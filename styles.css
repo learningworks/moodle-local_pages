@@ -1,0 +1,165 @@
+/* CSS Document */
+.custompages-list-element {
+    padding: 5px;
+    list-style: none;
+    margin: 0;
+    border: 1px solid #e2e2e2;
+    border-radius: 0;
+    margin-bottom: -1px;
+}
+
+.custompages-title {
+    margin-bottom: 5px;
+    margin: -5px -5px 10px -5px;
+    padding: 5px;
+    border-bottom: 1px solid #e2e2e2;
+    background: #f1f1f1;
+    font-size: 20px;
+}
+
+ul.custompages_nav {
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+
+ul.custompages_nav li {
+    float: left;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+ul.custompages_nav li a {
+    display: block;
+    padding: 5px;
+}
+
+.custompages-list-element {
+    clear: both;
+    padding-bottom: 0;
+}
+
+.custompages-list-element .custompages_submenu {
+    margin: 0;
+    padding: 0;
+    margin-left: -5px;
+    margin-right: -5px;
+    border-top: 1px solid #e2e2e2;
+}
+
+.custompages-list-element .custompages_submenu .custompages-list-element {
+    clear: both;
+    border: none;
+    border-bottom: 1px solid #e2e2e2;
+    border-radius: 0;
+    padding: 10px;
+    padding-right: 5px;
+    padding-bottom: 11px;
+}
+
+.custompages-list .custompages-title {
+    margin-bottom: 0;
+    border-bottom: 0;
+}
+
+.custompages-list-element .custompages_submenu h4 {
+    border: none;
+    background: transparent;
+    padding: 0;
+    margin-right: 25px;
+    margin-bottom: 0px;
+    margin-left: 5px;
+}
+
+.pages-action {
+    float: right;
+    margin-top: 0px;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.custompages-add {
+    text-align: right;
+    font-size: 12px;
+    text-transform: uppercase;
+    display: block;
+}
+
+.custompages-delete, .custompages-delete:hover {
+    color: #930;
+}
+
+.felement.fselect select, .felement.ftext input, .felement.feditor textarea {
+    width: 90%;
+    margin: 0;
+}
+
+.felement.fdate_selector select {
+    min-width: 80px;
+}
+
+body fieldset.hidden {
+    display: block !important;
+}
+
+#fitem_id_pagedata {
+    display: none;
+}
+
+.formbuilderform .formrow:first-child .form-removerow {
+    display: none;
+}
+
+.formbuilderform .formrow .form-addrow {
+    display: none;
+}
+
+.formbuilderform .formrow:last-child .form-addrow {
+    display: inline-block;
+}
+
+.formbuilderform .formrow input.form-removerow {
+    background: #999;
+    box-shadow: 0 3px #777;
+}
+
+.custompages_submenu .custompages_submenu {
+    margin-left: -10px;
+    padding-left: 10px;
+}
+
+.row.formrow {
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+body #showform-builder span {
+    display: block;
+    float: right;
+    font-size: 15px;
+    text-transform: uppercase;
+}
+
+body #form-builder {
+    border-bottom: 1px solid #e2e2e2;
+}
+
+body #id_s_local_pages_email_headers {
+    width: 90%;
+    font-size: 12px;
+}
+body#page-local-pages-pages-edit .span2 .form-control{
+    max-width:95%;
+    width:95%;
+}
+
+body#page-local-pages-pages-edit .formbuilderform{
+    margin-top: 10px;
+    float: left;
+    width: 100%;
+}
+
+body#page-local-pages-pages-edit .formrow{
+    clear:both;
+}

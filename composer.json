@@ -1,0 +1,10 @@
+{
+  "name": "learningworks/moodle-local_pages",
+  "type": "moodle-local",
+  "extra": {
+    "installer-name": "pages"
+  },
+  "require": {
+    "composer/installers": "~1.0"
+  }
+}
