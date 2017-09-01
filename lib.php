@@ -20,25 +20,11 @@
  * @package     local
  * @subpackage  local_pages
  * @author      Kevin Dibble
- * @copyright   2016 LearningWorks Ltd
+ * @copyright   2017 LearningWorks Ltd
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die;
-
-function local_pages_pluginfile($course, $birecordorcm, $context, $filearea, $args, $forcedownload, array $options = array()) {
-    $fs = get_file_storage();
-
-    $filename = array_pop($args);
-    $filepath = $args ? '/' . implode('/', $args) . '/' : '/';
-
-    if (!$file = $fs->get_file($context->id, 'local_pages', 'pagecontent', 0, $filepath, $filename) or $file->is_directory()) {
-        send_file_not_found();
-    }
-
-    \core\session\manager::write_close();
-    send_stored_file($file, null, 0, $forcedownload, $options);
-}
 
 function local_pages_extends_navigation(global_navigation $nav) {
     return local_pages_extend_navigation($nav);
@@ -49,13 +35,17 @@ function local_pages_build_menu(navigation_node $nav, $parent) {
     $records = $DB->get_records_sql("SELECT * FROM {local_pages} WHERE deleted=0 AND onmenu=1 " .
         "AND pagetype='page' AND pageparent=? AND pagedate <= UNIX_TIMESTAMP(CURDATE()) " .
         "ORDER BY pageorder", array($parent));
+    local_pages_prcess_records($records, $nav);
+}
+
+function local_pages_prcess_records($records, $nav, $parent = false) {
     if ($records) {
         foreach ($records as $page) {
             $canaccess = true;
             if (isset($page->accesslevel) && stripos($page->accesslevel, ":") !== false) {
                 $canaccess = false;
                 $levels = explode(",", $page->accesslevel);
-                foreach ($levels as $key => $level) {
+                foreach ($levels as $level) {
                     if ($canaccess != true) {
                         if (stripos($level, "!") !== false) {
                             $level = str_replace("!", "", $level);
@@ -76,11 +66,14 @@ function local_pages_build_menu(navigation_node $nav, $parent) {
                     $urllocation,
                     navigation_node::TYPE_CONTAINER
                 );
-                $child->set_parent($nav);
+                if ($parent) {
+                    $child->set_parent($nav);
+                }
                 local_pages_build_menu($child, $page->id);
             }
         }
     }
+
 }
 
 function local_pages_extend_navigation(global_navigation $nav) {
@@ -98,33 +91,5 @@ function local_pages_extend_navigation(global_navigation $nav) {
     $records = $DB->get_records_sql("SELECT * FROM {local_pages} WHERE deleted=0 AND onmenu=1 " .
         "AND pagetype='page' AND pageparent=0 AND pagedate <= UNIX_TIMESTAMP(CURDATE()) ORDER BY pageorder");
 
-    foreach ($records as $page) {
-        $canaccess = true;
-        if (isset($page->accesslevel) && stripos($page->accesslevel, ":") !== false) {
-            $canaccess = false;
-            $levels = explode(",", $page->accesslevel);
-            foreach ($levels as $key => $level) {
-                if ($canaccess != true) {
-                    if (stripos($level, "!") !== false) {
-                        $level = str_replace("!", "", $level);
-                        $canaccess = has_capability(trim($level), $context) ? false : true;
-                    } else {
-                        $canaccess = has_capability(trim($level), $context) ? true : false;
-                    }
-                }
-            }
-        }
-        if ($canaccess) {
-            $urllocation = new moodle_url($CFG->wwwroot . '/local/pages/', array('id' => $page->id));
-            if (get_config('local_pages', 'cleanurl_enabled') && trim($page->menuname) != '') {
-                $urllocation = new moodle_url($CFG->wwwroot . '/local/pages/' . $page->menuname);
-            }
-            $parent = $nav->add(
-                $page->pagename,
-                $urllocation,
-                navigation_node::TYPE_CONTAINER
-            );
-            local_pages_build_menu($parent, $page->id);
-        }
-    }
+    local_pages_prcess_records($records, $nav, false);
 }

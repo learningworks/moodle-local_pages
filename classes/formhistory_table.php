@@ -20,14 +20,14 @@
  * @package     local
  * @subpackage  local_pages
  * @author      Kevin Dibble
- * @copyright   2016 LearningWorks Ltd
+ * @copyright   2017 LearningWorks Ltd
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die;
 
 // Load Tablelib lib.
-require_once($CFG->dirroot .'/lib/tablelib.php');
+require_once($CFG->dirroot . '/lib/tablelib.php');
 
 class pages_formhistory_table extends table_sql {
 
@@ -77,7 +77,7 @@ class pages_formhistory_table extends table_sql {
         $data = json_decode($values->formcontent);
         $html = '';
         foreach ($data as $key => $value) {
-            $html .= ucfirst($key) ." = ".$value;
+            $html .= ucfirst($key) . " = " . $value;
             if (!$this->is_downloading()) {
                 $html .= "<br />";
             } else {

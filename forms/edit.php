@@ -20,7 +20,7 @@
  * @package     local
  * @subpackage  local_pages
  * @author      Kevin Dibble
- * @copyright   2016 LearningWorks Ltd
+ * @copyright   2017 LearningWorks Ltd
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -33,7 +33,7 @@ class pages_edit_product_form extends moodleform {
     public $_pagedata;
     public $callingpage;
 
-    public function __construct($page = false) {
+    public function __construct($page) {
         if ($page) {
             $this->_pagedata = $page->pagedata;
             $this->callingpage = $page->id;
@@ -53,7 +53,7 @@ class pages_edit_product_form extends moodleform {
 
     // Add elements to form.
     public function definition() {
-        global $CFG, $DB, $COURSE, $PAGE;
+        global $DB, $PAGE;
 
         // GET A list of all pages.
         $pages = array(0 => 'None');
@@ -65,7 +65,8 @@ class pages_edit_product_form extends moodleform {
         }
         $hasstandard = false;
         $layouts = array("standard" => "standard");
-        foreach ($PAGE->theme->layouts as $layoutname => $layoutobject) {
+        $layoutkeys = array_keys($PAGE->theme->layouts);
+        foreach ($layoutkeys as $layoutname) {
             if (strtolower($layoutname) != "standard") {
                 $layouts[$layoutname] = $layoutname;
             } else {
@@ -79,145 +80,53 @@ class pages_edit_product_form extends moodleform {
         $mform = $this->_form;
 
         $mform->addElement(
-            'date_selector',
-            'pagedate',
+            'date_selector', 'pagedate',
             get_string(
                 'page_date',
                 'local_pages'
-            ),
-            get_string('to')
+            ), get_string('to')
         );
         $mform->setType('pagedate', PARAM_TEXT);
-        $mform->addHelpButton(
-            'pagedate',
-            'pagedate_description',
-            'local_pages'
-        );
+        $mform->addHelpButton('pagedate', 'pagedate_description', 'local_pages');
 
-        $mform->addElement(
-            'text',
-            'pagename',
-            get_string(
-                'page_name',
-                'local_pages'
-            )
-        );
+        $mform->addElement('text', 'pagename', get_string('page_name', 'local_pages'));
         $mform->setType('pagename', PARAM_TEXT);
 
-        $mform->addElement(
-            'text',
-            'menuname',
-            get_string(
-                'menu_name',
-                'local_pages'
-            )
-        );
+        $mform->addElement('text', 'menuname', get_string('menu_name', 'local_pages'));
         $mform->setType('menuname', PARAM_TEXT);
 
-        $mform->addElement(
-            'text',
-            'emailto',
-            get_string(
-                'emailto_name',
-                'local_pages'
-            )
-        );
+        $mform->addElement('text', 'emailto', get_string('emailto_name', 'local_pages'));
         $mform->setType('emailto', PARAM_TEXT);
 
-        $mform->addElement(
-            'select',
-            'pagelayout',
-            get_string(
-                'pagelayout_name',
-                'local_pages'
-            ),
-            $layouts
-        );
+        $mform->addElement('select', 'pagelayout', get_string('pagelayout_name', 'local_pages'), $layouts);
 
         $mform->getElement('pagelayout')->setSelected('standard');
 
-        $mform->addElement(
-            'text',
-            'pageorder',
-            get_string(
-                'page_order',
-                'local_pages'
-            )
-        );
+        $mform->addElement('text', 'pageorder', get_string('page_order', 'local_pages'));
         $mform->setType('pageorder', PARAM_INT);
 
-        $mform->addElement(
-            'select',
-            'pageparent',
-            get_string(
-                'page_parent',
-                'local_pages'
-            ),
-            $pages
-        );
+        $mform->addElement('select', 'pageparent', get_string('page_parent', 'local_pages'), $pages);
 
-        $mform->addElement(
-            'select',
-            'onmenu',
-            get_string(
-                'page_onmenu',
-                'local_pages'
-            ),
-            array("1" => "Yes", "0" => "No"),
-            0
-        );
+        $mform->addElement('select', 'onmenu', get_string('page_onmenu', 'local_pages'),
+            array("1" => "Yes", "0" => "No"), 0);
 
-        $mform->addElement(
-            'text',
-            'accesslevel',
-            get_string(
-                'page_accesslevel',
-                'local_pages'
-            )
-        );
-        $mform->addHelpButton(
-            'accesslevel',
-            'accesslevel_description',
-            'local_pages'
-        );
+        $mform->addElement('text', 'accesslevel', get_string('page_accesslevel', 'local_pages'));
+        $mform->addHelpButton('accesslevel', 'accesslevel_description', 'local_pages');
         $mform->setType('accesslevel', PARAM_TEXT);
 
-        $mform->addElement(
-            'select',
-            'pagetype',
-            get_string(
-                'page_pagetype',
-                'local_pages'
-            ),
-            array("page" => "Page", "form" => "Form"),
-            'page'
-        );
+        $mform->addElement('select', 'pagetype', get_string('page_pagetype', 'local_pages'),
+            array("page" => "Page", "form" => "Form"), 'page');
 
         $context = context_system::instance();
         $editoroptions = array('maxfiles' => EDITOR_UNLIMITED_FILES, 'noclean' => true, 'context' => $context);
 
-        $mform->addElement(
-            'editor',
-            'pagecontent',
-            get_string(
-                'page_content',
-                'local_pages'
-            ),
-            get_string(
-                'page_content_description',
-                'local_pages'
-            ),
-            $editoroptions
-        );
+        $mform->addElement('editor', 'pagecontent', get_string('page_content', 'local_pages'),
+            get_string('page_content_description', 'local_pages'), $editoroptions);
 
         $mform->addRule('pagecontent', null, 'required', null, 'client');
         $mform->setType('pagecontent', PARAM_RAW); // XSS is prevented when printing the block contents and serving files.
 
-        $mform->addHelpButton(
-            'pagecontent',
-            'pagecontent_description',
-            'local_pages'
-        );
+        $mform->addHelpButton('pagecontent', 'pagecontent_description', 'local_pages');
 
         $mform->addElement('html', $this->build_html_form());
 
@@ -259,7 +168,8 @@ class pages_edit_product_form extends moodleform {
             $html .= '<div class="col-sm-12 col-md-2 span2"><label>Relates to</label>' .
                 '<select class="form-control field-readsfrom" name="readsfrom[]">' .
                 '<option value="">Nothing</option>';
-            foreach ((array)$usertable as $key => $value) {
+            $keys = array_keys((array)$usertable);
+            foreach ($keys as $key) {
                 $html .= '<option ' . ((isset($records[$i]) &&
                         isset($records[$i]->readsfrom) &&
                         $records[$i]->readsfrom == $key) ? 'selected="selected"' : '') . '>' . $key . '</option>';
@@ -305,8 +215,7 @@ class pages_edit_product_form extends moodleform {
             $i++;
         } while ($i < $limit);
 
-        $html .= '</div>' .
-            '</div>';
+        $html .= '</div></div>';
         return $html;
     }
 }

@@ -20,7 +20,7 @@
  * @package     local
  * @subpackage  local_pages
  * @author      Kevin Dibble
- * @copyright   2016 LearningWorks Ltd
+ * @copyright   2017 LearningWorks Ltd
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -44,7 +44,6 @@ class custompage {
     }
 
     public function update($data) {
-        global $DB;
         if (isset($data->id) && $data->id > 0) {
             $result = $this->updatepage($data);
             if ($result) {

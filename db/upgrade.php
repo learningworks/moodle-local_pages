@@ -15,13 +15,15 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @param $oldversion
- * @return bool
- * @throws ddl_exception
- * @throws ddl_table_missing_exception
- * @throws downgrade_exception
- * @throws upgrade_exception
+ * Local Pages Renderer
+ *
+ * @package     local
+ * @subpackage  local_pages
+ * @author      Kevin Dibble
+ * @copyright   2017 LearningWorks Ltd
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 
 defined('MOODLE_INTERNAL') || die;
 

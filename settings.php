@@ -20,7 +20,7 @@
  * @package         local_pages.
  * @author          Kevin Dibble <kevin.dibble@learningworks.co.nz>.
  * @contributors    Donald Barrett <donald.barrett@learningworks.co.nz>.
- * @copyright       2016 LearningWorks Ltd.
+ * @copyright       2017 LearningWorks Ltd.
  * @license         http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later.
  */
 

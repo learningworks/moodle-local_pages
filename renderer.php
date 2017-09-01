@@ -20,7 +20,7 @@
  * @package     local
  * @subpackage  local_pages
  * @author      Kevin Dibble
- * @copyright   2016 LearningWorks Ltd
+ * @copyright   2017 LearningWorks Ltd
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -33,7 +33,7 @@ class local_pages_renderer extends plugin_renderer_base {
 
     public $errorfields = array();
 
-    public function get_submenuitem($parent, $name, $url) {
+    public function get_submenuitem($parent, $name) {
         global $DB, $CFG;
         $html = '';
         $records = $DB->get_records_sql("SELECT * FROM {local_pages} WHERE deleted=0 AND " .
@@ -50,7 +50,7 @@ class local_pages_renderer extends plugin_renderer_base {
             $html .= "<h4 class='custompages-title'>" . $name . "</h4>";
             $html .= "<ul class='custompages_submenu'>";
             foreach ($records as $page) {
-                $html .= $this->get_submenuitem($page->id, $page->pagename, $page->menuname);
+                $html .= $this->get_submenuitem($page->id, $page->pagename);
             }
             $html .= "</ul>";
             $html .= "</li>";
@@ -70,11 +70,11 @@ class local_pages_renderer extends plugin_renderer_base {
     }
 
     public function list_pages() {
-        global $DB, $PAGE, $CFG;
+        global $DB, $CFG;
         $html = '<ul class="custompages-list">';
         $records = $DB->get_records_sql("SELECT * FROM {local_pages} WHERE deleted=0 AND pageparent=0 ORDER BY pageorder");
         foreach ($records as $page) {
-            $html .= $this->get_submenuitem($page->id, $page->pagename, $page->menuname);
+            $html .= $this->get_submenuitem($page->id, $page->pagename);
         }
 
         $html .= "<li class='custompages-list-element'>
@@ -92,7 +92,6 @@ class local_pages_renderer extends plugin_renderer_base {
         $html .= "</ul>";
         return $html;
     }
-
 
     public function showpage($page) {
         global $DB;
@@ -113,11 +112,7 @@ class local_pages_renderer extends plugin_renderer_base {
             }
         }
 
-        if ($page->pagedate > date('U')) {
-            $canaccess = false;
-        }
-
-        if ($canaccess) {
+        if ($canaccess && ($page->pagedate <= date('U') || is_siteadmin())) {
             $records = $DB->get_records_sql("SELECT * FROM {local_pages} WHERE deleted=0 AND pagetype <> 'page' " .
                 "AND pageparent=? AND pagedate <= UNIX_TIMESTAMP(CURDATE()) ORDER BY pageorder", array($page->id));
             $form = '';
@@ -132,10 +127,7 @@ class local_pages_renderer extends plugin_renderer_base {
 
             return str_replace(array("#form#", "{form}"), array($form, $form), $page->pagecontent);
         } else {
-            return get_string(
-                'noaccess',
-                'local_pages'
-            );
+            return get_string('noaccess', 'local_pages');
         }
     }
 
@@ -172,11 +164,8 @@ class local_pages_renderer extends plugin_renderer_base {
                     }
                     foreach ((array)$records as $key => $value) {
                         $valuesout[] = "{" . $value->name . "}";
-                        if (isset($_POST[str_replace(" ", "_", $value->name)])) {
-                            $valuesin[] = $_POST[str_replace(" ", "_", $value->name)];
-                        } else {
-                            $valuesin[] = '';
-                        }
+                        $valuesin[] = isset($_POST[str_replace(" ",
+                                "_", $value->name)]) ? $_POST[str_replace(" ", "_", $value->name)] : '';
                     }
                     return str_replace($valuesout, $valuesin, $data->pagecontent);
                 } else {
@@ -196,69 +185,63 @@ class local_pages_renderer extends plugin_renderer_base {
                     str_replace(" ", "", $value->name) . '" ' . ($value->required == "Yes" ? "Required" : '') .
                     ' placeholder="' . $value->defaultvalue . '">' .
                     (isset($_POST[str_replace(" ", "", $value->name)]) ? $_POST[str_replace(" ", "",
-                        $value->name)] : (isset($USER->$record) ? $USER->$record : '')) .
-                    '</textarea>';
+                        $value->name)] : (isset($USER->$record) ? $USER->$record : '')) . '</textarea>';
+            } else if (strtolower($value->type) == "checkbox") {
+                $str .= '<div class="checkbox ' . $errorclass . '">';
+                $str .= '<label for="' . str_replace(" ", "", $value->name) . '">';
+                $str .= '<input name="' . str_replace(" ", "_", $value->name) . '" type="hidden" value="0"  id="' .
+                    str_replace(" ", "", $value->name) . '" />';
+                $str .= '<input name="' . str_replace(" ", "_", $value->name) . '" type="' .
+                    strtolower($value->type) . '" value="' .
+                    (isset($_POST[str_replace(" ", "_", $value->name)]) ? $_POST[str_replace(" ", "_",
+                        $value->name)] : '') . '" id="' .
+                    str_replace(" ", "", $value->name) . '" ' . ($value->required == "Yes" ? "Required" : '') .
+                    ' placeholder="' . $value->defaultvalue . '" />';
+                $str .= $value->name . '</label>';
             } else {
-                if (strtolower($value->type) == "checkbox") {
-                    $str .= '<div class="checkbox ' . $errorclass . '">';
-                    $str .= '<label for="' . str_replace(" ", "", $value->name) . '">';
-                    $str .= '<input name="' . str_replace(" ", "_", $value->name) . '" type="hidden" value="0"  id="' .
-                        str_replace(" ", "", $value->name) . '" />';
+                if ($value->type == "HTML") {
+                    $str .= '<div class="form-break">' . $value->name;
+                } else if ($value->type == "Select") {
+                    $str .= '<div class="form-group ' . $errorclass . '">';
+                    $str .= '<label for="' . str_replace(" ", "", $value->name) . '">' . $value->name . '</label>';
+                    $str .= '<select class="form-control" ' . ($value->required == "Yes" ? "Required" : '') .
+                        ' name="' . str_replace(" ", "_", $value->name) . '" id="' .
+                        str_replace(" ", "", $value->name) . '">';
+                    $selectlist = explode("\r\n", $value->defaultvalue);
+                    foreach ($selectlist as $option) {
+                        $options = explode("|", $option);
+                        if (trim($options[0]) == '' && !isset($options[1])) {
+                            $options[1] == 'Please Select an option';
+                        }
+                        $str .= '<option value="' . $options[0] . '" ' .
+                            (isset($_POST[str_replace(" ", "_", $value->name)]) &&
+                            $_POST[str_replace(" ", "_",
+                                $value->name)] == $options[0] ? 'selected="selected"' : '') . ' >' .
+                            (isset($options[1]) ? $options[1] : $options[0]) . '</option>';
+                    }
+                    $str .= '</select>';
+                } else {
+                    $str .= '<div class="form-group ' . $errorclass . '">';
+                    $str .= '<label for="' . str_replace(" ", "", $value->name) . '">' .
+                        $value->name . '</label>';
                     $str .= '<input name="' . str_replace(" ", "_", $value->name) . '" type="' .
                         strtolower($value->type) . '" value="' .
                         (isset($_POST[str_replace(" ", "_", $value->name)]) ? $_POST[str_replace(" ", "_",
-                            $value->name)] : '') . '" id="' .
-                        str_replace(" ", "", $value->name) . '" ' . ($value->required == "Yes" ? "Required" : '') .
-                        ' placeholder="' . $value->defaultvalue . '" />';
-                    $str .= $value->name . '</label>';
-                } else {
-                    if ($value->type == "HTML") {
-                        $str .= '<div class="form-break">' . $value->name;
-                    } else {
-                        if ($value->type == "Select") {
-                            $str .= '<div class="form-group ' . $errorclass . '">';
-                            $str .= '<label for="' . str_replace(" ", "", $value->name) . '">' . $value->name . '</label>';
-                            $str .= '<select class="form-control" ' . ($value->required == "Yes" ? "Required" : '') .
-                                ' name="' . str_replace(" ", "_", $value->name) . '" id="' .
-                                str_replace(" ", "", $value->name) . '">';
-                            $selectlist = explode("\r\n", $value->defaultvalue);
-                            foreach ($selectlist as $option) {
-                                $options = explode("|", $option);
-                                if (trim($options[0]) == '' && !isset($options[1])) {
-                                    $options[1] == 'Please Select an option';
-                                }
-                                $str .= '<option value="' . $options[0] . '" ' .
-                                    (isset($_POST[str_replace(" ", "_", $value->name)]) &&
-                                    $_POST[str_replace(" ", "_",
-                                        $value->name)] == $options[0] ? 'selected="selected"' : '') . ' >' .
-                                    (isset($options[1]) ? $options[1] : $options[0]) . '</option>';
-                            }
-                            $str .= '</select>';
-                        } else {
-                            $str .= '<div class="form-group ' . $errorclass . '">';
-                            $str .= '<label for="' . str_replace(" ", "", $value->name) . '">' .
-                                $value->name . '</label>';
-                            $str .= '<input name="' . str_replace(" ", "_", $value->name) . '" type="' .
-                                strtolower($value->type) . '" value="' .
-                                (isset($_POST[str_replace(" ", "_", $value->name)]) ? $_POST[str_replace(" ", "_",
-                                    $value->name)] : (isset($USER->$record) ? $USER->$record : '')) .
-                                '" placeholder="' . $value->defaultvalue .
-                                '" class="form-control" id="' . str_replace(" ", "", $value->name) . '" ' .
-                                ($value->required == "Yes" ? "Required" : '') . ' />';
-                        }
-                    }
+                            $value->name)] : (isset($USER->$record) ? $USER->$record : '')) .
+                        '" placeholder="' . $value->defaultvalue .
+                        '" class="form-control" id="' . str_replace(" ", "", $value->name) . '" ' .
+                        ($value->required == "Yes" ? "Required" : '') . ' />';
                 }
             }
-
-            if (isset($this->error_fields[$value->name])) {
-                $str .= '<span class="help-block">' . $this->error_fields[$value->name] . '</span>';
-            }
-            $str .= '</div>';
         }
-        $str .= '
-		<input type="text" name="hp" value="" style="position:absolute;left:-99999px" />
-		<button type="submit" name="formsubmit" class="btn btn-primary">Submit</button>
-		</form>';
+
+        if (isset($this->error_fields[$value->name])) {
+            $str .= '<span class="help-block">' . $this->error_fields[$value->name] . '</span>';
+        }
+        $str .= '</div>';
+
+        $str .= '<input type="text" name="hp" value="" style="position:absolute;left:-99999px" /> ' .
+            '<button type="submit" name="formsubmit" class="btn btn-primary">Submit</button></form>';
         return $str;
     }
 
@@ -363,7 +346,7 @@ class local_pages_renderer extends plugin_renderer_base {
     }
 
     public function edit_page($page = false) {
-        global $_POST, $CFG, $USER;
+        global $_POST, $CFG;
         $mform = new pages_edit_product_form($page);
         if ($mform->is_cancelled()) {
             redirect(new moodle_url($CFG->wwwroot . '/local/pages/pages/pages.php'));
@@ -442,7 +425,7 @@ class local_pages_renderer extends plugin_renderer_base {
                 if (isset($page->accesslevel) && stripos($page->accesslevel, ":") !== false) {
                     $canaccess = false;        // Page Has level Requirements - check rights.
                     $levels = explode(",", $page->accesslevel);
-                    foreach ($levels as $key => $level) {
+                    foreach ($levels as $level) {
                         if ($canaccess != true) {
                             if (stripos($level, "!") !== false) {
                                 $level = str_replace("!", "", $level);
