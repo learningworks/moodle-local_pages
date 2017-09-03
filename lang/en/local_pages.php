@@ -15,12 +15,12 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Tag Manager
+ * Local Pages
  *
- * This module provides google tag manager to moodle sites
+ * This module allows custom pages and forms in moodle
  *
- * @package    local_tagmanager
- * @copyright  2016 Kevin Dibble, www.learningworks.co.nz
+ * @package    local_pages
+ * @copyright  2017 Kevin Dibble, www.learningworks.co.nz
  * @author     Kevin Dibble
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

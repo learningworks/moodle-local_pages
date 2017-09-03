@@ -28,6 +28,9 @@ defined('MOODLE_INTERNAL') || die;
 require_once($CFG->libdir . '/formslib.php');
 require_once(dirname(__FILE__) . '/../lib.php');
 
+/**
+ * Class pages_edit_product_form
+ */
 class pages_edit_product_form extends moodleform {
     public $_pagedata;
     public $callingpage;
@@ -206,9 +209,9 @@ class pages_edit_product_form extends moodleform {
 
             $html .= '<div class="col-sm-12 col-md-2 span2"><label style="width:100%"> &nbsp;</label>' .
                 '<input type="button" value="add" ' .
-                'class="form-submit form-addrow" name="submitbutton" type="button" />' .
+                'class="form-submit form-addrow btn btn-primary" name="submitbutton" type="button" />' .
                 '<input type="button" value="remove" ' .
-                'class="form-submit form-removerow" name="cancel" type="button" />' .
+                'class="form-submit form-removerow btn btn-danger" name="cancel" type="button" />' .
                 '</div>' .
                 '</div>';
             $i++;

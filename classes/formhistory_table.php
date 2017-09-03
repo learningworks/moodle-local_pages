@@ -28,6 +28,10 @@ defined('MOODLE_INTERNAL') || die;
 // Load Tablelib lib.
 require_once($CFG->dirroot . '/lib/tablelib.php');
 
+/**
+ * Class pages_formhistory_table
+ * Create and show form submission history
+ */
 class pages_formhistory_table extends table_sql {
 
     /**

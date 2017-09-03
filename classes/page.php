@@ -25,6 +25,10 @@
 
 defined('MOODLE_INTERNAL') || die;
 
+/**
+ * Class custompage
+ *
+ */
 class custompage {
     private $_data;
 
