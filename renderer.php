@@ -17,8 +17,7 @@
 /**
  * Local Pages Renderer
  *
- * @package     local
- * @subpackage  local_pages
+ * @package     local_pages
  * @author      Kevin Dibble
  * @copyright   2017 LearningWorks Ltd
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -29,10 +28,21 @@ defined('MOODLE_INTERNAL') || die;
 require_once($CFG->dirroot . '/local/pages/classes/page.php');
 require_once($CFG->dirroot . '/local/pages/forms/edit.php');
 
+/**
+ * Class local_pages_renderer
+ */
 class local_pages_renderer extends plugin_renderer_base {
 
+    /**
+     * @var array
+     */
     public $errorfields = array();
 
+    /**
+     * @param $parent
+     * @param $name
+     * @return string
+     */
     public function get_submenuitem($parent, $name) {
         global $DB, $CFG;
         $html = '';
@@ -69,6 +79,9 @@ class local_pages_renderer extends plugin_renderer_base {
         return $html;
     }
 
+    /**
+     * @return string
+     */
     public function list_pages() {
         global $DB, $CFG;
         $html = '<ul class="custompages-list">';
@@ -93,6 +106,10 @@ class local_pages_renderer extends plugin_renderer_base {
         return $html;
     }
 
+    /**
+     * @param $page
+     * @return mixed
+     */
     public function showpage($page) {
         global $DB;
         $context = context_system::instance();
@@ -131,6 +148,10 @@ class local_pages_renderer extends plugin_renderer_base {
         }
     }
 
+    /**
+     * @param $data
+     * @return mixed
+     */
     public function adduserdata($data) {
         global $USER, $DB;
         if (isloggedin()) {
@@ -146,6 +167,10 @@ class local_pages_renderer extends plugin_renderer_base {
         return $data;
     }
 
+    /**
+     * @param $data
+     * @return string
+     */
     public function createform($data) {
         global $_POST, $USER;
         if (isloggedin()) {
@@ -245,6 +270,10 @@ class local_pages_renderer extends plugin_renderer_base {
         return $str;
     }
 
+    /**
+     * @param $records
+     * @return bool
+     */
     public function valid($records) {
         global $_POST;
         $valid = true;
@@ -273,6 +302,9 @@ class local_pages_renderer extends plugin_renderer_base {
         return $valid;
     }
 
+    /**
+     * @param $page
+     */
     public function processform($page) {
         global $DB;
         $touser = get_admin();
@@ -345,6 +377,9 @@ class local_pages_renderer extends plugin_renderer_base {
         }
     }
 
+    /**
+     * @param bool $page
+     */
     public function edit_page($page = false) {
         global $_POST, $CFG;
         $mform = new pages_edit_product_form($page);
@@ -406,6 +441,12 @@ class local_pages_renderer extends plugin_renderer_base {
         $mform->display();
     }
 
+    /**
+     * @param $parent
+     * @param $name
+     * @param $url
+     * @return string
+     */
     public function get_menuitem($parent, $name, $url) {
         global $DB, $CFG;
         $context = context_system::instance();
@@ -448,6 +489,9 @@ class local_pages_renderer extends plugin_renderer_base {
         return $html;
     }
 
+    /**
+     * @return string
+     */
     public function build_menu() {
         global $DB;
         $context = context_system::instance();

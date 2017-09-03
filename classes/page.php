@@ -27,25 +27,43 @@ defined('MOODLE_INTERNAL') || die;
 
 /**
  * Class custompage
- *
+ * @author      Kevin Dibble
+ * @copyright   2017 LearningWorks Ltd
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class custompage {
     private $_data;
 
+    /**
+     * custompage constructor.
+     * @param $data
+     */
     public function __construct($data) {
         $this->_data = $data;
     }
 
+    /**
+     * @param $data
+     * @return mixed
+     */
     public function createpage($data) {
         global $DB;
         return $DB->insert_record('local_pages', $data);
     }
 
+    /**
+     * @param $data
+     * @return mixed
+     */
     public function updatepage($data) {
         global $DB;
         return $DB->update_record('local_pages', $data);
     }
 
+    /**
+     * @param $data
+     * @return mixed
+     */
     public function update($data) {
         if (isset($data->id) && $data->id > 0) {
             $result = $this->updatepage($data);
@@ -58,12 +76,20 @@ class custompage {
         return $result;
     }
 
+    /**
+     * @param $item
+     * @return mixed
+     */
     public function __get($item) {
         if (isset($this->_data->$item)) {
             return $this->_data->$item;
         }
     }
 
+    /**
+     * @param $id
+     * @return custompage
+     */
     public static function load($id) {
         global $DB, $CFG;
         require_once($CFG->libdir . '/formslib.php');

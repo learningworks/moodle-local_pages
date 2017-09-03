@@ -17,8 +17,7 @@
 /**
  * Moodec Capability definitions
  *
- * @package     local
- * @subpackage  local_pages
+ * @package     local_pages
  * @author      Kevin Dibble
  * @copyright   2015 LearningWorks Ltd
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later

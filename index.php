@@ -17,7 +17,7 @@
 /**
  * Pages main view page.
  *
- * @package         local_pages.
+ * @package         local_pages
  * @author          Kevin Dibble <kevin.dibble@learningworks.co.nz>.
  * @copyright       2017 LearningWorks Ltd.
  * @license         http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later.

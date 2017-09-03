@@ -30,6 +30,8 @@ require_once($CFG->dirroot . '/lib/tablelib.php');
 
 /**
  * Class pages_formhistory_table
+ * @copyright   2017 LearningWorks Ltd
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * Create and show form submission history
  */
 class pages_formhistory_table extends table_sql {
@@ -62,20 +64,32 @@ class pages_formhistory_table extends table_sql {
     }
 
     /**
-     * This function is called for each data row to allow processing of the
-     * purchase_date value.
+     * This function is called to return the id of the object
      *
      * @param object $values Contains object with all the values of record.
-     * @return $string Return purchase_date formatted like 09:23:00 01/12/1991
+     * @return $string Return id of record
      */
     public function col_id($values) {
         return $values->id;
     }
 
+    /**
+     * This function is called for each data row to allow processing of the
+     * date value.
+     *
+     * @param object $values Contains object with all the values of record.
+     * @return $string Return purchase_date formatted like 01/12/1991
+     */
     public function col_formdate($values) {
         return date('j M Y', $values->formdate);
     }
 
+    /**
+     * This function is called to format row data
+     *
+     * @param object $values Contains object with all the values of record.
+     * @return $string Return html string if not downloading
+     */
     public function col_formcontent($values) {
         $data = json_decode($values->formcontent);
         $html = '';

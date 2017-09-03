@@ -17,8 +17,7 @@
 /**
  * local pages
  *
- * @package     local
- * @subpackage  local_pages
+ * @package     local_pages
  * @author      Kevin Dibble
  * @copyright   2017 LearningWorks Ltd
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -26,10 +25,22 @@
 
 defined('MOODLE_INTERNAL') || die;
 
+/**
+ * @param global_navigation $nav
+ */
 function local_pages_extends_navigation(global_navigation $nav) {
     return local_pages_extend_navigation($nav);
 }
 
+/**
+ * @param $course
+ * @param $birecordorcm
+ * @param $context
+ * @param $filearea
+ * @param $args
+ * @param $forcedownload
+ * @param array $options
+ */
 function local_pages_pluginfile($course, $birecordorcm, $context, $filearea, $args, $forcedownload, array $options = array()) {
     $fs = get_file_storage();
 
@@ -44,6 +55,10 @@ function local_pages_pluginfile($course, $birecordorcm, $context, $filearea, $ar
     send_stored_file($file, null, 0, $forcedownload, $options);
 }
 
+/**
+ * @param navigation_node $nav
+ * @param $parent
+ */
 function local_pages_build_menu(navigation_node $nav, $parent) {
     global $DB;
     $records = $DB->get_records_sql("SELECT * FROM {local_pages} WHERE deleted=0 AND onmenu=1 " .
@@ -52,6 +67,11 @@ function local_pages_build_menu(navigation_node $nav, $parent) {
     local_pages_prcess_records($records, $nav);
 }
 
+/**
+ * @param $records
+ * @param $nav
+ * @param bool $parent
+ */
 function local_pages_prcess_records($records, $nav, $parent = false) {
     global $CFG;
     if ($records) {
@@ -88,9 +108,11 @@ function local_pages_prcess_records($records, $nav, $parent = false) {
             }
         }
     }
-
 }
 
+/**
+ * @param global_navigation $nav
+ */
 function local_pages_extend_navigation(global_navigation $nav) {
     global $CFG, $DB;
     if (!is_siteadmin()) {

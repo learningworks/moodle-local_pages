@@ -26,6 +26,12 @@
 
 defined('MOODLE_INTERNAL') || die;
 
+/**
+ * @param $oldversion
+ * @return bool
+ * @copyright   2017 LearningWorks Ltd
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 function xmldb_local_pages_upgrade($oldversion) {
     global $DB;
     $dbman = $DB->get_manager();
