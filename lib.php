@@ -45,7 +45,7 @@ function local_pages_pluginfile($course, $birecordorcm, $context, $filearea, $ar
 }
 
 function local_pages_build_menu(navigation_node $nav, $parent) {
-    global $CFG, $DB;
+    global $DB;
     $records = $DB->get_records_sql("SELECT * FROM {local_pages} WHERE deleted=0 AND onmenu=1 " .
         "AND pagetype='page' AND pageparent=? AND pagedate <= UNIX_TIMESTAMP(CURDATE()) " .
         "ORDER BY pageorder", array($parent));
@@ -53,6 +53,7 @@ function local_pages_build_menu(navigation_node $nav, $parent) {
 }
 
 function local_pages_prcess_records($records, $nav, $parent = false) {
+    global $CFG;
     if ($records) {
         foreach ($records as $page) {
             $canaccess = true;

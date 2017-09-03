@@ -1,6 +1,6 @@
-require(["jquery"], function ($) {
-    $(function () {
-        $("#id_pagetype").change(function () {
+require(["jquery"], function($) {
+    $(function() {
+        $("#id_pagetype").change(function() {
             switch ($(this).val()) {
                 case "form":
                     $("#fitem_id_pagelayout").hide();
@@ -20,15 +20,15 @@ require(["jquery"], function ($) {
             }
         });
 
-        $(".form-addrow").click(function () {
+        $(".form-addrow").click(function() {
             addrow(this);
         });
 
-        $(".form-removerow").click(function () {
+        $(".form-removerow").click(function() {
             $(this).closest(".formrow").remove();
         });
 
-        $(".field-type").change(function () {
+        $(".field-type").change(function() {
             if ($(this).val() == "HTML") {
                 $(this).closest(".formrow").find(".field-name").animate({
                     "height": 100,
@@ -111,26 +111,30 @@ require(["jquery"], function ($) {
         $("#showform-builder").trigger("click");
     });
 
+    /**
+     * @function addrow
+     * @param item
+     */
     function addrow(item) {
         var newrow = $(item).closest(".formrow").clone();
         $(newrow).appendTo(".formbuilderform");
         $(newrow).find("select").css({"display": "block"});
 
-        $(newrow).find("select").each(function () {
+        $(newrow).find("select").each(function() {
             $(this).val("");
         });
-        $(newrow).find("textarea").each(function () {
+        $(newrow).find("textarea").each(function() {
             $(this).val("");
         });
-        $(".form-removerow").click(function () {
+        $(".form-removerow").click(function() {
             $(this).closest(".formrow").remove();
         });
-        $(".form-addrow").click(function () {
+        $(".form-addrow").click(function() {
             $(this).unbind();
             addrow(this);
         });
 
-        $(newrow).find(".field-type").change(function () {
+        $(newrow).find(".field-type").change(function() {
             if ($(this).val() == "HTML") {
                 $(this).closest(".formrow").find(".field-name").animate({
                     "height": 100,

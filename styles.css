@@ -115,7 +115,7 @@ body fieldset.hidden {
 
 .formbuilderform .formrow .form-addrow {
     display: none;
-    margin-right:10px;
+    margin-right: 10px;
 }
 
 .formbuilderform .formrow:last-child .form-addrow {
