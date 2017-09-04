@@ -102,7 +102,7 @@ ul.custompages_nav li a {
 }
 
 body fieldset.hidden {
-    display: block !important;
+    display: block;
 }
 
 #fitem_id_pagedata {
