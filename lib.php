@@ -26,6 +26,9 @@
 defined('MOODLE_INTERNAL') || die;
 
 /**
+ *
+ * Extend page navigation
+ *
  * @param global_navigation $nav
  */
 function local_pages_extends_navigation(global_navigation $nav) {

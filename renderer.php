@@ -120,7 +120,7 @@ class local_pages_renderer extends plugin_renderer_base {
      *
      * Show the page based on users rights
      *
-     * @param $page
+     * @param mixed $page
      * @return mixed
      */
     public function showpage($page) {
@@ -165,7 +165,7 @@ class local_pages_renderer extends plugin_renderer_base {
      *
      * Add user data to the form to display on the page
      *
-     * @param $data
+     * @param mixed $data
      * @return mixed
      */
     public function adduserdata($data) {
@@ -187,7 +187,7 @@ class local_pages_renderer extends plugin_renderer_base {
      *
      * Create the form for the page
      *
-     * @param $data
+     * @param mixed $data
      * @return string
      */
     public function createform($data) {
@@ -328,7 +328,7 @@ class local_pages_renderer extends plugin_renderer_base {
      *
      * Process the submitted form up update page data
      *
-     * @param $page
+     * @param mixed $page
      */
     public function processform($page) {
         global $DB;

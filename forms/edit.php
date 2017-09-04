@@ -35,7 +35,14 @@ require_once(dirname(__FILE__) . '/../lib.php');
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class pages_edit_product_form extends moodleform {
+    /**
+     * @var $_pagedata
+     */
     public $_pagedata;
+
+    /**
+     * @var $callingpage
+     */
     public $callingpage;
 
     /**
