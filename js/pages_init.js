@@ -112,9 +112,8 @@ require(["jquery"], function($) {
     });
 
     /**
-     * @function addrow
+     *
      * @param item
-     * @type object
      */
     function addrow(item) {
         var newrow = $(item).closest(".formrow").clone();
