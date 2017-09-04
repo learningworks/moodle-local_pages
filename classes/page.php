@@ -40,7 +40,7 @@ class custompage {
 
     /**
      * custompage constructor.
-     * @param $data
+     * @param mixed $data
      */
     public function __construct($data) {
         $this->_data = $data;
@@ -50,8 +50,8 @@ class custompage {
      *
      * This is to create a new page in the database
      *
-     * @param $data
-     * @return mixed
+     * @param mixed $data
+     * @return Object
      */
     public function createpage($data) {
         global $DB;
@@ -62,7 +62,7 @@ class custompage {
      *
      * This is to update the page based on the data object
      *
-     * @param $data
+     * @param mixed $data
      * @return mixed
      */
     public function updatepage($data) {
@@ -74,7 +74,7 @@ class custompage {
      *
      * This is to update or create a page if it does not exist
      *
-     * @param $data
+     * @param mixed $data
      * @return mixed
      */
     public function update($data) {
@@ -93,7 +93,7 @@ class custompage {
      *
      * A getter to get items form the page object
      *
-     * @param $item
+     * @param string $item
      * @return mixed
      */
     public function __get($item) {
@@ -106,7 +106,7 @@ class custompage {
      *
      * This is to load the page based on the page id
      *
-     * @param $id
+     * @param integer $id
      * @return custompage
      */
     public static function load($id) {
