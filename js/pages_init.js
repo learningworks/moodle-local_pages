@@ -100,7 +100,7 @@ require(["jquery"], function($) {
         $(".field-type").trigger("change");
         $("#id_pagetype").trigger("change");
 
-        $("#showform-builder").click(function (e) {
+        $("#showform-builder").click(function(e) {
             e.preventDefault();
             $(".formbuilderform").toggle("fast");
             $("#showEdit").toggle("fast");
@@ -114,6 +114,7 @@ require(["jquery"], function($) {
     /**
      * @function addrow
      * @param item
+     * @type object
      */
     function addrow(item) {
         var newrow = $(item).closest(".formrow").clone();
