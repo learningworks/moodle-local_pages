@@ -29,7 +29,7 @@ require_once($CFG->dirroot . '/local/pages/classes/page.php');
 require_once($CFG->dirroot . '/local/pages/forms/edit.php');
 
 /**
- * 
+ *
  * Class local_pages_renderer
  *
  * @copyright   2017 LearningWorks Ltd

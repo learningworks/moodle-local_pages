@@ -25,18 +25,20 @@
 
 require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
 
-require_once("{$CFG->dirroot}/local/pages/lib.php");
-require_once("{$CFG->dirroot}/local/pages/classes/page.php");
-
-// Grab the global stuff that we need.
-global $CFG, $DB;
-
 // Get the id of the page to be displayed.
 $pageid = optional_param('id', 0, PARAM_INT);
 
 // Setup the page.
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_url("{$CFG->wwwroot}/local/pages/index.php", ['id' => $pageid]);
+
+// Login is NOT required to view this page.
+if (false) {
+    require_login(null, true, null, true, true);
+}
+
+require_once("{$CFG->dirroot}/local/pages/lib.php");
+require_once("{$CFG->dirroot}/local/pages/classes/page.php");
 
 // Set the page layout.
 $custompage     = custompage::load($pageid);
