@@ -30,11 +30,18 @@ require_once(dirname(__FILE__) . '/../lib.php');
 
 /**
  * Class pages_edit_product_form
+ *
+ * @copyright   2017 LearningWorks Ltd
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class pages_edit_product_form extends moodleform {
     public $_pagedata;
     public $callingpage;
 
+    /**
+     * pages_edit_product_form constructor.
+     * @param mixed $page
+     */
     public function __construct($page) {
         if ($page) {
             $this->_pagedata = $page->pagedata;
@@ -43,6 +50,13 @@ class pages_edit_product_form extends moodleform {
         parent::__construct();
     }
 
+    /**
+     *
+     * Set the page data.
+     *
+     * @param mixed $defaults
+     * @return mixed
+     */
     public function set_data($defaults) {
         $context = context_system::instance();
         $draftideditor = file_get_submitted_draft_itemid('pagecontent');
@@ -53,7 +67,9 @@ class pages_edit_product_form extends moodleform {
         return parent::set_data($defaults);
     }
 
-    // Add elements to form.
+    /**
+     * Get a list of all pages
+     */
     public function definition() {
         global $DB, $PAGE;
 
@@ -139,12 +155,25 @@ class pages_edit_product_form extends moodleform {
         $mform->setType('id', PARAM_INT);
     }
 
-    // Custom validation should be added here.
+    /**
+     *
+     * Validate the form
+     *
+     * @param mixed $data
+     * @param mixed $files
+     * @return mixed
+     */
     public function validation($data, $files) {
         $errors = parent::validation($data, $files);
         return $errors;
     }
 
+    /**
+     *
+     * Build the HTML form elements
+     *
+     * @return string
+     */
     private function build_html_form() {
         global $DB;
         $usertable = $DB->get_record_sql("select * FROM {user} LIMIT 1");

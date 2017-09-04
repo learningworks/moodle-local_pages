@@ -33,12 +33,15 @@ function local_pages_extends_navigation(global_navigation $nav) {
 }
 
 /**
- * @param $course
- * @param $birecordorcm
- * @param $context
- * @param $filearea
- * @param $args
- * @param $forcedownload
+ *
+ * Get saved files for the page
+ *
+ * @param mixed $course
+ * @param mixed $birecordorcm
+ * @param mixed $context
+ * @param mixed $filearea
+ * @param mixed $args
+ * @param bool $forcedownload
  * @param array $options
  */
 function local_pages_pluginfile($course, $birecordorcm, $context, $filearea, $args, $forcedownload, array $options = array()) {
@@ -56,8 +59,11 @@ function local_pages_pluginfile($course, $birecordorcm, $context, $filearea, $ar
 }
 
 /**
+ *
+ * Build the menu for the page
+ *
  * @param navigation_node $nav
- * @param $parent
+ * @param mixed $parent
  */
 function local_pages_build_menu(navigation_node $nav, $parent) {
     global $DB;
@@ -68,8 +74,11 @@ function local_pages_build_menu(navigation_node $nav, $parent) {
 }
 
 /**
- * @param $records
- * @param $nav
+ *
+ * Process records for pages
+ *
+ * @param mixed $records
+ * @param mixed $nav
  * @param bool $parent
  */
 function local_pages_prcess_records($records, $nav, $parent = false) {
@@ -111,6 +120,9 @@ function local_pages_prcess_records($records, $nav, $parent = false) {
 }
 
 /**
+ *
+ * Extend navigation to show the pages in the navigation block
+ *
  * @param global_navigation $nav
  */
 function local_pages_extend_navigation(global_navigation $nav) {

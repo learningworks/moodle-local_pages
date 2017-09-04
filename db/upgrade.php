@@ -27,7 +27,10 @@
 defined('MOODLE_INTERNAL') || die;
 
 /**
- * @param $oldversion
+ *
+ * This is to upgrade the older versions of the plugin.
+ *
+ * @param integer $oldversion
  * @return bool
  * @copyright   2017 LearningWorks Ltd
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later

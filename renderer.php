@@ -29,7 +29,11 @@ require_once($CFG->dirroot . '/local/pages/classes/page.php');
 require_once($CFG->dirroot . '/local/pages/forms/edit.php');
 
 /**
+ * 
  * Class local_pages_renderer
+ *
+ * @copyright   2017 LearningWorks Ltd
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class local_pages_renderer extends plugin_renderer_base {
 
@@ -39,8 +43,11 @@ class local_pages_renderer extends plugin_renderer_base {
     public $errorfields = array();
 
     /**
-     * @param $parent
-     * @param $name
+     *
+     * Get the submenu item
+     *
+     * @param mixed $parent
+     * @param string $name
      * @return string
      */
     public function get_submenuitem($parent, $name) {
@@ -80,6 +87,9 @@ class local_pages_renderer extends plugin_renderer_base {
     }
 
     /**
+     *
+     * List the pages for the user to view
+     *
      * @return string
      */
     public function list_pages() {
@@ -107,6 +117,9 @@ class local_pages_renderer extends plugin_renderer_base {
     }
 
     /**
+     *
+     * Show the page based on users rights
+     *
      * @param $page
      * @return mixed
      */
@@ -149,6 +162,9 @@ class local_pages_renderer extends plugin_renderer_base {
     }
 
     /**
+     *
+     * Add user data to the form to display on the page
+     *
      * @param $data
      * @return mixed
      */
@@ -168,6 +184,9 @@ class local_pages_renderer extends plugin_renderer_base {
     }
 
     /**
+     *
+     * Create the form for the page
+     *
      * @param $data
      * @return string
      */
@@ -271,7 +290,10 @@ class local_pages_renderer extends plugin_renderer_base {
     }
 
     /**
-     * @param $records
+     *
+     * Check if the form is valid
+     *
+     * @param  mixed $records
      * @return bool
      */
     public function valid($records) {
@@ -303,6 +325,9 @@ class local_pages_renderer extends plugin_renderer_base {
     }
 
     /**
+     *
+     * Process the submitted form up update page data
+     *
      * @param $page
      */
     public function processform($page) {
@@ -378,6 +403,9 @@ class local_pages_renderer extends plugin_renderer_base {
     }
 
     /**
+     *
+     * Show the page information to edit
+     *
      * @param bool $page
      */
     public function edit_page($page = false) {
@@ -442,9 +470,12 @@ class local_pages_renderer extends plugin_renderer_base {
     }
 
     /**
-     * @param $parent
-     * @param $name
-     * @param $url
+     *
+     * Gets all the menu items
+     *
+     * @param mixed $parent
+     * @param string $name
+     * @param string $url
      * @return string
      */
     public function get_menuitem($parent, $name, $url) {
@@ -490,6 +521,9 @@ class local_pages_renderer extends plugin_renderer_base {
     }
 
     /**
+     *
+     * Builds the menu for the page
+     *
      * @return string
      */
     public function build_menu() {
