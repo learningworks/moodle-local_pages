@@ -145,7 +145,7 @@ class local_pages_renderer extends plugin_renderer_base {
         if ($canaccess && ($page->pagedate <= date('U') || is_siteadmin())) {
             $today = date('U');
             $records = $DB->get_records_sql("SELECT * FROM {local_pages} WHERE deleted=0 AND pagetype <> 'page' " .
-                "AND pageparent=? AND pagedate <=? ORDER BY pageorder", array($page->id,$today));
+                "AND pageparent=? AND pagedate <=? ORDER BY pageorder", array($page->id, $today));
             $form = '';
             foreach ($records as $key => $value) {
                 switch (strtolower($value->pagetype)) {
@@ -490,7 +490,7 @@ class local_pages_renderer extends plugin_renderer_base {
         $today = date('U');
         $records = $DB->get_records_sql("SELECT * FROM {local_pages} WHERE deleted=0 AND onmenu=1 " .
             "AND pagetype='page' AND pageparent=? AND pagedate <=? " .
-            "ORDER BY pageorder", array($parent,$today));
+            "ORDER BY pageorder", array($parent, $today));
         if ($records) {
             $html .= "<li class='custompages_item'><a href='" . $urllocation . "'>" . $name . "</a>";
             $html .= "<ul class='custompages_submenu'>";
@@ -537,7 +537,7 @@ class local_pages_renderer extends plugin_renderer_base {
             $html = '<ul class="custompages_nav">';
             $today = date('U');
             $records = $DB->get_records_sql("SELECT * FROM {local_pages} WHERE deleted=0 AND onmenu=1 " .
-                "AND pagetype='page' AND pageparent=0 AND pagedate <= ? ORDER BY pageorder",array($today));
+                "AND pagetype='page' AND pageparent=0 AND pagedate <= ? ORDER BY pageorder", array($today));
             $canaccess = true;
             foreach ($records as $page) {
                 if (isset($page->accesslevel) && stripos($page->accesslevel, ":") !== false) {
