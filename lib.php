@@ -70,9 +70,10 @@ function local_pages_pluginfile($course, $birecordorcm, $context, $filearea, $ar
  */
 function local_pages_build_menu(navigation_node $nav, $parent) {
     global $DB;
+    $today = date('U');
     $records = $DB->get_records_sql("SELECT * FROM {local_pages} WHERE deleted=0 AND onmenu=1 " .
-        "AND pagetype='page' AND pageparent=? AND pagedate <= UNIX_TIMESTAMP(CURDATE()) " .
-        "ORDER BY pageorder", array($parent));
+        "AND pagetype='page' AND pageparent=? AND pagedate <=? " .
+        "ORDER BY pageorder", array($parent, $today));
     local_pages_prcess_records($records, $nav);
 }
 
@@ -140,8 +141,9 @@ function local_pages_extend_navigation(global_navigation $nav) {
             );
         }
     }
+    $today = date('U');
     $records = $DB->get_records_sql("SELECT * FROM {local_pages} WHERE deleted=0 AND onmenu=1 " .
-        "AND pagetype='page' AND pageparent=0 AND pagedate <= UNIX_TIMESTAMP(CURDATE()) ORDER BY pageorder");
+        "AND pagetype='page' AND pageparent=0 AND pagedate <= ? ORDER BY pageorder", array($today));
 
     local_pages_prcess_records($records, $nav, false);
 }
