@@ -51,7 +51,7 @@ class local_pages_renderer extends plugin_renderer_base {
      * @return string
      */
     public function get_submenuitem($parent, $name) {
-        global $DB, $CFG;
+        global $DB, $CFG, $USER;
         $html = '';
         $records = $DB->get_records_sql("SELECT * FROM {local_pages} WHERE deleted=0 AND " .
             "pageparent=? ORDER BY pageorder", array($parent));
@@ -63,7 +63,7 @@ class local_pages_renderer extends plugin_renderer_base {
                 '<a href="' . new moodle_url($CFG->wwwroot . '/local/pages/pages/edit.php',
                     array('id' => $parent)) . '" class="custompages-edit">Edit</a> | ' .
                 '<a href="' . new moodle_url($CFG->wwwroot . '/local/pages/pages/pages.php',
-                    array('pagedel' => $parent)) . '" class="custompages-delete">Delete</a></div>';
+                    array('pagedel' => $parent, 'sesskey' => $USER->sesskey)) . '" class="custompages-delete">Delete</a></div>';
             $html .= "<h4 class='custompages-title'>" . $name . "</h4>";
             $html .= "<ul class='custompages_submenu'>";
             foreach ($records as $page) {
@@ -79,7 +79,7 @@ class local_pages_renderer extends plugin_renderer_base {
                 '<a href="' . new moodle_url($CFG->wwwroot . '/local/pages/pages/edit.php',
                     array('id' => $parent)) . '" class="custompages-edit">Edit</a> | ' .
                 '<a href="' . new moodle_url($CFG->wwwroot . '/local/pages/pages/pages.php',
-                    array('pagedel' => $parent)) . '" class="custompages-delete">Delete</a></div>';
+                    array('pagedel' => $parent,'sesskey' => $USER->sesskey)) . '" class="custompages-delete">Delete</a></div>';
             $html .= "<h4 class='custompages-title'>" . $name . "</h4>";
             $html .= "</li>";
         }

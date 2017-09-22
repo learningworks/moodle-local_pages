@@ -43,11 +43,14 @@ if (!has_capability('local/pages:addpages', $context)) {
 }
 
 if ($deletepage !== 0) {
-    global $DB;
-    $options = new stdClass();
-    $options->id = $deletepage;
-    $options->deleted = 1;
-    $DB->update_record('local_pages', $options);
+    require_sesskey();
+    if(confirm_sesskey()) {
+        global $DB;
+        $options = new stdClass();
+        $options->id = $deletepage;
+        $options->deleted = 1;
+        $DB->update_record('local_pages', $options);
+    }
 }
 
 $PAGE->set_pagelayout('standard');
