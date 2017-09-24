@@ -32,16 +32,18 @@ $pageid = optional_param('id', 0, PARAM_INT);
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_url("{$CFG->wwwroot}/local/pages/index.php", ['id' => $pageid]);
 
-// Login is NOT required to view this page.
-if (false) {
-    require_login(null, true, null, true, true);
-}
-
 require_once("{$CFG->dirroot}/local/pages/lib.php");
 require_once("{$CFG->dirroot}/local/pages/classes/page.php");
 
 // Set the page layout.
 $custompage     = custompage::load($pageid);
+
+// Check if the page has an access level requirement.
+$accesslevel    = $custompage->accesslevel;
+if ($accesslevel != '') {
+    require_login();
+}
+
 $templatename   = trim($custompage->pagelayout) != '' ? $custompage->pagelayout : 'standard';
 $PAGE->set_pagelayout($templatename);
 

@@ -79,7 +79,7 @@ class local_pages_renderer extends plugin_renderer_base {
                 '<a href="' . new moodle_url($CFG->wwwroot . '/local/pages/pages/edit.php',
                     array('id' => $parent)) . '" class="custompages-edit">Edit</a> | ' .
                 '<a href="' . new moodle_url($CFG->wwwroot . '/local/pages/pages/pages.php',
-                    array('pagedel' => $parent,'sesskey' => $USER->sesskey)) . '" class="custompages-delete">Delete</a></div>';
+                    array('pagedel' => $parent, 'sesskey' => $USER->sesskey)) . '" class="custompages-delete">Delete</a></div>';
             $html .= "<h4 class='custompages-title'>" . $name . "</h4>";
             $html .= "</li>";
         }
@@ -192,7 +192,12 @@ class local_pages_renderer extends plugin_renderer_base {
      * @return string
      */
     public function createform($data) {
-        global $_POST, $USER;
+        global $USER;
+
+        // Setup required parameters.
+        $honeypot = optional_param('hp', '', PARAM_RAW);
+        $formsubmit = optional_param('formsubmit', 0, PARAM_RAW);
+
         if (isloggedin()) {
             $USER->fullname = $USER->firstname . " " . $USER->lastname;
         }
@@ -200,7 +205,7 @@ class local_pages_renderer extends plugin_renderer_base {
         $valuesout = array();
         $valuesin = array();
 
-        if (isset($_POST['formsubmit']) && $_POST['hp'] == '') {
+        if ($formsubmit == 1 && $honeypot == '') {
             if ($this->valid($records)) {
                 if (!isset($_SESSION[$data->pagename])) {
                     $this->processform($data);
@@ -209,8 +214,11 @@ class local_pages_renderer extends plugin_renderer_base {
                     }
                     foreach ((array)$records as $key => $value) {
                         $valuesout[] = "{" . $value->name . "}";
-                        $valuesin[] = isset($_POST[str_replace(" ",
-                                "_", $value->name)]) ? $_POST[str_replace(" ", "_", $value->name)] : '';
+
+                        // Get all data sent from the form.
+                        $tmpparam = str_replace(" ", "_", $value->name);
+                        $tmpparam = optional_param($tmpparam, '', PARAM_RAW);
+                        $valuesin[] = $tmpparam;
                     }
                     return str_replace($valuesout, $valuesin, $data->pagecontent);
                 } else {
@@ -223,23 +231,23 @@ class local_pages_renderer extends plugin_renderer_base {
         foreach ((array)$records as $key => $value) {
             $errorclass = isset($this->error_fields[$value->name]) ? 'has-error' : '';
             $record = $value->readsfrom;
+            $tmpparam = str_replace(' ', '', $value->name);
+            $tmpparam = optional_param($tmpparam, '', PARAM_RAW);
             if ($value->type == "Text Area") {
                 $str .= '<div class="form-group ' . $errorclass . '">';
                 $str .= '<label for="' . str_replace(" ", "", $value->name) . '">' . $value->name . '</label>';
                 $str .= '<textarea class="form-control" name="' . str_replace(" ", "_", $value->name) . '" id="' .
                     str_replace(" ", "", $value->name) . '" ' . ($value->required == "Yes" ? "Required" : '') .
                     ' placeholder="' . $value->defaultvalue . '">' .
-                    (isset($_POST[str_replace(" ", "", $value->name)]) ? $_POST[str_replace(" ", "",
-                        $value->name)] : (isset($USER->$record) ? $USER->$record : '')) . '</textarea>';
+                    ($tmpparam != '' ? $tmpparam : (isset($USER->$record) ? $USER->$record : ''))
+                    . '</textarea>';
             } else if (strtolower($value->type) == "checkbox") {
                 $str .= '<div class="checkbox ' . $errorclass . '">';
                 $str .= '<label for="' . str_replace(" ", "", $value->name) . '">';
                 $str .= '<input name="' . str_replace(" ", "_", $value->name) . '" type="hidden" value="0"  id="' .
                     str_replace(" ", "", $value->name) . '" />';
                 $str .= '<input name="' . str_replace(" ", "_", $value->name) . '" type="' .
-                    strtolower($value->type) . '" value="' .
-                    (isset($_POST[str_replace(" ", "_", $value->name)]) ? $_POST[str_replace(" ", "_",
-                        $value->name)] : '') . '" id="' .
+                    strtolower($value->type) . '" value="' . $tmpparam . '" id="' .
                     str_replace(" ", "", $value->name) . '" ' . ($value->required == "Yes" ? "Required" : '') .
                     ' placeholder="' . $value->defaultvalue . '" />';
                 $str .= $value->name . '</label>';
@@ -259,9 +267,7 @@ class local_pages_renderer extends plugin_renderer_base {
                             $options[1] == 'Please Select an option';
                         }
                         $str .= '<option value="' . $options[0] . '" ' .
-                            (isset($_POST[str_replace(" ", "_", $value->name)]) &&
-                            $_POST[str_replace(" ", "_",
-                                $value->name)] == $options[0] ? 'selected="selected"' : '') . ' >' .
+                            ($tmpparam == $options[0] ? 'selected="selected"' : '') . ' >' .
                             (isset($options[1]) ? $options[1] : $options[0]) . '</option>';
                     }
                     $str .= '</select>';
@@ -271,9 +277,8 @@ class local_pages_renderer extends plugin_renderer_base {
                         $value->name . '</label>';
                     $str .= '<input name="' . str_replace(" ", "_", $value->name) . '" type="' .
                         strtolower($value->type) . '" value="' .
-                        (isset($_POST[str_replace(" ", "_", $value->name)]) ? $_POST[str_replace(" ", "_",
-                            $value->name)] : (isset($USER->$record) ? $USER->$record : '')) .
-                        '" placeholder="' . $value->defaultvalue .
+                        ($tmpparam != '' ? $tmpparam : (isset($USER->$record) ? $USER->$record : ''))
+                        . '" placeholder="' . $value->defaultvalue .
                         '" class="form-control" id="' . str_replace(" ", "", $value->name) . '" ' .
                         ($value->required == "Yes" ? "Required" : '') . ' />';
                 }
@@ -286,7 +291,7 @@ class local_pages_renderer extends plugin_renderer_base {
         $str .= '</div>';
 
         $str .= '<input type="text" name="hp" value="" style="position:absolute;left:-99999px" /> ' .
-            '<button type="submit" name="formsubmit" class="btn btn-primary">Submit</button></form>';
+            '<button type="submit" name="formsubmit" value="1" class="btn btn-primary">Submit</button></form>';
         return $str;
     }
 
@@ -298,25 +303,25 @@ class local_pages_renderer extends plugin_renderer_base {
      * @return bool
      */
     public function valid($records) {
-        global $_POST;
         $valid = true;
         foreach ((array)$records as $key => $value) {
+            $tmpparam = str_replace(" ", "_", $value->name);
+            $tmpparam = optional_param($tmpparam, '', PARAM_RAW);
+
             if ($value->required == "Yes" && $value->type != "HTML") {
-                if ($value->type == "Email" && (stripos($_POST[str_replace(" ", "_", $value->name)], "@") === false ||
-                        stripos($_POST[str_replace(" ", "_", $value->name)], ".") === false)
+                if ($value->type == "Email" && (stripos($tmpparam, "@") === false ||
+                        stripos($tmpparam, ".") === false)
                 ) {
                     $this->error_fields[$value->name] = "Please Supply a valid email address for " . $value->name;
                     $valid = false;
                 }
 
-                if ($value->type != 'Email' && isset($_POST[str_replace(" ", "_", $value->name)]) &&
-                    trim($_POST[str_replace(" ", "_", $value->name)]) == ''
-                ) {
+                if ($value->type != 'Email' && $tmpparam == '') {
                     $this->error_fields[$value->name] = "Please fill in " . $value->name;
                     $valid = false;
                 }
 
-                if ($value->type == 'Numeric' && !is_numeric($_POST[str_replace(" ", "_", $value->name)])) {
+                if ($value->type == 'Numeric' && !is_numeric($tmpparam)) {
                     $this->error_fields[$value->name] = "Please provide a number for " . $value->name;
                     $valid = false;
                 }
@@ -346,10 +351,14 @@ class local_pages_renderer extends plugin_renderer_base {
         foreach ((array)$records as $key => $value) {
             if ($value->type != "HTML") {
                 $outarray[] = "{" . $value->name . "}";
-                $fields[$value->name] = $_POST[str_replace(" ", "_", $value->name)];
-                $messagetext .= ucfirst($value->name) . ": " . $_POST[str_replace(" ", "_", $value->name)] . "\r\n";
+
+                $tmpparam = str_replace(" ", "_", $value->name);
+                $tmpparam = optional_param($tmpparam, '', PARAM_RAW);
+
+                $fields[$value->name] = $tmpparam;
+                $messagetext .= ucfirst($value->name) . ": " . $tmpparam . "\r\n";
                 $field = strtolower(str_replace(" ", "", $value->name));
-                $fromuser->$field = $_POST[str_replace(" ", "_", $value->name)];
+                $fromuser->$field = $tmpparam;
             }
         }
 
@@ -410,7 +419,7 @@ class local_pages_renderer extends plugin_renderer_base {
      * @param bool $page
      */
     public function edit_page($page = false) {
-        global $_POST, $CFG;
+        global $CFG;
         $mform = new pages_edit_product_form($page);
         if ($mform->is_cancelled()) {
             redirect(new moodle_url($CFG->wwwroot . '/local/pages/pages/pages.php'));
@@ -425,10 +434,19 @@ class local_pages_renderer extends plugin_renderer_base {
             $data->pagedata = '';
             if (strtolower($data->pagetype) == "form") {
                 $pagedata = array();
-                foreach ($_POST['fieldname'] as $key => $value) {
-                    $pagedata[] = array("name" => $value, "type" => $_POST['fieldtype'][$key],
-                        "required" => $_POST['fieldrequired'][$key], "defaultvalue" => $_POST['defaultvalue'][$key],
-                        "readsfrom" => $_POST['readsfrom'][$key]);
+                $fieldnames = required_param_array('fieldname', PARAM_RAW);
+                $fieldtype = required_param_array('fieldtype', PARAM_RAW);
+                $fieldrequired = required_param_array('fieldrequired', PARAM_RAW);
+                $fielddefault = required_param_array('defaultvalue', PARAM_RAW);
+                $fieldreadsfrom = required_param_array('readsfrom', PARAM_RAW);
+
+                foreach ($fieldnames as $key => $value) {
+                    // Get all data sent from the form.
+                    $pagedata[] = array("name" => $value,
+                        "type" => $fieldtype[$key],
+                        "required" => $fieldrequired[$key],
+                        "defaultvalue" => $fielddefault[$key],
+                        "readsfrom" => $fieldreadsfrom[$key]);
                 }
                 $data->pagedata = json_encode($pagedata);
             }

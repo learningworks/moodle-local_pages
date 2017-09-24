@@ -80,9 +80,9 @@ class pages_edit_product_form extends moodleform {
     public function definition() {
         global $DB, $PAGE;
 
-        // GET A list of all pages.
+        // Get a list of all pages.
         $pages = array(0 => 'None');
-        $allpages = $DB->get_records('local_pages', array('deleted' => 0, 'pagetype' => 'page'));
+        $allpages = $DB->get_records('local_pages', array('deleted' => 0));
         foreach ($allpages as $page) {
             if ($page->id != $this->callingpage) {
                 $pages[$page->id] = $page->pagename;

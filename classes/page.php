@@ -116,7 +116,7 @@ class custompage {
 
         $data = new stdClass();
         if (intval($id) > 0) {
-            $data = $DB->get_record("local_pages", array('id' => intval($id)));
+            $data = $DB->get_record_sql("SELECT * FROM {local_pages} WHERE id=? AND pagetype='page' LIMIT 1", array(intval($id)));
         } else {
 
             // Check url for page name.
@@ -130,7 +130,7 @@ class custompage {
             }
         }
 
-        $data->pagecontent = isset($data->pagecontent) ? $data->pagecontent : '';
+        $data->pagecontent = isset($data->pagecontent) ? $data->pagecontent : get_string('noaccess', 'local_pages');;
 
         $context = context_system::instance();
         $data->pagecontent = file_rewrite_pluginfile_urls($data->pagecontent, 'pluginfile.php',

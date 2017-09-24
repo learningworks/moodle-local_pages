@@ -74,7 +74,7 @@ function local_pages_build_menu(navigation_node $nav, $parent) {
     $records = $DB->get_records_sql("SELECT * FROM {local_pages} WHERE deleted=0 AND onmenu=1 " .
         "AND pagetype='page' AND pageparent=? AND pagedate <=? " .
         "ORDER BY pageorder", array($parent, $today));
-    local_pages_prcess_records($records, $nav);
+    local_pages_process_records($records, $nav);
 }
 
 /**
@@ -85,7 +85,7 @@ function local_pages_build_menu(navigation_node $nav, $parent) {
  * @param mixed $nav
  * @param bool $parent
  */
-function local_pages_prcess_records($records, $nav, $parent = false) {
+function local_pages_process_records($records, $nav, $parent = false) {
     global $CFG;
     if ($records) {
         foreach ($records as $page) {
@@ -93,6 +93,7 @@ function local_pages_prcess_records($records, $nav, $parent = false) {
             if (isset($page->accesslevel) && stripos($page->accesslevel, ":") !== false) {
                 $canaccess = false;
                 $levels = explode(",", $page->accesslevel);
+                $context = context_system::instance();
                 foreach ($levels as $level) {
                     if ($canaccess != true) {
                         if (stripos($level, "!") !== false) {
@@ -145,5 +146,5 @@ function local_pages_extend_navigation(global_navigation $nav) {
     $records = $DB->get_records_sql("SELECT * FROM {local_pages} WHERE deleted=0 AND onmenu=1 " .
         "AND pagetype='page' AND pageparent=0 AND pagedate <= ? ORDER BY pageorder", array($today));
 
-    local_pages_prcess_records($records, $nav, false);
+    local_pages_process_records($records, $nav, false);
 }
