@@ -116,7 +116,7 @@ class custompage {
 
         $data = new stdClass();
         if (intval($id) > 0) {
-            $data = $DB->get_record_sql("SELECT * FROM {local_pages} WHERE id=? AND pagetype='page' LIMIT 1", array(intval($id)));
+            $data = $DB->get_record_sql("SELECT * FROM {local_pages} WHERE id=? LIMIT 1", array(intval($id)));
         } else {
 
             // Check url for page name.
