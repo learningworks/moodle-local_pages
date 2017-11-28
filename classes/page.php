@@ -130,7 +130,8 @@ class custompage {
             }
         }
 
-        $data->pagecontent = isset($data->pagecontent) ? $data->pagecontent : get_string('noaccess', 'local_pages');;
+        $str = get_string('noaccess', 'local_pages');
+        $data->pagecontent = isset($data->pagecontent) ? $data->pagecontent : ($editor ? '' : $str);
 
         $context = context_system::instance();
         $data->pagecontent = file_rewrite_pluginfile_urls($data->pagecontent, 'pluginfile.php',

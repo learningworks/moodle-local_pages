@@ -53,8 +53,8 @@ $PAGE->set_pagelayout('standard');
 // Get the renderer for this page.
 $renderer = $PAGE->get_renderer('local_pages');
 
-$pagetoedit = custompage::load($pageid);
-
+$pagetoedit = custompage::load($pageid, true);
+$renderer->save_page($pagetoedit);
 // Print the page header.
 $PAGE->set_title(get_string('pagesetup_title', 'local_pages'));
 $PAGE->set_heading(get_string('pagesetup_heading', 'local_pages'));
@@ -69,7 +69,8 @@ $table->define_baseurl(new moodle_url($CFG->wwwroot . '/local/pages/pages/edit.p
 $table->set_attribute('class', 'admintable generaltable history-table');
 $table->collapsible(false);
 $table->show_download_buttons_at(array(TABLE_P_BOTTOM));
-$table->set_sql('*', "{local_pageslogging}", 'formname = ' . $pageid);
+
+$table->set_sql('*', "{local_pageslogging}", "formname = '$pageid'");
 
 if (!$table->is_downloading()) {
 

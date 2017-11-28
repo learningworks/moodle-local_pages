@@ -207,10 +207,11 @@ class local_pages_renderer extends plugin_renderer_base {
 
         if ($formsubmit == 1 && $honeypot == '') {
             if ($this->valid($records)) {
-                if (!isset($_SESSION[$data->pagename])) {
+                $cache = cache::make('local_pages', 'sent');
+                if (!$cache->get($data->pagename)) {
                     $this->processform($data);
                     if (get_config('local_pages', 'enable_limit') != 0) {
-                        $_SESSION[$data->pagename] = "sent";
+                        $cache->set($data->pagename, 'sent');
                     }
                     foreach ((array)$records as $key => $value) {
                         $valuesout[] = "{" . $value->name . "}";
@@ -412,13 +413,7 @@ class local_pages_renderer extends plugin_renderer_base {
         }
     }
 
-    /**
-     *
-     * Show the page information to edit
-     *
-     * @param bool $page
-     */
-    public function edit_page($page = false) {
+    public function save_page($page = false) {
         global $CFG;
         $mform = new pages_edit_product_form($page);
         if ($mform->is_cancelled()) {
@@ -469,22 +464,32 @@ class local_pages_renderer extends plugin_renderer_base {
             if ($result && $result > 0) {
                 redirect(new moodle_url($CFG->wwwroot . '/local/pages/pages/edit.php', array('id' => $result)));
             }
-        } else {
-            $forform = new stdClass();
-            $forform->pagecontent['text'] = $page->pagecontent;
-            $forform->pagename = $page->pagename;
-            $forform->onmenu = $page->onmenu;
-            $forform->accesslevel = $page->accesslevel;
-            $forform->pageparent = $page->pageparent;
-            $forform->menuname = $page->menuname;
-            $forform->id = $page->id;
-            $forform->emailto = $page->emailto;
-            $forform->pagedate = $page->pagedate;
-            $forform->pagelayout = $page->pagelayout;
-            $forform->pageorder = $page->pageorder;
-            $forform->pagetype = $page->pagetype;
-            $mform->set_data($forform);
         }
+    }
+
+    /**
+     *
+     * Show the page information to edit
+     *
+     * @param bool $page
+     */
+    public function edit_page($page = false) {
+        global $CFG;
+        $mform = new pages_edit_product_form($page);
+        $forform = new stdClass();
+        $forform->pagecontent['text'] = $page->pagecontent;
+        $forform->pagename = $page->pagename;
+        $forform->onmenu = $page->onmenu;
+        $forform->accesslevel = $page->accesslevel;
+        $forform->pageparent = $page->pageparent;
+        $forform->menuname = $page->menuname;
+        $forform->id = $page->id;
+        $forform->emailto = $page->emailto;
+        $forform->pagedate = $page->pagedate;
+        $forform->pagelayout = $page->pagelayout;
+        $forform->pageorder = $page->pageorder;
+        $forform->pagetype = $page->pagetype;
+        $mform->set_data($forform);
         $mform->display();
     }
 

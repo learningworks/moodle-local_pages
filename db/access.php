@@ -28,7 +28,7 @@ defined('MOODLE_INTERNAL') || die;
 $capabilities = array(
     'local/pages:addpages' => array(
 
-        'riskbitmask' => RISK_PERSONAL,
+        'riskbitmask' => RISK_XSS,
 
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,

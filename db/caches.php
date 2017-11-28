@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version file for component local_pages.
+ * Cache file for component local_pages.
  *
  * @package         local_pages
  * @author          Kevin Dibble <kevin.dibble@learningworks.co.nz>.
@@ -25,8 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-$plugin->requires   = 2015111600;                       // This plugin requires Moodle VER 3.0.
-$plugin->version    = 2017083103;                       // This plugins version number.
-$plugin->release    = 'v1.2';                           // This plugins release number.
-$plugin->maturity   = MATURITY_STABLE;
-$plugin->component  = 'local_pages';
+$definitions = array(
+    'sent' => array(
+        'mode' => cache_store::MODE_SESSION
+    )
+);
