@@ -109,7 +109,7 @@ class custompage {
      * @param integer $id
      * @return custompage
      */
-    public static function load($id) {
+    public static function load($id, $editor = false) {
         global $DB, $CFG;
         require_once($CFG->libdir . '/formslib.php');
         require_once(dirname(__FILE__) . '/../lib.php');
