@@ -228,20 +228,20 @@ class local_pages_renderer extends plugin_renderer_base {
             }
         }
 
-        $str = '<form method="post" action="">';
+        $str = '<form method="post" action="" class="mform">';
         foreach ((array)$records as $key => $value) {
             $errorclass = isset($this->error_fields[$value->name]) ? 'has-error' : '';
             $record = $value->readsfrom;
             $tmpparam = str_replace(' ', '', $value->name);
             $tmpparam = optional_param($tmpparam, '', PARAM_RAW);
             if ($value->type == "Text Area") {
-                $str .= '<div class="form-group ' . $errorclass . '">';
-                $str .= '<label for="' . str_replace(" ", "", $value->name) . '">' . $value->name . '</label>';
-                $str .= '<textarea class="form-control" name="' . str_replace(" ", "_", $value->name) . '" id="' .
+                $str .= '<div class="form-group fitem ' . $errorclass . '">';
+                $str .= '<div class="fitemtitle"><label for="' . str_replace(" ", "", $value->name) . '">' . $value->name . '</label></div>';
+                $str .= '<div class="felement"><textarea class="form-control" name="' . str_replace(" ", "_", $value->name) . '" id="' .
                     str_replace(" ", "", $value->name) . '" ' . ($value->required == "Yes" ? "Required" : '') .
                     ' placeholder="' . $value->defaultvalue . '">' .
                     ($tmpparam != '' ? $tmpparam : (isset($USER->$record) ? $USER->$record : ''))
-                    . '</textarea>';
+                    . '</textarea></div></div>';
             } else if (strtolower($value->type) == "checkbox") {
                 $str .= '<div class="checkbox ' . $errorclass . '">';
                 $str .= '<label for="' . str_replace(" ", "", $value->name) . '">';
@@ -251,14 +251,14 @@ class local_pages_renderer extends plugin_renderer_base {
                     strtolower($value->type) . '" value="' . $tmpparam . '" id="' .
                     str_replace(" ", "", $value->name) . '" ' . ($value->required == "Yes" ? "Required" : '') .
                     ' placeholder="' . $value->defaultvalue . '" />';
-                $str .= $value->name . '</label>';
+                $str .= $value->name . '</label></div>';
             } else {
                 if ($value->type == "HTML") {
-                    $str .= '<div class="form-break">' . $value->name;
+                    $str .= '<div class="form-break">' . $value->name ."</div>";
                 } else if ($value->type == "Select") {
-                    $str .= '<div class="form-group ' . $errorclass . '">';
-                    $str .= '<label for="' . str_replace(" ", "", $value->name) . '">' . $value->name . '</label>';
-                    $str .= '<select class="form-control" ' . ($value->required == "Yes" ? "Required" : '') .
+                    $str .= '<div class="form-group fitem fitem_fselect' . $errorclass . '">';
+                    $str .= '<div class="fitemtitle"><label for="' . str_replace(" ", "", $value->name) . '">' . $value->name . '</label></div>';
+                    $str .= '<div class="felement fselect"><select class="form-control" ' . ($value->required == "Yes" ? "Required" : '') .
                         ' name="' . str_replace(" ", "_", $value->name) . '" id="' .
                         str_replace(" ", "", $value->name) . '">';
                     $selectlist = explode("\r\n", $value->defaultvalue);
@@ -271,17 +271,17 @@ class local_pages_renderer extends plugin_renderer_base {
                             ($tmpparam == $options[0] ? 'selected="selected"' : '') . ' >' .
                             (isset($options[1]) ? $options[1] : $options[0]) . '</option>';
                     }
-                    $str .= '</select>';
+                    $str .= '</select></div></div>';
                 } else {
-                    $str .= '<div class="form-group ' . $errorclass . '">';
-                    $str .= '<label for="' . str_replace(" ", "", $value->name) . '">' .
-                        $value->name . '</label>';
-                    $str .= '<input name="' . str_replace(" ", "_", $value->name) . '" type="' .
+                    $str .= '<div class="form-group fitem fitem_ftext ' . $errorclass . '">';
+                    $str .= '<div class="fitemtitle"><label for="' . str_replace(" ", "", $value->name) . '">' .
+                        $value->name . '</label></div>';
+                    $str .= '<div class="felement ftext"><input name="' . str_replace(" ", "_", $value->name) . '" type="' .
                         strtolower($value->type) . '" value="' .
                         ($tmpparam != '' ? $tmpparam : (isset($USER->$record) ? $USER->$record : ''))
                         . '" placeholder="' . $value->defaultvalue .
                         '" class="form-control" id="' . str_replace(" ", "", $value->name) . '" ' .
-                        ($value->required == "Yes" ? "Required" : '') . ' />';
+                        ($value->required == "Yes" ? "Required" : '') . ' /></div></div>';
                 }
             }
         }
@@ -289,10 +289,11 @@ class local_pages_renderer extends plugin_renderer_base {
         if (isset($this->error_fields[$value->name])) {
             $str .= '<span class="help-block">' . $this->error_fields[$value->name] . '</span>';
         }
-        $str .= '</div>';
 
-        $str .= '<input type="text" name="hp" value="" style="position:absolute;left:-99999px" /> ' .
-            '<button type="submit" name="formsubmit" value="1" class="btn btn-primary">Submit</button></form>';
+        $str .= '<div class="fitem fitem_actionbuttons fitem_fgroup"><div class="felement fgroup">' .
+            '<input type="text" name="hp" value="" style="position:absolute;left:-99999px" /> ' .
+            '<button type="submit" name="formsubmit" value="1" class="btn btn-primary">Submit</button>' .
+            '</div></div></form>';
         return $str;
     }
 
