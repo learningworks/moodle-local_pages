@@ -122,6 +122,7 @@ require(["jquery"], function($) {
 
         $(newrow).find("select").each(function() {
             $(this).val("");
+            $(this).find('option:first-child').attr("selected", "selected");
         });
         $(newrow).find("textarea").each(function() {
             $(this).val("");
