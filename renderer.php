@@ -384,7 +384,7 @@ class local_pages_renderer extends plugin_renderer_base {
                 mail($page->emailto, $subject, $messagetext, $headers);
             }
         } else {
-            email_to_user($touser, $fromuser, $subject, $messagetext, $messagehtml, ", ", true);
+            email_to_user($touser, $fromuser, $subject, $messagetext, $messagehtml, '', '', true);
         }
         $outarray[] = "{table}";
         $fields[] = $messagetext;
@@ -408,7 +408,7 @@ class local_pages_renderer extends plugin_renderer_base {
                     mail($fromuser->email, $subject, $messagetext, $headers);
                 }
             } else {
-                email_to_user($fromuser, $touser, $subject, $messagetext, $messageforuser, ", ", true);
+                email_to_user($fromuser, $touser, $subject, $messagetext, $messageforuser, '', '', true);
             }
         }
     }
@@ -437,11 +437,14 @@ class local_pages_renderer extends plugin_renderer_base {
 
                 foreach ($fieldnames as $key => $value) {
                     // Get all data sent from the form.
-                    $pagedata[] = array("name" => $value,
-                        "type" => $fieldtype[$key],
-                        "required" => $fieldrequired[$key],
-                        "defaultvalue" => $fielddefault[$key],
-                        "readsfrom" => $fieldreadsfrom[$key]);
+                    // Stop empty fields being created.
+                    if(trim($value) != '') {
+                        $pagedata[] = array("name" => $value,
+                            "type" => $fieldtype[$key],
+                            "required" => $fieldrequired[$key],
+                            "defaultvalue" => $fielddefault[$key],
+                            "readsfrom" => $fieldreadsfrom[$key]);
+                    }
                 }
                 $data->pagedata = json_encode($pagedata);
             }
