@@ -38,12 +38,9 @@ $PAGE->set_url($CFG->wwwroot . '/local/pages/pages/pages.php');
 // Force the user to login/create an account to access this page.
 require_login();
 
-if (!has_capability('local/pages:addpages', $context)) {
-    require_capability('local/pages:addpages', $context);
-}
+require_capability('local/pages:addpages', $context);
 
 if ($deletepage !== 0) {
-    require_sesskey();
     if (confirm_sesskey()) {
         global $DB;
         $options = new stdClass();
