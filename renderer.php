@@ -439,7 +439,7 @@ class local_pages_renderer extends plugin_renderer_base {
                 foreach ($fieldnames as $key => $value) {
                     // Get all data sent from the form.
                     // Stop empty fields being created.
-                    if(trim($value) != '') {
+                    if (trim($value) != '') {
                         $pagedata[] = array("name" => $value,
                             "type" => $fieldtype[$key],
                             "required" => $fieldrequired[$key],
