@@ -71,23 +71,6 @@ if ($hassiteconfig) {
         ''
     );
 
-    // Setting to control email method. Uses moodle mail by default.
-    $settings[] = new \admin_setting_configcheckbox(
-        'local_pages/custom_email',
-        get_string('custom_email', 'local_pages'),
-        get_string('custom_email_description', 'local_pages'),
-        0
-    );
-
-    // Setting to add any custom headers for php mail.
-    // Todo: This should be enabled only if php mail is used.
-    $settings[] = new \admin_setting_configtextarea(
-        'local_pages/email_headers',
-        get_string('email_headers', 'local_pages'),
-        get_string('email_headers_description', 'local_pages'),
-        ''
-    );
-
     // Add all the settings to the settings page.
     foreach ($settings as $setting) {
         $settingspage->add($setting);

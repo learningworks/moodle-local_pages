@@ -373,20 +373,8 @@ class local_pages_renderer extends plugin_renderer_base {
         $data->formname = $page->id;
         $DB->insert_record('local_pageslogging', $data);
 
-        // Emails To the Address input into the Form.
-        if (get_config('local_pages', 'custom_email') == 1) {
-            $headers = str_replace(array("{From}", "{Reply-to}", "{html}"), array("From : " . $subject . " <" .
-                    $fromuser->email . ">", "Reply-To: " .
-                    $fromuser->email, "MIME-Version: 1.0\r\n" . "Content-Type: text/html; charset=ISO-8859-1\r\n"),
-                    trim(get_config('local_pages', 'email_headers'))) . "\r\n";
-            if (stripos(get_config('local_pages', 'email_headers'), "{html}") !== false) {
-                mail($page->emailto, $subject, $messagehtml, $headers);
-            } else {
-                mail($page->emailto, $subject, $messagetext, $headers);
-            }
-        } else {
-            email_to_user($touser, $fromuser, $subject, $messagetext, $messagehtml, '', '', true);
-        }
+        email_to_user($touser, $fromuser, $subject, $messagetext, $messagehtml, '', '', true);
+
         $outarray[] = "{table}";
         $fields[] = $messagetext;
 
@@ -396,21 +384,7 @@ class local_pages_renderer extends plugin_renderer_base {
 
         // Emails a copy to the user.
         if (get_config('local_pages', 'user_copy') == 1) {
-            if (get_config('local_pages', 'custom_email') == 1) {
-
-                $headers = str_replace(array("{From}", "{Reply-to}", "{html}"), array("From : " . $subject . " <" .
-                        $touser->email . ">", "Reply-To: " . $touser->email, "MIME-Version: 1.0\r\n" .
-                        "Content-Type: text/html; charset=ISO-8859-1\r\n"),
-                        trim(get_config('local_pages', 'email_headers'))) . "\r\n";
-
-                if (stripos(get_config('local_pages', 'email_headers'), "{html}") !== false) {
-                    mail($fromuser->email, $subject, $messageforuser, $headers);
-                } else {
-                    mail($fromuser->email, $subject, $messagetext, $headers);
-                }
-            } else {
-                email_to_user($fromuser, $touser, $subject, $messagetext, $messageforuser, '', '', true);
-            }
+            email_to_user($fromuser, $touser, $subject, $messagetext, $messageforuser, '', '', true);
         }
     }
 
