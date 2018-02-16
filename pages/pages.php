@@ -61,6 +61,12 @@ $PAGE->set_title(get_string('pagesetup_title', 'local_pages'));
 $PAGE->set_heading(get_string('pagesetup_heading', 'local_pages'));
 $PAGE->requires->jquery();
 
+// Set the admin navigation tree to Plugins > Local Plugins > Pages > Manage Pages for users that have site config.
+if (has_capability('moodle/site:config', $context)) {
+    require_once($CFG->libdir . '/adminlib.php');
+    admin_externalpage_setup('Manage Pages');
+}
+
 echo $OUTPUT->header();
 
 printf('<h1 class="page__title">%s</h1>', get_string('custompage_title', 'local_pages'));
