@@ -107,7 +107,7 @@ class custompage {
      * This is to load the page based on the page id
      *
      * @param integer $id
-     * @return custompage
+     * @return object
      */
     public static function load($id, $editor = false) {
         global $DB, $CFG;

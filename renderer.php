@@ -236,8 +236,10 @@ class local_pages_renderer extends plugin_renderer_base {
             $tmpparam = optional_param($tmpparam, '', PARAM_RAW);
             if ($value->type == "Text Area") {
                 $str .= '<div class="form-group fitem ' . $errorclass . '">';
-                $str .= '<div class="fitemtitle"><label for="' . str_replace(" ", "", $value->name) . '">' . $value->name . '</label></div>';
-                $str .= '<div class="felement"><textarea class="form-control" name="' . str_replace(" ", "_", $value->name) . '" id="' .
+                $str .= '<div class="fitemtitle"><label for="' .
+                    str_replace(" ", "", $value->name) . '">' . $value->name . '</label></div>';
+                $str .= '<div class="felement"><textarea class="form-control" name="' .
+                    str_replace(" ", "_", $value->name) . '" id="' .
                     str_replace(" ", "", $value->name) . '" ' . ($value->required == "Yes" ? "Required" : '') .
                     ' placeholder="' . $value->defaultvalue . '">' .
                     ($tmpparam != '' ? $tmpparam : (isset($USER->$record) ? $USER->$record : ''))
@@ -257,8 +259,10 @@ class local_pages_renderer extends plugin_renderer_base {
                     $str .= '<div class="form-break">' . $value->name ."</div>";
                 } else if ($value->type == "Select") {
                     $str .= '<div class="form-group fitem fitem_fselect' . $errorclass . '">';
-                    $str .= '<div class="fitemtitle"><label for="' . str_replace(" ", "", $value->name) . '">' . $value->name . '</label></div>';
-                    $str .= '<div class="felement fselect"><select class="form-control" ' . ($value->required == "Yes" ? "Required" : '') .
+                    $str .= '<div class="fitemtitle"><label for="' . str_replace(" ", "", $value->name) . '">' .
+                        $value->name . '</label></div>';
+                    $str .= '<div class="felement fselect">'.
+                        '<select class="form-control" ' . ($value->required == "Yes" ? "Required" : '') .
                         ' name="' . str_replace(" ", "_", $value->name) . '" id="' .
                         str_replace(" ", "", $value->name) . '">';
                     $selectlist = explode("\r\n", $value->defaultvalue);
@@ -388,6 +392,12 @@ class local_pages_renderer extends plugin_renderer_base {
         }
     }
 
+    /**
+     *
+     * Save the page to the database and redirect the user
+     *
+     * @param bool $page
+     */
     public function save_page($page = false) {
         global $CFG;
         $mform = new pages_edit_product_form($page);
