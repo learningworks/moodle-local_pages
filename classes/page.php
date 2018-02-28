@@ -135,9 +135,10 @@ class custompage {
         $data->pagecontent = isset($data->pagecontent) ? $data->pagecontent : ($editor ? '' : $str);
 
         $context = context_system::instance();
-        $data->pagecontent = file_rewrite_pluginfile_urls($data->pagecontent, 'pluginfile.php',
-            $context->id, 'local_pages', 'content', null);
-
+        if (!$editor) {
+            $data->pagecontent = file_rewrite_pluginfile_urls($data->pagecontent, 'pluginfile.php',
+                $context->id, 'local_pages', 'pagecontent', null);
+        }
         return new custompage($data);
     }
 }
