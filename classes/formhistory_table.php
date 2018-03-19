@@ -29,12 +29,12 @@ defined('MOODLE_INTERNAL') || die;
 require_once($CFG->dirroot . '/lib/tablelib.php');
 
 /**
- * Class pages_formhistory_table
+ * Class formhistory_table
  * @copyright   2017 LearningWorks Ltd
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * Create and show form submission history
  */
-class pages_formhistory_table extends table_sql {
+class formhistory_table extends table_sql {
 
     /**
      * Constructor

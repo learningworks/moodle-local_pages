@@ -156,7 +156,7 @@ class local_pages_renderer extends plugin_renderer_base {
             }
             $page->pagecontent = $this->adduserdata($page->pagecontent);
 
-            return str_replace(array("#form#", "{form}"), array($form, $form), $page->pagecontent);
+            return format_text(str_replace(array("#form#", "{form}"), array($form, $form), $page->pagecontent));
         } else {
             return get_string('noaccess', 'local_pages');
         }
@@ -462,7 +462,6 @@ class local_pages_renderer extends plugin_renderer_base {
      * @param bool $page
      */
     public function edit_page($page = false) {
-        global $CFG;
         $mform = new pages_edit_product_form($page);
         $forform = new stdClass();
         $forform->pagecontent['text'] = $page->pagecontent;

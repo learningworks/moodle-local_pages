@@ -189,64 +189,82 @@ class pages_edit_product_form extends moodleform {
 
         $i = 0;
         $html = '<div class="form-builder" id="form-builder">' .
-            '<h3><a href="#" id="showform-builder">Form Builder ' .
-            '<span id="showEdit">Show</span> <span id="hideEdit">Hide</span></a></h3><div class="formbuilderform">';
+            '<h3><a href="#" id="showform-builder">'. get_string('formbuilder', 'local_pages') .'  ' .
+            '<span id="showEdit">' . get_string('show', 'local_pages') .
+            '</span> <span id="hideEdit">' . get_string('hide', 'local_pages') .
+            '</span></a></h3><div class="formbuilderform">';
         do {
-            $html .= '<div class="formrow"><div class="col-sm-12 col-md-2 span2"><label>Name</label>' .
+            $html .= '<div class="formrow"><div class="col-sm-12 col-md-2 span2"><label>' .
+                get_string('label_name', 'local_pages') .' </label>' .
                 '<textarea class="form-control field-name" name="fieldname[]" ' .
-                'placeholder="Field Name" style="height:25px;resize:none;overflow:hidden">' .
+                'placeholder="' . get_string('placeholder_fieldname', 'local_pages') .
+                '" style="height:25px;resize:none;overflow:hidden">' .
                 (isset($records[$i]) ? $records[$i]->name : '') .
                 '</textarea></div>';
-            $html .= '<div class="col-sm-12 col-md-2 span2"><label>Placeholder</label>' .
+            $html .= '<div class="col-sm-12 col-md-2 span2"><label>'.
+                get_string('label_placeholder', 'local_pages') . '</label>' .
                 '<textarea type="text" class="form-control default-name" ' .
-                'name="defaultvalue[]" style="height:25px;resize:none;overflow:hidden" placeholder="Placeholder text">' .
+                'name="defaultvalue[]" style="height:25px;resize:none;overflow:hidden" placeholder="' .
+                get_string('placeholder_text', 'local_pages') . '">' .
                 (isset($records[$i]) ? $records[$i]->defaultvalue : '') .
                 '</textarea></div>';
 
-            $html .= '<div class="col-sm-12 col-md-2 span2"><label>Relates to</label>' .
+            $html .= '<div class="col-sm-12 col-md-2 span2"><label>' .
+                get_string('label_relatesto', 'local_pages') .' </label>' .
                 '<select class="form-control field-readsfrom" name="readsfrom[]">' .
-                '<option value="">Nothing</option>';
+                '<option value="">'. get_string('select_nothing', 'local_pages')  .' </option>';
             $keys = array_keys((array)$usertable);
             foreach ($keys as $key) {
                 $html .= '<option ' . ((isset($records[$i]) &&
                         isset($records[$i]->readsfrom) &&
                         $records[$i]->readsfrom == $key) ? 'selected="selected"' : '') . '>' . $key . '</option>';
             }
-            $html .= '<option ' . ((isset($records[$i]) &&
+            $html .= '<option value="fullname" ' . ((isset($records[$i]) &&
                     isset($records[$i]->readsfrom) &&
-                    $records[$i]->readsfrom == "fullname") ? 'selected="selected"' : '') . '>fullname</option>';
+                    $records[$i]->readsfrom == "fullname") ? 'selected="selected"' : '') . '>' .
+                    get_string('select_fullname', 'local_pages') . '</option>';
             $html .= '</select></div>';
 
-            $html .= '<div class="col-sm-12 col-md-2 span2"><label>Required</label>' .
+            $html .= '<div class="col-sm-12 col-md-2 span2"><label>' .
+                get_string('label_required', 'local_pages') .'</label>' .
                 '<select class="form-control field-required" name="fieldrequired[]">' .
-                '<option ' . (isset($records[$i]) &&
-                $records[$i]->required == 'Yes' ? 'selected="selected"' : '') . '>Yes</option>' .
-                '<option ' . (isset($records[$i]) &&
-                $records[$i]->required == 'No' ? 'selected="selected"' : '') . '>No</option>' .
+                '<option value="Yes" ' . (isset($records[$i]) &&
+                $records[$i]->required == 'Yes' ? 'selected="selected"' : '') . '>' .
+                get_string('select_yes', 'local_pages') .'</option>' .
+                '<option value="No" ' . (isset($records[$i]) &&
+                $records[$i]->required == 'No' ? 'selected="selected"' : '') . '>' .
+                get_string('select_no', 'local_pages').'</option>' .
                 '</select></div>';
 
             $html .= '<div class="col-sm-12 col-md-2 span2"><label>Type</label>' .
                 '<select class="form-control field-type" name="fieldtype[]">' .
-                '<option ' . (isset($records[$i]) &&
-                $records[$i]->type == 'Text' ? 'selected="selected"' : '') . ' >Text</option>' .
-                '<option ' . (isset($records[$i]) &&
-                $records[$i]->type == 'Email' ? 'selected="selected"' : '') . ' >Email</option>' .
-                '<option ' . (isset($records[$i]) &&
-                $records[$i]->type == 'Number' ? 'selected="selected"' : '') . '  >Number</option>' .
-                '<option ' . (isset($records[$i]) &&
-                $records[$i]->type == 'Checkbox' ? 'selected="selected"' : '') . ' >Checkbox</option>' .
-                '<option ' . (isset($records[$i]) &&
-                $records[$i]->type == 'Text Area' ? 'selected="selected"' : '') . ' >Text Area</option>' .
-                '<option ' . (isset($records[$i]) &&
-                $records[$i]->type == 'Select' ? 'selected="selected"' : '') . ' >Select</option>' .
-                '<option ' . (isset($records[$i]) &&
-                $records[$i]->type == 'HTML' ? 'selected="selected"' : '') . ' >HTML</option>' .
+                '<option value="Text" ' . (isset($records[$i]) &&
+                $records[$i]->type == 'Text' ? 'selected="selected"' : '') . ' >' .
+                get_string('select_text', 'local_pages') . '</option>' .
+                '<option value="Email" ' . (isset($records[$i]) &&
+                $records[$i]->type == 'Email' ? 'selected="selected"' : '') . ' >' .
+                get_string('select_email', 'local_pages') . '</option>' .
+                '<option value="Number" ' . (isset($records[$i]) &&
+                $records[$i]->type == 'Number' ? 'selected="selected"' : '') . '  >' .
+                get_string('select_number', 'local_pages')  . '</option>' .
+                '<option value="Checkbox" ' . (isset($records[$i]) &&
+                $records[$i]->type == 'Checkbox' ? 'selected="selected"' : '') . ' >' .
+                get_string('select_checkbox', 'local_pages') . '</option>' .
+                '<option value="Text Area"' . (isset($records[$i]) &&
+                $records[$i]->type == 'Text Area' ? 'selected="selected"' : '') . ' >' .
+                get_string('select_text_area', 'local_pages') . '</option>' .
+                '<option value="Select" ' . (isset($records[$i]) &&
+                $records[$i]->type == 'Select' ? 'selected="selected"' : '') . ' >' .
+                get_string('select_select', 'local_pages') . '</option>' .
+                '<option value="HTML" ' . (isset($records[$i]) &&
+                $records[$i]->type == 'HTML' ? 'selected="selected"' : '') . ' >' .
+                get_string('select_html', 'local_pages') . '</option>' .
                 '</select></div>';
 
             $html .= '<div class="col-sm-12 col-md-2 span2"><label style="width:100%"> &nbsp;</label>' .
-                '<input type="button" value="add" ' .
+                '<input type="button" value="' . get_string('label_add', 'local_pages') . '" ' .
                 'class="form-submit form-addrow btn btn-primary" name="submitbutton" type="button" />' .
-                '<input type="button" value="remove" ' .
+                '<input type="button" value="' . get_string('label_remove', 'local_pages') .'" ' .
                 'class="form-submit form-removerow btn btn-danger" name="cancel" type="button" />' .
                 '</div>' .
                 '</div>';

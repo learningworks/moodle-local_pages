@@ -71,7 +71,7 @@ ul.custompages_nav li a {
     margin-left: 5px;
 }
 
-.pages-action {
+.custompages-list-element .pages-action {
     float: right;
     margin-top: 0;
     text-transform: uppercase;
@@ -90,39 +90,39 @@ ul.custompages_nav li a {
     color: #930;
 }
 
-.felement.fselect select,
-.felement.ftext input,
-.felement.feditor textarea {
+#page-local-pages-pages-edit .felement.fselect select,
+#page-local-pages-pages-edit .felement.ftext input,
+#page-local-pages-pages-edit .felement.feditor textarea {
     width: 90%;
     margin: 0;
 }
 
-.felement.fdate_selector select {
+#page-local-pages-pages-edit .felement.fdate_selector select {
     min-width: 80px;
 }
 
-body fieldset.hidden {
+body#page-local-pages-pages-edit fieldset.hidden {
     display: block;
 }
 
-#fitem_id_pagedata {
+#page-local-pages-pages-edit #fitem_id_pagedata {
     display: none;
 }
 
-.formbuilderform .formrow:first-child .form-removerow {
+#page-local-pages-pages-edit .formbuilderform .formrow:first-child .form-removerow {
     display: none;
 }
 
-.formbuilderform .formrow .form-addrow {
+#page-local-pages-pages-edit .formbuilderform .formrow .form-addrow {
     display: none;
     margin-right: 10px;
 }
 
-.formbuilderform .formrow:last-child .form-addrow {
+#page-local-pages-pages-edit .formbuilderform .formrow:last-child .form-addrow {
     display: inline-block;
 }
 
-.formbuilderform .formrow input.form-removerow {
+#page-local-pages-pages-edit formbuilderform .formrow input.form-removerow {
     margin-right: 0;
 }
 
@@ -131,23 +131,23 @@ body fieldset.hidden {
     padding-left: 10px;
 }
 
-.row.formrow {
+#page-local-pages-pages-edit .row.formrow {
     padding-bottom: 10px;
     margin-bottom: 10px;
 }
 
-body #showform-builder span {
+body#page-local-pages-pages-edit #showform-builder span {
     display: block;
     float: right;
     font-size: 15px;
     text-transform: uppercase;
 }
 
-body #form-builder {
+body#page-local-pages-pages-edit #form-builder {
     border-bottom: 1px solid #e2e2e2;
 }
 
-body #id_s_local_pages_email_headers {
+body#page-local-pages-pages-edit #id_s_local_pages_email_headers {
     width: 90%;
     font-size: 12px;
 }

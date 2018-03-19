@@ -46,7 +46,7 @@ if (!has_capability('local/pages:addpages', $context)) {
 
 // Add chosen Javascript to list.
 $PAGE->requires->jquery();
-$PAGE->requires->js(new moodle_url($CFG->wwwroot . '/local/pages/js/pages_init.js'));
+$PAGE->requires->js(new moodle_url($CFG->wwwroot . '/local/pages/js/pages.js'));
 
 $PAGE->set_pagelayout('standard');
 
@@ -59,7 +59,7 @@ $renderer->save_page($pagetoedit);
 $PAGE->set_title(get_string('pagesetup_title', 'local_pages'));
 $PAGE->set_heading(get_string('pagesetup_heading', 'local_pages'));
 
-$table = new pages_formhistory_table('form-history');
+$table = new formhistory_table('form-history');
 $table->is_downloadable(true);
 $table->is_downloading($download, 'form-report', 'Pages Form Report');
 
