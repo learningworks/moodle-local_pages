@@ -23,9 +23,8 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once(dirname(__FILE__) . '/../../../config.php');
+require_once(dirname(__FILE__) . '/../../config.php');
 require_once($CFG->dirroot . '/local/pages/lib.php');
-require_once($CFG->dirroot . '/local/pages/classes/formhistory_table.php');
 
 $download = optional_param('download', '', PARAM_ALPHA);
 $pageid = optional_param('id', 0, PARAM_INT);
@@ -35,7 +34,7 @@ global $USER, $PAGE;
 
 // Set PAGE variables.
 $PAGE->set_context($context);
-$PAGE->set_url($CFG->wwwroot . '/local/pages/pages/edit.php', array("id" => $pageid));
+$PAGE->set_url($CFG->wwwroot . '/local/pages/edit.php', array("id" => $pageid));
 
 // Force the user to login/create an account to access this page.
 require_login();
@@ -53,18 +52,18 @@ $PAGE->set_pagelayout('standard');
 // Get the renderer for this page.
 $renderer = $PAGE->get_renderer('local_pages');
 
-$pagetoedit = custompage::load($pageid, true);
+$pagetoedit = \local_pages\custompage::load($pageid, true);
 $renderer->save_page($pagetoedit);
 // Print the page header.
 $PAGE->set_title(get_string('pagesetup_title', 'local_pages'));
 $PAGE->set_heading(get_string('pagesetup_heading', 'local_pages'));
 
-$table = new formhistory_table('form-history');
+$table = new \local_pages\formhistory('form-history');
 $table->is_downloadable(true);
 $table->is_downloading($download, 'form-report', 'Pages Form Report');
 
 // Configure the table.
-$table->define_baseurl(new moodle_url($CFG->wwwroot . '/local/pages/pages/edit.php', array("id" => $pageid)));
+$table->define_baseurl(new moodle_url($CFG->wwwroot . '/local/pages/edit.php', array("id" => $pageid)));
 
 $table->set_attribute('class', 'admintable generaltable history-table');
 $table->collapsible(false);
@@ -77,7 +76,7 @@ if (!$table->is_downloading()) {
     echo $OUTPUT->header();
 
     printf('<h1 class="page__title">%s<a style="float:right;font-size:15px" href="' .
-        new moodle_url($CFG->wwwroot . '/local/pages/pages/pages.php') . '"> << Back to Page List</a></h1>',
+        new moodle_url($CFG->wwwroot . '/local/pages/pages.php') . '"> << Back to Page List</a></h1>',
         get_string('custompage_title', 'local_pages'));
 
     echo $renderer->edit_page($pagetoedit);

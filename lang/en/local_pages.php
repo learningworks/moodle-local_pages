@@ -94,3 +94,6 @@ $string['select_text_area'] = "Text Area";
 $string['select_select'] = "Select";
 $string['select_html'] = "HTML";
 $string['select_fullname'] = "fullname";
+$string['view'] = "View";
+$string['edit'] = "Edit";
+$string['delete'] = "Delete";

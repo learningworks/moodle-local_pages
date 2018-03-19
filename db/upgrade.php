@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Local Pages Renderer
+ * Local Pages Upgrade
  *
  * @package     local_pages
  * @author      Kevin Dibble
@@ -116,7 +116,7 @@ function xmldb_local_pages_upgrade($oldversion) {
         }
 
         // Local pages savepoint reached.
-        upgrade_plugin_savepoint(true, 2016092900, 'local', 'pages');
+        upgrade_plugin_savepoint(true, 2018032001, 'local', 'pages');
     }
 
     return true;

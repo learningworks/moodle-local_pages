@@ -137,7 +137,7 @@ function local_pages_extend_navigation(global_navigation $nav) {
         if (has_capability('local/pages:addpages', $context)) {
             $nav->add(
                 get_string('pluginname', 'local_pages'),
-                new moodle_url($CFG->wwwroot . "/local/pages/pages/pages.php"),
+                new moodle_url($CFG->wwwroot . "/local/pages/pages.php"),
                 navigation_node::TYPE_CONTAINER
             );
         }

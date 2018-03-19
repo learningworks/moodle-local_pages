@@ -2,10 +2,9 @@
 .custompages-list-element {
     padding: 5px;
     list-style: none;
-    margin: 0;
+    margin: 0 0 1px 0;
     border: 1px solid #e2e2e2;
     border-radius: 0;
-    margin-bottom: -1px;
 }
 
 .custompages-title {
@@ -13,7 +12,7 @@
     padding: 5px;
     border-bottom: 1px solid #e2e2e2;
     background: #f1f1f1;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 ul.custompages_nav {
@@ -29,6 +28,10 @@ ul.custompages_nav li {
     padding: 0;
 }
 
+ul.custompages-list{
+    margin-left:0;
+}
+
 ul.custompages_nav li a {
     display: block;
     padding: 5px;
@@ -40,10 +43,8 @@ ul.custompages_nav li a {
 }
 
 .custompages-list-element .custompages_submenu {
-    margin: 0;
+    margin: 0 -5px;
     padding: 0;
-    margin-left: -5px;
-    margin-right: -5px;
     border-top: 1px solid #e2e2e2;
 }
 
@@ -52,9 +53,11 @@ ul.custompages_nav li a {
     border: none;
     border-bottom: 1px solid #e2e2e2;
     border-radius: 0;
-    padding: 10px;
-    padding-right: 5px;
-    padding-bottom: 11px;
+    padding: 6px 5px 6px 20px;
+}
+
+.custompages-list-element .custompages_submenu .custompages-list-element:last-child{
+    border-bottom:none;
 }
 
 .custompages-list .custompages-title {
@@ -65,10 +68,17 @@ ul.custompages_nav li a {
 .custompages-list-element .custompages_submenu h4 {
     border: none;
     background: transparent;
-    padding: 0;
-    margin-right: 25px;
-    margin-bottom: 0;
-    margin-left: 5px;
+    padding:0;
+    margin: 0 25px 0 5px;
+    font-size: 14px;
+}
+
+.custompages-list-element .custompages_submenu h4:before {
+    content: "->";
+    margin-right: 5px;
+    margin-top: -1px;
+    display: block;
+    float: left;
 }
 
 .custompages-list-element .pages-action {
@@ -90,39 +100,39 @@ ul.custompages_nav li a {
     color: #930;
 }
 
-#page-local-pages-pages-edit .felement.fselect select,
-#page-local-pages-pages-edit .felement.ftext input,
-#page-local-pages-pages-edit .felement.feditor textarea {
+#page-local-pages-edit .felement.fselect select,
+#page-local-pages-edit .felement.ftext input,
+#page-local-pages-edit .felement.feditor textarea {
     width: 90%;
     margin: 0;
 }
 
-#page-local-pages-pages-edit .felement.fdate_selector select {
+#page-local-pages-edit .felement.fdate_selector select {
     min-width: 80px;
 }
 
-body#page-local-pages-pages-edit fieldset.hidden {
+body#page-local-pages-edit fieldset.hidden {
     display: block;
 }
 
-#page-local-pages-pages-edit #fitem_id_pagedata {
+#page-local-pages-edit #fitem_id_pagedata {
     display: none;
 }
 
-#page-local-pages-pages-edit .formbuilderform .formrow:first-child .form-removerow {
+#page-local-pages-edit .formbuilderform .formrow:first-child .form-removerow {
     display: none;
 }
 
-#page-local-pages-pages-edit .formbuilderform .formrow .form-addrow {
+#page-local-pages-edit .formbuilderform .formrow .form-addrow {
     display: none;
     margin-right: 10px;
 }
 
-#page-local-pages-pages-edit .formbuilderform .formrow:last-child .form-addrow {
+#page-local-pages-edit .formbuilderform .formrow:last-child .form-addrow {
     display: inline-block;
 }
 
-#page-local-pages-pages-edit .formbuilderform .formrow input.form-removerow {
+#page-local-pages-edit .formbuilderform .formrow input.form-removerow {
     margin-right: 0;
 }
 
@@ -131,38 +141,38 @@ body#page-local-pages-pages-edit fieldset.hidden {
     padding-left: 10px;
 }
 
-#page-local-pages-pages-edit .row.formrow {
+#page-local-pages-edit .row.formrow {
     padding-bottom: 10px;
     margin-bottom: 10px;
 }
 
-body#page-local-pages-pages-edit #showform-builder span {
+body#page-local-pages-edit #showform-builder span {
     display: block;
     float: right;
     font-size: 15px;
     text-transform: uppercase;
 }
 
-body#page-local-pages-pages-edit #form-builder {
+body#page-local-pages-edit #form-builder {
     border-bottom: 1px solid #e2e2e2;
 }
 
-body#page-local-pages-pages-edit #id_s_local_pages_email_headers {
+body#page-local-pages-edit #id_s_local_pages_email_headers {
     width: 90%;
     font-size: 12px;
 }
-body#page-local-pages-pages-edit .span2 .form-control {
+body#page-local-pages-edit .span2 .form-control {
     max-width: 95%;
     width: 95%;
 }
 
-body#page-local-pages-pages-edit .formbuilderform {
+body#page-local-pages-edit .formbuilderform {
     margin-top: 10px;
     float: left;
     width: 100%;
     margin-bottom: 25px;
 }
 
-body#page-local-pages-pages-edit .formrow {
+body#page-local-pages-edit .formrow {
     clear: both;
 }

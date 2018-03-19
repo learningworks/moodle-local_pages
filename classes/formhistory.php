@@ -23,18 +23,20 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace local_pages;
+
 defined('MOODLE_INTERNAL') || die;
 
 // Load Tablelib lib.
 require_once($CFG->dirroot . '/lib/tablelib.php');
 
 /**
- * Class formhistory_table
+ * Class formhistory
  * @copyright   2017 LearningWorks Ltd
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * Create and show form submission history
  */
-class formhistory_table extends table_sql {
+class formhistory extends \table_sql {
 
     /**
      * Constructor

@@ -23,6 +23,8 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace local_pages;
+
 defined('MOODLE_INTERNAL') || die;
 
 /**
@@ -115,7 +117,7 @@ class custompage {
         require_once($CFG->libdir . '/formslib.php');
         require_once(dirname(__FILE__) . '/../lib.php');
 
-        $data = new stdClass();
+        $data = new \stdClass();
         if (intval($id) > 0) {
             $data = $DB->get_record_sql("SELECT * FROM {local_pages} WHERE id=? LIMIT 1", array(intval($id)));
         } else {
@@ -134,7 +136,7 @@ class custompage {
         $str = get_string('noaccess', 'local_pages');
         $data->pagecontent = isset($data->pagecontent) ? $data->pagecontent : ($editor ? '' : $str);
 
-        $context = context_system::instance();
+        $context = \context_system::instance();
         if (!$editor) {
             $data->pagecontent = file_rewrite_pluginfile_urls($data->pagecontent, 'pluginfile.php',
                 $context->id, 'local_pages', 'pagecontent', null);

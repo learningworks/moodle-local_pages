@@ -25,7 +25,6 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-require_once($CFG->dirroot . '/local/pages/classes/page.php');
 require_once($CFG->dirroot . '/local/pages/forms/edit.php');
 
 /**
@@ -59,11 +58,14 @@ class local_pages_renderer extends plugin_renderer_base {
             $html .= "<li class='custompages-list-element'>";
             $html .= '<div class="pages-action">' .
                 '<a href="' . new moodle_url($CFG->wwwroot . '/local/pages/',
-                    array('id' => $parent)) . '" class="custompages-edit">View</a> | ' .
-                '<a href="' . new moodle_url($CFG->wwwroot . '/local/pages/pages/edit.php',
-                    array('id' => $parent)) . '" class="custompages-edit">Edit</a> | ' .
-                '<a href="' . new moodle_url($CFG->wwwroot . '/local/pages/pages/pages.php',
-                    array('pagedel' => $parent, 'sesskey' => $USER->sesskey)) . '" class="custompages-delete">Delete</a></div>';
+                    array('id' => $parent)) . '" class="custompages-edit">' .
+                    get_string('view', 'local_pages') .'</a> | ' .
+                '<a href="' . new moodle_url($CFG->wwwroot . '/local/pages/edit.php',
+                    array('id' => $parent)) . '" class="custompages-edit">' .
+                    get_string('edit', 'local_pages') . '</a> | ' .
+                '<a href="' . new moodle_url($CFG->wwwroot . '/local/pages/pages.php',
+                    array('pagedel' => $parent, 'sesskey' => $USER->sesskey)) . '" class="custompages-delete">' .
+                    get_string('delete', 'local_pages') .' </a></div>';
             $html .= "<h4 class='custompages-title'>" . $name . "</h4>";
             $html .= "<ul class='custompages_submenu'>";
             foreach ($records as $page) {
@@ -75,11 +77,14 @@ class local_pages_renderer extends plugin_renderer_base {
             $html .= "<li class='custompages-list-element'>";
             $html .= '<div class="pages-action">' .
                 '<a href="' . new moodle_url($CFG->wwwroot . '/local/pages/',
-                    array('id' => $parent)) . '" class="custompages-edit">View</a> | ' .
-                '<a href="' . new moodle_url($CFG->wwwroot . '/local/pages/pages/edit.php',
-                    array('id' => $parent)) . '" class="custompages-edit">Edit</a> | ' .
-                '<a href="' . new moodle_url($CFG->wwwroot . '/local/pages/pages/pages.php',
-                    array('pagedel' => $parent, 'sesskey' => $USER->sesskey)) . '" class="custompages-delete">Delete</a></div>';
+                    array('id' => $parent)) . '" class="custompages-edit">' .
+                    get_string('view', 'local_pages') .'</a> | ' .
+                '<a href="' . new moodle_url($CFG->wwwroot . '/local/pages/edit.php',
+                    array('id' => $parent)) . '" class="custompages-edit">' .
+                    get_string('edit', 'local_pages') .'</a> | ' .
+                '<a href="' . new moodle_url($CFG->wwwroot . '/local/pages/pages.php',
+                    array('pagedel' => $parent, 'sesskey' => $USER->sesskey)) . '" class="custompages-delete">' .
+                    get_string('delete', 'local_pages') .' </a></div>';
             $html .= "<h4 class='custompages-title'>" . $name . "</h4>";
             $html .= "</li>";
         }
@@ -101,15 +106,13 @@ class local_pages_renderer extends plugin_renderer_base {
         }
 
         $html .= "<li class='custompages-list-element'>
-                	<a href='" . new moodle_url($CFG->wwwroot . '/local/pages/pages/edit.php') .
+                	<a href='" . new moodle_url($CFG->wwwroot . '/local/pages/edit.php') .
             "' class='custompages-add'>Add Page</a>
             	</li>";
 
         $html .= "<li class='custompages-list-element'>
 					<a target='_blank' href='" . new moodle_url($CFG->wwwroot .
-                '/local/pages/Moodle Plugin - Pages.ibooks') . "' class='custompages-add'>Ibooks Manual</a>
-					<a target='_blank' href='" . new moodle_url($CFG->wwwroot .
-                '/local/pages/Moodle Plugin - Pages.pdf') . "' class='custompages-add'>PDF Manual</a>
+                '/local/pages/pages.pdf') . "' class='custompages-add'>PDF Manual</a>
 				</li>";
 
         $html .= "</ul>";
@@ -154,9 +157,11 @@ class local_pages_renderer extends plugin_renderer_base {
                         break;
                 }
             }
-            $page->pagecontent = $this->adduserdata($page->pagecontent);
 
-            return format_text(str_replace(array("#form#", "{form}"), array($form, $form), $page->pagecontent));
+            // Format the input for XSS.
+            $page->pagecontent = format_text($this->adduserdata($page->pagecontent), FORMAT_HTML);
+
+            return str_replace(array("#form#", "{form}"), array($form, $form), $page->pagecontent);
         } else {
             return get_string('noaccess', 'local_pages');
         }
@@ -402,7 +407,7 @@ class local_pages_renderer extends plugin_renderer_base {
         global $CFG;
         $mform = new pages_edit_product_form($page);
         if ($mform->is_cancelled()) {
-            redirect(new moodle_url($CFG->wwwroot . '/local/pages/pages/pages.php'));
+            redirect(new moodle_url($CFG->wwwroot . '/local/pages/pages.php'));
         } else if ($data = $mform->get_data()) {
             require_once($CFG->libdir . '/formslib.php');
 
@@ -450,7 +455,7 @@ class local_pages_renderer extends plugin_renderer_base {
             $recordpage->pagecontent = $data->pagecontent['text'];
             $result = $page->update($recordpage);
             if ($result && $result > 0) {
-                redirect(new moodle_url($CFG->wwwroot . '/local/pages/pages/edit.php', array('id' => $result)));
+                redirect(new moodle_url($CFG->wwwroot . '/local/pages/edit.php', array('id' => $result)));
             }
         }
     }

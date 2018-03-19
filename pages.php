@@ -23,7 +23,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once(dirname(__FILE__) . '/../../../config.php');
+require_once(dirname(__FILE__) . '/../../config.php');
 require_once($CFG->dirroot . '/local/pages/lib.php');
 
 $deletepage = optional_param('pagedel', 0, PARAM_INT);
@@ -33,7 +33,7 @@ global $USER, $PAGE;
 
 // Set PAGE variables.
 $PAGE->set_context($context);
-$PAGE->set_url($CFG->wwwroot . '/local/pages/pages/pages.php');
+$PAGE->set_url($CFG->wwwroot . '/local/pages/pages.php');
 
 // Force the user to login/create an account to access this page.
 require_login();
