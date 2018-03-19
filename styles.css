@@ -122,7 +122,7 @@ body#page-local-pages-pages-edit fieldset.hidden {
     display: inline-block;
 }
 
-#page-local-pages-pages-edit formbuilderform .formrow input.form-removerow {
+#page-local-pages-pages-edit .formbuilderform .formrow input.form-removerow {
     margin-right: 0;
 }
 
