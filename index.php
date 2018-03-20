@@ -33,7 +33,6 @@ $PAGE->set_context(\context_system::instance());
 $PAGE->set_url("{$CFG->wwwroot}/local/pages/index.php", ['id' => $pageid]);
 
 require_once("{$CFG->dirroot}/local/pages/lib.php");
-require_once("{$CFG->dirroot}/local/pages/classes/custompage.php");
 
 // Set the page layout.
 $custompage     = \local_pages\custompage::load($pageid);
