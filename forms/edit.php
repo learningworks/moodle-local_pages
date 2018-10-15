@@ -188,13 +188,13 @@ class pages_edit_product_form extends moodleform {
         $limit = count($records);
 
         $i = 0;
-        $html = '<div class="form-builder" id="form-builder">' .
-            '<h3><a href="#" id="showform-builder">'. get_string('formbuilder', 'local_pages') .'  ' .
+        $html = '<div class="form-builder row" id="form-builder">' .
+            '<h3 style="width:100%"><a href="#" id="showform-builder">'. get_string('formbuilder', 'local_pages') .'  ' .
             '<span id="showEdit">' . get_string('show', 'local_pages') .
             '</span> <span id="hideEdit">' . get_string('hide', 'local_pages') .
             '</span></a></h3><div class="formbuilderform">';
         do {
-            $html .= '<div class="formrow"><div class="col-sm-12 col-md-2 span2"><label>' .
+            $html .= '<div class="formrow row"><div class="col-sm-12 col-md-2 span2"><label>' .
                 get_string('label_name', 'local_pages') .' </label>' .
                 '<textarea class="form-control field-name" name="fieldname[]" ' .
                 'placeholder="' . get_string('placeholder_fieldname', 'local_pages') .
@@ -222,7 +222,7 @@ class pages_edit_product_form extends moodleform {
             $html .= '<option value="fullname" ' . ((isset($records[$i]) &&
                     isset($records[$i]->readsfrom) &&
                     $records[$i]->readsfrom == "fullname") ? 'selected="selected"' : '') . '>' .
-                    get_string('select_fullname', 'local_pages') . '</option>';
+                get_string('select_fullname', 'local_pages') . '</option>';
             $html .= '</select></div>';
 
             $html .= '<div class="col-sm-12 col-md-2 span2"><label>' .
