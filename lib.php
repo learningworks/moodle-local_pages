@@ -68,13 +68,13 @@ function local_pages_pluginfile($course, $birecordorcm, $context, $filearea, $ar
  * @param navigation_node $nav
  * @param mixed $parent
  */
-function local_pages_build_menu(navigation_node $nav, $parent) {
+function local_pages_build_menu(navigation_node $nav, $parent, global_navigation $gnav) {
     global $DB;
     $today = date('U');
     $records = $DB->get_records_sql("SELECT * FROM {local_pages} WHERE deleted=0 AND onmenu=1 " .
         "AND pagetype='page' AND pageparent=? AND pagedate <=? " .
         "ORDER BY pageorder", array($parent, $today));
-    local_pages_process_records($records, $nav);
+    local_pages_process_records($records, $nav, false, $gnav);
 }
 
 /**
@@ -85,7 +85,7 @@ function local_pages_build_menu(navigation_node $nav, $parent) {
  * @param mixed $nav
  * @param bool $parent
  */
-function local_pages_process_records($records, $nav, $parent = false) {
+function local_pages_process_records($records, $nav, $parent = false, global_navigation $gnav) {
     global $CFG;
     if ($records) {
         foreach ($records as $page) {
@@ -110,15 +110,21 @@ function local_pages_process_records($records, $nav, $parent = false) {
                 if (get_config('local_pages', 'cleanurl_enabled') && trim($page->menuname) != '') {
                     $urllocation = new moodle_url($CFG->wwwroot . '/local/pages/' . $page->menuname);
                 }
-                $child = $nav->add(
-                    $page->pagename,
-                    $urllocation,
-                    navigation_node::TYPE_CONTAINER
-                );
-                if ($parent) {
-                    $child->set_parent($nav);
+                if (!$gnav->get('lpi' . $page->id)) {
+                    $child = $nav->add(
+                        $page->pagename,
+                        $urllocation,
+                        navigation_node::TYPE_CONTAINER,
+                        null,
+                        'lpi' . $page->id
+                    );
+                    $child->nodetype = 1;
+                    $child->showinflatnavigation = true;
+                    if ($parent) {
+                        $child->set_parent($parent);
+                    }
+                    local_pages_build_menu($child, $page->id, $gnav);
                 }
-                local_pages_build_menu($child, $page->id);
             }
         }
     }
@@ -132,19 +138,19 @@ function local_pages_process_records($records, $nav, $parent = false) {
  */
 function local_pages_extend_navigation(global_navigation $nav) {
     global $CFG, $DB;
-    if (!is_siteadmin()) {
-        $context = context_system::instance();
-        if (has_capability('local/pages:addpages', $context)) {
-            $nav->add(
-                get_string('pluginname', 'local_pages'),
-                new moodle_url($CFG->wwwroot . "/local/pages/pages.php"),
-                navigation_node::TYPE_CONTAINER
-            );
-        }
+    $context = context_system::instance();
+    if (has_capability('local/pages:addpages', $context)) {
+        $mainnode = $nav->add(
+            get_string('pagesplugin', 'local_pages'),
+            new moodle_url($CFG->wwwroot . "/local/pages/pages.php"),
+            navigation_node::TYPE_CONTAINER
+        );
+        $mainnode->nodetype = 1;
+        $mainnode->showinflatnavigation = true;
     }
     $today = date('U');
     $records = $DB->get_records_sql("SELECT * FROM {local_pages} WHERE deleted=0 AND onmenu=1 " .
         "AND pagetype='page' AND pageparent=0 AND pagedate <= ? ORDER BY pageorder", array($today));
 
-    local_pages_process_records($records, $nav, false);
+    local_pages_process_records($records, $nav, false, $nav);
 }

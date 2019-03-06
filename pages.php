@@ -47,6 +47,9 @@ if ($deletepage !== 0) {
         $options->id = $deletepage;
         $options->deleted = 1;
         $DB->update_record('local_pages', $options);
+
+        // Get pages under this page and update their parent.
+        $DB->set_field('local_pages', 'pageparent', 0, ['pageparent' => $deletepage]);
     }
 }
 

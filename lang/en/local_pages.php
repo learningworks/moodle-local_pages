@@ -98,3 +98,4 @@ $string['view'] = "View";
 $string['edit'] = "Edit";
 $string['delete'] = "Delete";
 $string['privacy:metadata'] = 'The pages local plugin does not store any personal data';
+$string['pagesplugin'] = 'Pages plugin';

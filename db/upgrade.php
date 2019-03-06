@@ -116,7 +116,7 @@ function xmldb_local_pages_upgrade($oldversion) {
         }
 
         // Local pages savepoint reached.
-        upgrade_plugin_savepoint(true, 2018032004, 'local', 'pages');
+        upgrade_plugin_savepoint(true, 2019011100, 'local', 'pages');
     }
 
     return true;
