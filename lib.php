@@ -67,6 +67,10 @@ function local_pages_pluginfile($course, $birecordorcm, $context, $filearea, $ar
  *
  * @param navigation_node $nav
  * @param mixed $parent
+ * @param global_navigation $gnav
+ * @throws coding_exception
+ * @throws dml_exception
+ * @throws moodle_exception
  */
 function local_pages_build_menu(navigation_node $nav, $parent, global_navigation $gnav) {
     global $DB;
@@ -84,6 +88,10 @@ function local_pages_build_menu(navigation_node $nav, $parent, global_navigation
  * @param mixed $records
  * @param mixed $nav
  * @param bool $parent
+ * @param global_navigation $gnav
+ * @throws coding_exception
+ * @throws dml_exception
+ * @throws moodle_exception
  */
 function local_pages_process_records($records, $nav, $parent = false, global_navigation $gnav) {
     global $CFG;

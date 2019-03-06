@@ -155,11 +155,11 @@ body#page-local-pages-edit #showform-builder span {
 
 body#page-local-pages-edit #form-builder {
     border-bottom: 1px solid #e2e2e2;
-    margin-right:0;
+    margin-right: 0;
 }
 
-body#page-local-pages-edit #form-builder h3{
-    width:100%
+body#page-local-pages-edit #form-builder h3 {
+    width: 100%
 }
 
 body#page-local-pages-edit #id_s_local_pages_email_headers {

@@ -28,11 +28,8 @@ namespace local_pages\privacy;
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * The mod_book module does not store any data.
- *
- * @package    mod_book
- * @copyright  2018 Shamim Rezaie <shamim@moodle.com>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * Class provider
+ * @package local_pages\privacy
  */
 class provider implements \core_privacy\local\metadata\null_provider {
     /**
