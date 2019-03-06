@@ -118,9 +118,10 @@ function local_pages_process_records($records, $nav, $parent = false, global_nav
                         null,
                         'lpi' . $page->id
                     );
-                    $child->nodetype = 1;
+                    $child->nodetype = 0;
                     $child->showinflatnavigation = true;
                     if ($parent) {
+                        $parent->nodetype = 1;
                         $child->set_parent($parent);
                     }
                     local_pages_build_menu($child, $page->id, $gnav);
@@ -145,7 +146,7 @@ function local_pages_extend_navigation(global_navigation $nav) {
             new moodle_url($CFG->wwwroot . "/local/pages/pages.php"),
             navigation_node::TYPE_CONTAINER
         );
-        $mainnode->nodetype = 1;
+        $mainnode->nodetype = 0;
         $mainnode->showinflatnavigation = true;
     }
     $today = date('U');

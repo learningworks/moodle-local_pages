@@ -159,6 +159,9 @@ class pages_edit_product_form extends moodleform {
         $this->add_action_buttons();
 
         $mform->addElement('hidden', 'id', null);
+
+        $mform->hideIf('emailto', 'pagetype', 'neq', 'form');
+
         $mform->setType('id', PARAM_INT);
     }
 

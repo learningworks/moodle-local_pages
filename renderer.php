@@ -449,7 +449,7 @@ class local_pages_renderer extends plugin_renderer_base {
             $recordpage->accesslevel = $data->accesslevel;
             $recordpage->pagedata = $data->pagedata;
             $recordpage->pagetype = $data->pagetype;
-            $recordpage->emailto = $data->emailto;
+            $recordpage->emailto = isset($data->emailto) ? $data->emailto : '';
             $recordpage->pagelayout = $data->pagelayout;
             $recordpage->pageparent = intval($data->pageparent);
             $recordpage->pagecontent = $data->pagecontent['text'];
