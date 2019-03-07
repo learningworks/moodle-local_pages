@@ -30,6 +30,9 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Class provider
  * @package local_pages\privacy
+ * @author      Kevin Dibble
+ * @copyright   2017 LearningWorks Ltd
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class provider implements \core_privacy\local\metadata\null_provider {
     /**

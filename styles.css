@@ -159,7 +159,7 @@ body#page-local-pages-edit #form-builder {
 }
 
 body#page-local-pages-edit #form-builder h3 {
-    width: 100%
+    width: 100%;
 }
 
 body#page-local-pages-edit #id_s_local_pages_email_headers {
