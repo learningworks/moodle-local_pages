@@ -159,7 +159,8 @@ class local_pages_renderer extends plugin_renderer_base {
             }
 
             // Format the input for XSS.
-            $page->pagecontent = format_text($this->adduserdata($page->pagecontent), FORMAT_HTML);
+            $page->pagecontent = format_text($this->adduserdata($page->pagecontent), FORMAT_HTML,
+                ['trusted' => true, 'noclean' => true]);
 
             return str_replace(array("#form#", "{form}"), array($form, $form), $page->pagecontent);
         } else {
