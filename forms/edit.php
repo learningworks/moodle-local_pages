@@ -81,7 +81,8 @@ class pages_edit_product_form extends moodleform {
         global $DB, $PAGE;
 
         // Get a list of all pages.
-        $pages = array(0 => 'None');
+        $none = get_string("none", "local_pages");
+        $pages = array(0 => $none);
         $allpages = $DB->get_records('local_pages', array('deleted' => 0));
         foreach ($allpages as $page) {
             if ($page->id != $this->callingpage) {
@@ -133,14 +134,15 @@ class pages_edit_product_form extends moodleform {
         $mform->addElement('select', 'pageparent', get_string('page_parent', 'local_pages'), $pages);
 
         $mform->addElement('select', 'onmenu', get_string('page_onmenu', 'local_pages'),
-            array("1" => "Yes", "0" => "No"), 0);
+            array("1" => get_string("yes", "local_pages"), "0" => get_string("no", "local_pages")), 0);
 
         $mform->addElement('text', 'accesslevel', get_string('page_accesslevel', 'local_pages'));
         $mform->addHelpButton('accesslevel', 'accesslevel_description', 'local_pages');
         $mform->setType('accesslevel', PARAM_TEXT);
 
         $mform->addElement('select', 'pagetype', get_string('page_pagetype', 'local_pages'),
-            array("page" => "Page", "form" => "Form"), 'page');
+            array("page" => get_string("page", "local_pages"),
+                "form" => get_string("form", "local_pages")), 'page');
 
         $context = context_system::instance();
         $editoroptions = array('maxfiles' => EDITOR_UNLIMITED_FILES, 'noclean' => true, 'context' => $context);

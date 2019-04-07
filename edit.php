@@ -76,7 +76,8 @@ if (!$table->is_downloading()) {
     echo $OUTPUT->header();
 
     printf('<h1 class="page__title">%s<a style="float:right;font-size:15px" href="' .
-        new moodle_url($CFG->wwwroot . '/local/pages/pages.php') . '"> << Back to Page List</a></h1>',
+        new moodle_url($CFG->wwwroot . '/local/pages/pages.php') . '"> '.
+        get_string('backtolist', 'local_pages') .'</a></h1>',
         get_string('custompage_title', 'local_pages'));
 
     echo $renderer->edit_page($pagetoedit);

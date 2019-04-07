@@ -107,12 +107,12 @@ class local_pages_renderer extends plugin_renderer_base {
 
         $html .= "<li class='custompages-list-element'>
                 	<a href='" . new moodle_url($CFG->wwwroot . '/local/pages/edit.php') .
-            "' class='custompages-add'>Add Page</a>
+            "' class='custompages-add'>" . get_string("addpage", "local_pages") . "</a>
             	</li>";
 
         $html .= "<li class='custompages-list-element'>
 					<a target='_blank' href='" . new moodle_url($CFG->wwwroot .
-                '/local/pages/pages.pdf') . "' class='custompages-add'>PDF Manual</a>
+                '/local/pages/pages.pdf') . "' class='custompages-add'>" . get_string("pdfmanual", "local_pages") ."</a>
 				</li>";
 
         $html .= "</ul>";
@@ -275,7 +275,7 @@ class local_pages_renderer extends plugin_renderer_base {
                     foreach ($selectlist as $option) {
                         $options = explode("|", $option);
                         if (trim($options[0]) == '' && !isset($options[1])) {
-                            $options[1] == 'Please Select an option';
+                            $options[1] = get_string("pleaseselect", "local_pages");
                         }
                         $str .= '<option value="' . $options[0] . '" ' .
                             ($tmpparam == $options[0] ? 'selected="selected"' : '') . ' >' .
@@ -302,7 +302,8 @@ class local_pages_renderer extends plugin_renderer_base {
 
         $str .= '<div class="fitem fitem_actionbuttons fitem_fgroup"><div class="felement fgroup">' .
             '<input type="text" name="hp" value="" style="position:absolute;left:-99999px" /> ' .
-            '<button type="submit" name="formsubmit" value="1" class="btn btn-primary">Submit</button>' .
+            '<button type="submit" name="formsubmit" value="1" class="btn btn-primary">' .
+            get_string("submit", "local_pages") .'</button>' .
             '</div></div></form>';
         return $str;
     }
