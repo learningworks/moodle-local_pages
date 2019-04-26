@@ -162,7 +162,9 @@ class pages_edit_product_form extends moodleform {
 
         $mform->addElement('hidden', 'id', null);
 
-        $mform->hideIf('emailto', 'pagetype', 'neq', 'form');
+        if (method_exists($mform, "hideif")) {
+            $mform->hideIf('emailto', 'pagetype', 'neq', 'form');
+        }
 
         $mform->setType('id', PARAM_INT);
     }
@@ -241,7 +243,8 @@ class pages_edit_product_form extends moodleform {
                 get_string('select_no', 'local_pages').'</option>' .
                 '</select></div>';
 
-            $html .= '<div class="col-sm-12 col-md-2 span2"><label>Type</label>' .
+            $html .= '<div class="col-sm-12 col-md-2 span2"><label>' .
+                get_string('type', 'local_pages') . '</label>' .
                 '<select class="form-control field-type" name="fieldtype[]">' .
                 '<option value="Text" ' . (isset($records[$i]) &&
                 $records[$i]->type == 'Text' ? 'selected="selected"' : '') . ' >' .

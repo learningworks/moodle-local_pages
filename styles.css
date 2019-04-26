@@ -53,7 +53,7 @@ ul.custompages_nav li a {
     border: none;
     border-bottom: 1px solid #e2e2e2;
     border-radius: 0;
-    padding: 6px 5px 6px 20px;
+    padding: 6px 5px 0 20px;
 }
 
 .custompages-list-element .custompages_submenu .custompages-list-element:last-child {
@@ -71,6 +71,7 @@ ul.custompages_nav li a {
     padding: 0;
     margin: 0 25px 0 5px;
     font-size: 14px;
+    padding-bottom:5px;
 }
 
 .custompages-list-element .custompages_submenu h4:before {
@@ -171,6 +172,15 @@ body#page-local-pages-edit .span2 .form-control {
     width: 95%;
 }
 
+body#page-local-pages-index .form-group{
+    min-height:25px;
+    height:auto;
+}
+textarea.form-control{
+    max-width:100%;
+    width:auto;
+}
+
 body#page-local-pages-edit .formbuilderform {
     margin-top: 10px;
     float: left;
@@ -180,4 +190,12 @@ body#page-local-pages-edit .formbuilderform {
 
 body#page-local-pages-edit .formrow {
     clear: both;
+}
+
+body#page-local-pages-index span.required{
+    color: red;
+    margin-top: -5px;
+    margin-left: -12px;
+    display: block;
+    float: left;
 }
