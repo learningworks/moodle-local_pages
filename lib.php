@@ -126,10 +126,10 @@ function local_pages_process_records($records, $nav, $parent = false, global_nav
                         null,
                         'lpi' . $page->id
                     );
-                    $child->nodetype = 0;
+                    $child->nodetype = navigation_node::NODETYPE_LEAF;
                     $child->showinflatnavigation = true;
                     if ($parent) {
-                        $parent->nodetype = 1;
+                        $parent->nodetype = navigation_node::NODETYPE_BRANCH;
                         $child->set_parent($parent);
                     }
                     local_pages_build_menu($child, $page->id, $gnav);
@@ -149,21 +149,24 @@ function local_pages_extend_navigation(global_navigation $nav) {
     global $CFG, $DB;
     $context = context_system::instance();
     $pluginname = get_string('pluginname', 'local_pages');
+    $url = null;
     if (has_capability('local/pages:addpages', $context)) {
-        $mainnode = $nav->add(
-            get_string('pagesplugin', 'local_pages'),
-            new moodle_url($CFG->wwwroot . "/local/pages/pages.php"),
-            navigation_node::TYPE_CONTAINER,
-            'local_pages',
-            'local_pages',
-            new pix_icon('newspaper', $pluginname, 'local_pages')
-        );
-        $mainnode->nodetype = 0;
-        $mainnode->showinflatnavigation = true;
+        $url = new moodle_url($CFG->wwwroot . "/local/pages/pages.php");
     }
+    $mainnode = $nav->add(
+        get_string('pagesplugin', 'local_pages'),
+        $url,
+        navigation_node::TYPE_CONTAINER,
+        'local_pages',
+        'local_pages',
+        new pix_icon('newspaper', $pluginname, 'local_pages')
+    );
+    $mainnode->nodetype = navigation_node::NODETYPE_LEAF;
+    $mainnode->showinflatnavigation = true;
+
     $today = date('U');
     $records = $DB->get_records_sql("SELECT * FROM {local_pages} WHERE deleted=0 AND onmenu=1 " .
         "AND pagetype='page' AND pageparent=0 AND pagedate <= ? ORDER BY pageorder", array($today));
 
-    local_pages_process_records($records, $nav, false, $nav);
+    local_pages_process_records($records, $nav, $mainnode, $nav);
 }
