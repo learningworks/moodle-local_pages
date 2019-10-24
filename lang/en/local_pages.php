@@ -42,6 +42,7 @@ $string['page_order'] = 'Page Order';
 $string['page_date'] = 'Page Date';
 $string['page_parent'] = 'Page Parent';
 $string['menu_name'] = 'Page URL';
+$string['menu_icon'] = 'Entry icon';
 $string['page_onmenu'] = 'Display on menu';
 $string['cleanurl_enabled'] = 'Enable Smart URLS';
 $string['cleanurl_enabled_description'] = 'Enable Links to use a clean URL';

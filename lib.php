@@ -124,7 +124,8 @@ function local_pages_process_records($records, $nav, $parent = false, global_nav
                         $urllocation,
                         navigation_node::TYPE_CONTAINER,
                         null,
-                        'lpi' . $page->id
+                        'lpi' . $page->id,
+                        (!empty($page->menuicon)) ? new pix_icon($page->menuicon, '') : null
                     );
                     $child->nodetype = 0;
                     $child->showinflatnavigation = true;

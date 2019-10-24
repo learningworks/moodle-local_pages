@@ -118,6 +118,9 @@ class pages_edit_product_form extends moodleform {
         $mform->addElement('text', 'pagename', get_string('page_name', 'local_pages'));
         $mform->setType('pagename', PARAM_TEXT);
 
+        $mform->addElement('text', 'menuicon', get_string('menu_icon', 'local_pages'));
+        $mform->setType('menuicon', PARAM_TEXT);
+
         $mform->addElement('text', 'menuname', get_string('menu_name', 'local_pages'));
         $mform->setType('menuname', PARAM_TEXT);
 
