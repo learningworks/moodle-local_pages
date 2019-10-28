@@ -145,6 +145,9 @@ function local_pages_process_records($records, $nav, $parent = false, global_nav
  * Extend navigation to show the pages in the navigation block
  *
  * @param global_navigation $nav
+ * @throws coding_exception
+ * @throws dml_exception
+ * @throws moodle_exception
  */
 function local_pages_extend_navigation(global_navigation $nav) {
     global $CFG, $DB;
@@ -172,13 +175,13 @@ function local_pages_extend_navigation(global_navigation $nav) {
 /**
  *
  * Generate pix -> fontawesome icon mapping
- * 
- * This is direct copy from moodle core mapping, 
+ *
+ * This is direct copy from moodle core mapping,
  * from https://github.com/moodle/moodle/blob/master/lib/classes/output/icon_system_fontawesome.php
  * Unfortunately, moodle core forbids fetching it directly, and forces every plugin to create its own map.
  * This is the only way I found, to display possible icons to user as selectable list
  *
- * @param global_navigation $nav
+ * @return array
  */
 function local_pages_get_fontawesome_icon_map() {
     return [
