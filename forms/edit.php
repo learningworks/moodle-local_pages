@@ -121,7 +121,10 @@ class pages_edit_product_form extends moodleform {
         $icons = [ "" => "" ];
         foreach (local_pages_get_fontawesome_icon_map() as $pix => $fa) {
             $text = preg_replace('/' . preg_quote('fa-', '/') . '/', '', $fa);
-            if (!in_array($text, $icons)) $icons[explode(":", $pix)[1]] = $text;
+            if (!in_array($text, $icons)) {
+                $items = explode(":", $pix);
+                $icons[$items[1]] = $text;
+            }
         }
         asort($icons);
         $mform->addElement('select', 'menuicon', get_string('menu_icon', 'local_pages'), $icons);
