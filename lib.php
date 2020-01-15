@@ -67,14 +67,18 @@ function local_pages_pluginfile($course, $birecordorcm, $context, $filearea, $ar
  *
  * @param navigation_node $nav
  * @param mixed $parent
+ * @param global_navigation $gnav
+ * @throws coding_exception
+ * @throws dml_exception
+ * @throws moodle_exception
  */
-function local_pages_build_menu(navigation_node $nav, $parent) {
+function local_pages_build_menu(navigation_node $nav, $parent, global_navigation $gnav) {
     global $DB;
     $today = date('U');
     $records = $DB->get_records_sql("SELECT * FROM {local_pages} WHERE deleted=0 AND onmenu=1 " .
         "AND pagetype='page' AND pageparent=? AND pagedate <=? " .
         "ORDER BY pageorder", array($parent, $today));
-    local_pages_process_records($records, $nav);
+    local_pages_process_records($records, $nav, false, $gnav);
 }
 
 /**
@@ -84,8 +88,12 @@ function local_pages_build_menu(navigation_node $nav, $parent) {
  * @param mixed $records
  * @param mixed $nav
  * @param bool $parent
+ * @param global_navigation $gnav
+ * @throws coding_exception
+ * @throws dml_exception
+ * @throws moodle_exception
  */
-function local_pages_process_records($records, $nav, $parent = false) {
+function local_pages_process_records($records, $nav, $parent = false, global_navigation $gnav) {
     global $CFG;
     if ($records) {
         foreach ($records as $page) {
@@ -110,15 +118,22 @@ function local_pages_process_records($records, $nav, $parent = false) {
                 if (get_config('local_pages', 'cleanurl_enabled') && trim($page->menuname) != '') {
                     $urllocation = new moodle_url($CFG->wwwroot . '/local/pages/' . $page->menuname);
                 }
-                $child = $nav->add(
-                    $page->pagename,
-                    $urllocation,
-                    navigation_node::TYPE_CONTAINER
-                );
-                if ($parent) {
-                    $child->set_parent($nav);
+                if (!$gnav->get('lpi' . $page->id)) {
+                    $child = $nav->add(
+                        $page->pagename,
+                        $urllocation,
+                        navigation_node::TYPE_CONTAINER,
+                        null,
+                        'lpi' . $page->id
+                    );
+                    $child->nodetype = 0;
+                    $child->showinflatnavigation = true;
+                    if ($parent) {
+                        $parent->nodetype = 1;
+                        $child->set_parent($parent);
+                    }
+                    local_pages_build_menu($child, $page->id, $gnav);
                 }
-                local_pages_build_menu($child, $page->id);
             }
         }
     }

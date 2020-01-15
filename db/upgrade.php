@@ -39,7 +39,7 @@ function xmldb_local_pages_upgrade($oldversion) {
     global $DB;
     $dbman = $DB->get_manager();
 
-    if ($oldversion < 2016092900) {
+    if ($oldversion < 2019011100) {
         $table = new xmldb_table('local_pages');
         $field = new xmldb_field('pagedate', XMLDB_TYPE_INTEGER, '10', null, null, null, '0');
 
@@ -116,7 +116,7 @@ function xmldb_local_pages_upgrade($oldversion) {
         }
 
         // Local pages savepoint reached.
-        upgrade_plugin_savepoint(true, 2018032004, 'local', 'pages');
+        upgrade_plugin_savepoint(true, 2019011100, 'local', 'pages');
     }
 
     return true;
