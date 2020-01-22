@@ -135,6 +135,11 @@ class pages_edit_product_form extends moodleform {
         $mform->addElement('select', 'onmenu', get_string('page_onmenu', 'local_pages'),
             array("1" => "Yes", "0" => "No"), 0);
 
+        $mform->addElement('advcheckbox', 'loginrequired', get_string('loginrequired', 'local_pages'));
+        $mform->addHelpButton('loginrequired', 'loginrequired', 'local_pages');
+        $mform->setType('loginrequired', PARAM_BOOL);
+        $mform->setDefault('loginrequired', false);
+
         $mform->addElement('text', 'accesslevel', get_string('page_accesslevel', 'local_pages'));
         $mform->addHelpButton('accesslevel', 'accesslevel_description', 'local_pages');
         $mform->setType('accesslevel', PARAM_TEXT);
@@ -171,8 +176,7 @@ class pages_edit_product_form extends moodleform {
      * @return mixed
      */
     public function validation($data, $files) {
-        $errors = parent::validation($data, $files);
-        return $errors;
+        return parent::validation($data, $files);
     }
 
     /**
