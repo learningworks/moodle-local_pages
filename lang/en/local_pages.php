@@ -29,6 +29,7 @@
 $string['pluginname'] = 'Pages';
 $string['pluginsettings'] = 'Settings';
 $string['pluginsettings_managepages'] = 'Manage pages';
+$string['pagesplugin'] = 'Pages plugin';
 
 // Other plugin strings.
 $string['pages_settings'] = 'Pages Settings';
