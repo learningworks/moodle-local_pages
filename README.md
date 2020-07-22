@@ -6,3 +6,5 @@ Pages can only be a type of page or form
 
 Pages created can be publicly accessed.
 To restrict access to a page, set the pages permissions to match that of a specific user type.
+
+-- Updated to make each page in the sidebar have an info icon next to it.
