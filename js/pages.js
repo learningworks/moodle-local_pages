@@ -120,22 +120,22 @@ require(["jquery"], function($) {
         $(newrow).appendTo(".formbuilderform");
         $(newrow).find("select").css({"display": "block"});
 
-        $(newrow).find("select").each(function () {
+        $(newrow).find("select").each(function() {
             $(this).val("");
             $(this).find('option:first-child').attr("selected", "selected");
         });
-        $(newrow).find("textarea").each(function () {
+        $(newrow).find("textarea").each(function() {
             $(this).val("");
         });
-        $(".form-removerow").click(function () {
+        $(".form-removerow").click(function() {
             $(this).closest(".formrow").remove();
         });
-        $(".form-addrow").click(function () {
+        $(".form-addrow").click(function() {
             $(this).unbind();
             addrow(this);
         });
 
-        $(newrow).find(".field-type").change(function () {
+        $(newrow).find(".field-type").change(function() {
             if ($(this).val() == "HTML") {
                 $(this).closest(".formrow").find(".field-name").animate({
                     "height": 100,
