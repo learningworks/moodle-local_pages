@@ -1,6 +1,6 @@
-require(["jquery"], function ($) {
-    $(function () {
-        $("#id_pagetype").change(function () {
+require(["jquery"], function($) {
+    $(function() {
+        $("#id_pagetype").change(function() {
             switch ($(this).val()) {
                 case "form":
                     $("#fitem_id_pagelayout").hide();
@@ -20,15 +20,15 @@ require(["jquery"], function ($) {
             }
         });
 
-        $(".form-addrow").click(function () {
+        $(".form-addrow").click(function() {
             addrow(this);
         });
 
-        $(".form-removerow").click(function () {
+        $(".form-removerow").click(function() {
             $(this).closest(".formrow").remove();
         });
 
-        $(".field-type").change(function () {
+        $(".field-type").change(function() {
             if ($(this).val() == "HTML") {
                 $(this).closest(".formrow").find(".field-name").animate({
                     "height": 100,
@@ -100,7 +100,7 @@ require(["jquery"], function ($) {
         $(".field-type").trigger("change");
         $("#id_pagetype").trigger("change");
 
-        $("#showform-builder").click(function (e) {
+        $("#showform-builder").click(function(e) {
             e.preventDefault();
             $(".formbuilderform").toggle("fast");
             $("#showEdit").toggle("fast");
