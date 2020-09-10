@@ -11,6 +11,7 @@
 				<FIELD NAME="pageorder" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false" />
 				<FIELD NAME="onmenu" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="0" SEQUENCE="false" />
 				<FIELD NAME="accesslevel" TYPE="text" NOTNULL="false"  SEQUENCE="false" />
+                <FIELD NAME="menuicon" TYPE="text" NOTNULL="false" SEQUENCE="false" />
 				<FIELD NAME="menuname" TYPE="text" NOTNULL="true" SEQUENCE="false" />
 				<FIELD NAME="pagedata" TYPE="text" NOTNULL="false" SEQUENCE="false" />
 				<FIELD NAME="pagetype" TYPE="text" NOTNULL="false" SEQUENCE="false" />

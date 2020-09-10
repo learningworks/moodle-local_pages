@@ -119,7 +119,7 @@ function xmldb_local_pages_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2019011100, 'local', 'pages');
     }
 
-    if ($oldversion < 2019102401) {
+    if ($oldversion < 2019102402) {
 
         // Define field menuicon to be added to local_pages.
         $table = new xmldb_table('local_pages');
@@ -131,7 +131,7 @@ function xmldb_local_pages_upgrade($oldversion) {
         }
 
         // Pages savepoint reached.
-        upgrade_plugin_savepoint(true, 2019102401, 'local', 'pages');
+        upgrade_plugin_savepoint(true, 2019102402, 'local', 'pages');
     }
 
     return true;
