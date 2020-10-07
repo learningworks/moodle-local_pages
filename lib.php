@@ -113,7 +113,8 @@ function local_pages_process_records($records, $nav, $parent = false) {
                 $child = $nav->add(
                     $page->pagename,
                     $urllocation,
-                    navigation_node::TYPE_CONTAINER
+                    navigation_node::TYPE_CONTAINER,
+                    new pix_icon('white-info-circle', $page->pagename, 'local_pages')
                 );
                 if ($parent) {
                     $child->set_parent($nav);
