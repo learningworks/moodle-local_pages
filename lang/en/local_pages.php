@@ -29,6 +29,7 @@
 $string['pluginname'] = 'Pages';
 $string['pluginsettings'] = 'Settings';
 $string['pluginsettings_managepages'] = 'Manage pages';
+$string['pagesplugin'] = 'Pages plugin';
 
 // Other plugin strings.
 $string['pages_settings'] = 'Pages Settings';
@@ -52,6 +53,8 @@ $string['pagelayout_name'] = 'Page Template';
 $string['form_field_id'] = "ID";
 $string['form_field_date'] = "Date";
 $string['form_field_content'] = "Form Details";
+$string['loginrequired'] = 'Login required';
+$string['loginrequired_help'] = 'Require user to be logged in to access this page<br>Note: if set, capabilities are always checked, regardless of this setting';
 $string['page_accesslevel'] = "Capability required";
 $string['noaccess'] = 'You do not have rights to view this page';
 $string['pagecontent_description_help'] = "Use #form# to add a form to the main page (Must choose a page type of 'page'). <br/>If the page type is a form, This area is the thank you message to display. You can use {form field name} to include form values in the thankyou message";

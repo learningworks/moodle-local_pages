@@ -119,5 +119,20 @@ function xmldb_local_pages_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2018032004, 'local', 'pages');
     }
 
+    if ($oldversion < 2018032005) {
+
+        // Define field loginrequired to be added to local_pages.
+        $table = new xmldb_table('local_pages');
+        $field = new xmldb_field('loginrequired', XMLDB_TYPE_INTEGER, '1', null, null, null, null, 'onmenu');
+
+        // Conditionally launch add field loginrequired.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Pages savepoint reached.
+        upgrade_plugin_savepoint(true, 2018032005, 'local', 'pages');
+    }
+
     return true;
 }

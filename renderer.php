@@ -128,24 +128,8 @@ class local_pages_renderer extends plugin_renderer_base {
      */
     public function showpage($page) {
         global $DB;
-        $context = context_system::instance();
-        $canaccess = true;
-        if (trim($page->accesslevel) != '') {
-            $canaccess = false;        // Page Has level Requirements - check rights.
-            $levels = explode(",", $page->accesslevel);
-            foreach ($levels as $key => $level) {
-                if ($canaccess != true) {
-                    if (stripos($level, "!") !== false) {
-                        $level = str_replace("!", "", $level);
-                        $canaccess = has_capability(trim($level), $context) ? false : true;
-                    } else {
-                        $canaccess = has_capability(trim($level), $context) ? true : false;
-                    }
-                }
-            }
-        }
 
-        if ($canaccess && ($page->pagedate <= date('U') || is_siteadmin())) {
+        if ($this->can_access_page($page) && ($page->pagedate <= date('U') || is_siteadmin())) {
             $today = date('U');
             $records = $DB->get_records_sql("SELECT * FROM {local_pages} WHERE deleted=0 AND pagetype <> 'page' " .
                 "AND pageparent=? AND pagedate <=? ORDER BY pageorder", array($page->id, $today));
@@ -446,6 +430,7 @@ class local_pages_renderer extends plugin_renderer_base {
             $recordpage->menuname = strtolower(str_replace(array(" ", "/", "\\", "'", '"', ";", "~",
                 "?", "&", "@", "#", "$", "%", "^", "*", "(", ")", "+", "="), "", trim($data->menuname)));
             $recordpage->onmenu = $data->onmenu;
+            $recordpage->loginrequired = $data->loginrequired;
             $recordpage->accesslevel = $data->accesslevel;
             $recordpage->pagedata = $data->pagedata;
             $recordpage->pagetype = $data->pagetype;
@@ -464,14 +449,15 @@ class local_pages_renderer extends plugin_renderer_base {
      *
      * Show the page information to edit
      *
-     * @param bool $page
+     * @param object $page
      */
-    public function edit_page($page = false) {
+    public function edit_page($page) {
         $mform = new pages_edit_product_form($page);
         $forform = new stdClass();
         $forform->pagecontent['text'] = $page->pagecontent;
         $forform->pagename = $page->pagename;
         $forform->onmenu = $page->onmenu;
+        $forform->loginrequired = $page->loginrequired;
         $forform->accesslevel = $page->accesslevel;
         $forform->pageparent = $page->pageparent;
         $forform->menuname = $page->menuname;
@@ -545,7 +531,7 @@ class local_pages_renderer extends plugin_renderer_base {
      */
     public function build_menu() {
         global $DB;
-        $context = context_system::instance();
+
         $dbman = $DB->get_manager();
         $html = '';
         if ($dbman->table_exists('local_pages')) {
@@ -553,28 +539,46 @@ class local_pages_renderer extends plugin_renderer_base {
             $today = date('U');
             $records = $DB->get_records_sql("SELECT * FROM {local_pages} WHERE deleted=0 AND onmenu=1 " .
                 "AND pagetype='page' AND pageparent=0 AND pagedate <= ? ORDER BY pageorder", array($today));
-            $canaccess = true;
             foreach ($records as $page) {
-                if (isset($page->accesslevel) && stripos($page->accesslevel, ":") !== false) {
-                    $canaccess = false;
-                    $levels = explode(",", $page->accesslevel);
-                    foreach ($levels as $key => $level) {
-                        if ($canaccess != true) {
-                            if (stripos($level, "!") !== false) {
-                                $level = str_replace("!", "", $level);
-                                $canaccess = has_capability(trim($level), $context) ? false : true;
-                            } else {
-                                $canaccess = has_capability(trim($level), $context) ? true : false;
-                            }
-                        }
-                    }
-                }
-                if ($canaccess) {
+                if ($this->can_access_page($page)) {
                     $html .= $this->get_menuitem($page->id, $page->pagename, $page->menuname);
                 }
             }
             $html .= "</ul>";
         }
         return $html;
+    }
+
+    /**
+     * Checks if user has access to provided page
+     *
+     * @param $page
+     * @return bool
+     * @throws coding_exception
+     * @throws dml_exception
+     */
+    private function can_access_page($page): bool
+    {
+        $context = context_system::instance();
+        $canaccess = true;
+
+        if (trim($page->accesslevel) != '' && stripos($page->accesslevel, ':') !== false) {
+            // Page Has level Requirements - check rights.
+            $canaccess = false;
+
+            $levels = explode(",", $page->accesslevel);
+            foreach ($levels as $key => $level) {
+                if ($canaccess != true) {
+                    if (stripos($level, "!") !== false) {
+                        $level = str_replace("!", "", $level);
+                        $canaccess = has_capability(trim($level), $context);
+                    } else {
+                        $canaccess = has_capability(trim($level), $context);
+                    }
+                }
+            }
+        }
+
+        return $canaccess;
     }
 }
