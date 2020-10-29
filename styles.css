@@ -199,3 +199,19 @@ body#page-local-pages-index span.required {
     display: block;
     float: left;
 }
+
+body#page-local-pages-index .fitem.has-error {
+    background: rgba(224, 176, 176, 0.3);
+    padding: 5px;
+}
+
+body#page-local-pages-index .help-block.error-item {
+    padding: 5px 0;
+    text-transform: uppercase;
+    color: #ff0000;
+    display: block;
+}
+
+body#page-local-pages-index .fitemtitle label {
+    text-transform: capitalize;
+}

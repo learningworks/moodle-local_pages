@@ -34,7 +34,8 @@ require_once($CFG->dirroot . '/local/pages/forms/edit.php');
  * @copyright   2017 LearningWorks Ltd
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class local_pages_renderer extends plugin_renderer_base {
+class local_pages_renderer extends plugin_renderer_base
+{
 
     /**
      * @var array
@@ -49,7 +50,8 @@ class local_pages_renderer extends plugin_renderer_base {
      * @param string $name
      * @return string
      */
-    public function get_submenuitem($parent, $name) {
+    public function get_submenuitem($parent, $name)
+    {
         global $DB, $CFG, $USER;
         $html = '';
         $records = $DB->get_records_sql("SELECT * FROM {local_pages} WHERE deleted=0 AND " .
@@ -59,13 +61,13 @@ class local_pages_renderer extends plugin_renderer_base {
             $html .= '<div class="pages-action">' .
                 '<a href="' . new moodle_url($CFG->wwwroot . '/local/pages/',
                     array('id' => $parent)) . '" class="custompages-edit">' .
-                    get_string('view', 'local_pages') .'</a> | ' .
+                get_string('view', 'local_pages') . '</a> | ' .
                 '<a href="' . new moodle_url($CFG->wwwroot . '/local/pages/edit.php',
                     array('id' => $parent)) . '" class="custompages-edit">' .
-                    get_string('edit', 'local_pages') . '</a> | ' .
+                get_string('edit', 'local_pages') . '</a> | ' .
                 '<a href="' . new moodle_url($CFG->wwwroot . '/local/pages/pages.php',
                     array('pagedel' => $parent, 'sesskey' => $USER->sesskey)) . '" class="custompages-delete">' .
-                    get_string('delete', 'local_pages') .' </a></div>';
+                get_string('delete', 'local_pages') . ' </a></div>';
             $html .= "<h4 class='custompages-title'>" . $name . "</h4>";
             $html .= "<ul class='custompages_submenu'>";
             foreach ($records as $page) {
@@ -78,13 +80,13 @@ class local_pages_renderer extends plugin_renderer_base {
             $html .= '<div class="pages-action">' .
                 '<a href="' . new moodle_url($CFG->wwwroot . '/local/pages/',
                     array('id' => $parent)) . '" class="custompages-edit">' .
-                    get_string('view', 'local_pages') .'</a> | ' .
+                get_string('view', 'local_pages') . '</a> | ' .
                 '<a href="' . new moodle_url($CFG->wwwroot . '/local/pages/edit.php',
                     array('id' => $parent)) . '" class="custompages-edit">' .
-                    get_string('edit', 'local_pages') .'</a> | ' .
+                get_string('edit', 'local_pages') . '</a> | ' .
                 '<a href="' . new moodle_url($CFG->wwwroot . '/local/pages/pages.php',
                     array('pagedel' => $parent, 'sesskey' => $USER->sesskey)) . '" class="custompages-delete">' .
-                    get_string('delete', 'local_pages') .' </a></div>';
+                get_string('delete', 'local_pages') . ' </a></div>';
             $html .= "<h4 class='custompages-title'>" . $name . "</h4>";
             $html .= "</li>";
         }
@@ -97,7 +99,8 @@ class local_pages_renderer extends plugin_renderer_base {
      *
      * @return string
      */
-    public function list_pages() {
+    public function list_pages()
+    {
         global $DB, $CFG;
         $html = '<ul class="custompages-list">';
         $records = $DB->get_records_sql("SELECT * FROM {local_pages} WHERE deleted=0 AND pageparent=0 ORDER BY pageorder");
@@ -125,7 +128,8 @@ class local_pages_renderer extends plugin_renderer_base {
      * @param mixed $page
      * @return mixed
      */
-    public function showpage($page) {
+    public function showpage($page)
+    {
         global $DB;
         $context = context_system::instance();
         $canaccess = true;
@@ -174,7 +178,8 @@ class local_pages_renderer extends plugin_renderer_base {
      * @param mixed $data
      * @return mixed
      */
-    public function adduserdata($data) {
+    public function adduserdata($data)
+    {
         global $USER, $DB;
         if (isloggedin()) {
             $usr = $USER;
@@ -196,7 +201,8 @@ class local_pages_renderer extends plugin_renderer_base {
      * @param mixed $data
      * @return string
      */
-    public function createform($data) {
+    public function createform($data)
+    {
         global $USER;
 
         // Setup required parameters.
@@ -239,8 +245,13 @@ class local_pages_renderer extends plugin_renderer_base {
             $record = $value->readsfrom;
             $tmpparam = str_replace(' ', '', $value->name);
             $tmpparam = optional_param($tmpparam, '', PARAM_RAW);
-            if ($value->type == "Text Area") {
+            if ($value->type == get_string('textarea', 'local_pages')) {
                 $str .= '<div class="form-group fitem ' . $errorclass . '">';
+
+                if (isset($this->error_fields[$value->name])) {
+                    $str .= '<span class="help-block error-item">' . $this->error_fields[$value->name] . '</span>';
+                }
+
                 $str .= '<div class="fitemtitle"><label for="' .
                     str_replace(" ", "", $value->name) . '">' . $value->name . '</label></div>';
                 $str .= '<div class="felement"><textarea class="form-control" name="' .
@@ -251,6 +262,9 @@ class local_pages_renderer extends plugin_renderer_base {
                     . '</textarea></div></div>';
             } else if (strtolower($value->type) == "checkbox") {
                 $str .= '<div class="checkbox ' . $errorclass . '">';
+                if (isset($this->error_fields[$value->name])) {
+                    $str .= '<span class="help-block error-item">' . $this->error_fields[$value->name] . '</span>';
+                }
                 $str .= '<label for="' . str_replace(" ", "", $value->name) . '">';
                 $str .= '<input name="' . str_replace(" ", "_", $value->name) . '" type="hidden" value="0"  id="' .
                     str_replace(" ", "", $value->name) . '" />';
@@ -261,12 +275,15 @@ class local_pages_renderer extends plugin_renderer_base {
                 $str .= $value->name . '</label></div>';
             } else {
                 if ($value->type == "HTML") {
-                    $str .= '<div class="form-break">' . $value->name ."</div>";
+                    $str .= '<div class="form-break">' . $value->name . "</div>";
                 } else if ($value->type == "Select") {
                     $str .= '<div class="form-group fitem fitem_fselect' . $errorclass . '">';
+                    if (isset($this->error_fields[$value->name])) {
+                        $str .= '<span class="help-block error-item">' . $this->error_fields[$value->name] . '</span>';
+                    }
                     $str .= '<div class="fitemtitle"><label for="' . str_replace(" ", "", $value->name) . '">' .
                         $value->name . '</label></div>';
-                    $str .= '<div class="felement fselect">'.
+                    $str .= '<div class="felement fselect">' .
                         '<select class="form-control" ' . ($value->required == "Yes" ? "Required" : '') .
                         ' name="' . str_replace(" ", "_", $value->name) . '" id="' .
                         str_replace(" ", "", $value->name) . '">';
@@ -283,6 +300,9 @@ class local_pages_renderer extends plugin_renderer_base {
                     $str .= '</select></div></div>';
                 } else {
                     $str .= '<div class="form-group fitem fitem_ftext ' . $errorclass . '">';
+                    if (isset($this->error_fields[$value->name])) {
+                        $str .= '<span class="help-block error-item">' . $this->error_fields[$value->name] . '</span>';
+                    }
                     $str .= '<div class="fitemtitle"><label for="' . str_replace(" ", "", $value->name) . '">' .
                         $value->name . '</label></div>';
                     $str .= '<div class="felement ftext"><input name="' . str_replace(" ", "_", $value->name) . '" type="' .
@@ -295,14 +315,10 @@ class local_pages_renderer extends plugin_renderer_base {
             }
         }
 
-        if (isset($this->error_fields[$value->name])) {
-            $str .= '<span class="help-block">' . $this->error_fields[$value->name] . '</span>';
-        }
-
         $str .= '<div class="fitem fitem_actionbuttons fitem_fgroup"><div class="felement fgroup">' .
             '<input type="text" name="hp" value="" style="position:absolute;left:-99999px" /> ' .
             '<button type="submit" name="formsubmit" value="1" class="btn btn-primary">' .
-            get_string("submit", "local_pages") .'</button>' .
+            get_string("submit", "local_pages") . '</button>' .
             '</div></div></form>';
         return $str;
     }
@@ -311,30 +327,31 @@ class local_pages_renderer extends plugin_renderer_base {
      *
      * Check if the form is valid
      *
-     * @param  mixed $records
+     * @param mixed $records
      * @return bool
      */
-    public function valid($records) {
+    public function valid($records)
+    {
         $valid = true;
         foreach ((array)$records as $key => $value) {
-            $tmpparam = str_replace(" ", "_", $value->name);
-            $tmpparam = optional_param($tmpparam, '', PARAM_RAW);
+            $tmpparam = trim(str_replace(" ", "_", $value->name));
+            $tmpparam = trim(optional_param($tmpparam, '', PARAM_RAW));
 
             if ($value->required == "Yes" && $value->type != "HTML") {
                 if ($value->type == "Email" && (stripos($tmpparam, "@") === false ||
                         stripos($tmpparam, ".") === false)
                 ) {
-                    $this->error_fields[$value->name] = "Please Supply a valid email address for " . $value->name;
+                    $this->error_fields[$value->name] = get_string('validemail', 'local_pages', ['value' => $value->name]);
                     $valid = false;
                 }
 
                 if ($value->type != 'Email' && $tmpparam == '') {
-                    $this->error_fields[$value->name] = "Please fill in " . $value->name;
+                    $this->error_fields[$value->name] = get_string('pleasefillin', 'local_pages', ['value' => $value->name]);
                     $valid = false;
                 }
 
                 if ($value->type == 'Numeric' && !is_numeric($tmpparam)) {
-                    $this->error_fields[$value->name] = "Please provide a number for " . $value->name;
+                    $this->error_fields[$value->name] = get_string('pleasefillinnumber', 'local_pages', ['value' => $value->name]);
                     $valid = false;
                 }
             }
@@ -348,7 +365,8 @@ class local_pages_renderer extends plugin_renderer_base {
      *
      * @param mixed $page
      */
-    public function processform($page) {
+    public function processform($page)
+    {
         global $DB;
         $touser = get_admin();
         $fromuser = clone $touser;
@@ -404,7 +422,8 @@ class local_pages_renderer extends plugin_renderer_base {
      *
      * @param bool $page
      */
-    public function save_page($page = false) {
+    public function save_page($page = false)
+    {
         global $CFG;
         $mform = new pages_edit_product_form($page);
         if ($mform->is_cancelled()) {
@@ -467,7 +486,8 @@ class local_pages_renderer extends plugin_renderer_base {
      *
      * @param bool $page
      */
-    public function edit_page($page = false) {
+    public function edit_page($page = false)
+    {
         $mform = new pages_edit_product_form($page);
         $forform = new stdClass();
         $forform->pagecontent['text'] = $page->pagecontent;
@@ -496,7 +516,8 @@ class local_pages_renderer extends plugin_renderer_base {
      * @param string $url
      * @return string
      */
-    public function get_menuitem($parent, $name, $url) {
+    public function get_menuitem($parent, $name, $url)
+    {
         global $DB, $CFG;
         $context = context_system::instance();
         $html = '';
@@ -545,7 +566,8 @@ class local_pages_renderer extends plugin_renderer_base {
      *
      * @return string
      */
-    public function build_menu() {
+    public function build_menu()
+    {
         global $DB;
         $context = context_system::instance();
         $dbman = $DB->get_manager();
