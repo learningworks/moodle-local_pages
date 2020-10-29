@@ -243,7 +243,7 @@ class pages_edit_product_form extends moodleform {
                 get_string('select_no', 'local_pages').'</option>' .
                 '</select></div>';
 
-            $html .= '<div class="col-sm-12 col-md-2 span2"><label>Type</label>' .
+            $html .= '<div class="col-sm-12 col-md-2 span2"><label>' . get_string('type', 'local_pages') . '</label>' .
                 '<select class="form-control field-type" name="fieldtype[]">' .
                 '<option value="Text" ' . (isset($records[$i]) &&
                 $records[$i]->type == get_string('text', 'local_pages') ? 'selected="selected"' : '') . ' >' .

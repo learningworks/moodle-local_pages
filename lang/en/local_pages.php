@@ -109,6 +109,7 @@ $string['no'] = "No";
 $string['backtolist'] = "Back to pages list";
 $string['page'] = 'Page';
 $string['form'] = 'Form';
+$string['type'] = 'Type';
 $string['email'] = "Email";
 $string['text'] = "Text";
 $string['number'] = "Number";
