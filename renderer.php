@@ -330,7 +330,7 @@ class local_pages_renderer extends plugin_renderer_base {
                 if ($value->type == get_string('email', 'local_pages') && (stripos($tmpparam, "@") === false ||
                         stripos($tmpparam, ".") === false)
                 ) {
-                    $this->error_fields[$value->name] = get_string('email', 'local_pages', ['email' => $value->name ]);
+                    $this->error_fields[$value->name] = get_string('validemail', 'local_pages', ['email' => $value->name ]);
                     $valid = false;
                 }
 
