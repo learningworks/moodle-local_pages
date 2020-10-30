@@ -116,7 +116,7 @@ $string['type'] = 'Type';
 $string['cachedef_sent'] = '';
 
 $string['numeric'] = "Numeric";
-$string['validemail'] = 'Please supply a valid email address for {$a->value}';
-$string['pleasefillin'] = 'Please fill in {$a->value}';
-$string['pleasefillinnumber'] = 'Please give a number for {$a->value}';
+$string['validemail'] = 'Please supply a valid email address for {$a}';
+$string['pleasefillin'] = 'Please fill in {$a}';
+$string['pleasefillinnumber'] = 'Please give a number for {$a}';
 $string['textarea'] = 'Text Area';

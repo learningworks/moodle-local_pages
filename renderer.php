@@ -341,17 +341,17 @@ class local_pages_renderer extends plugin_renderer_base
                 if ($value->type == "Email" && (stripos($tmpparam, "@") === false ||
                         stripos($tmpparam, ".") === false)
                 ) {
-                    $this->error_fields[$value->name] = get_string('validemail', 'local_pages', ['value' => $value->name]);
+                    $this->error_fields[$value->name] = get_string('validemail', 'local_pages', $value->name);
                     $valid = false;
                 }
 
                 if ($value->type != 'Email' && $tmpparam == '') {
-                    $this->error_fields[$value->name] = get_string('pleasefillin', 'local_pages', ['value' => $value->name]);
+                    $this->error_fields[$value->name] = get_string('pleasefillin', 'local_pages', $value->name);
                     $valid = false;
                 }
 
                 if ($value->type == 'Numeric' && !is_numeric($tmpparam)) {
-                    $this->error_fields[$value->name] = get_string('pleasefillinnumber', 'local_pages', ['value' => $value->name]);
+                    $this->error_fields[$value->name] = get_string('pleasefillinnumber', 'local_pages', $value->name);
                     $valid = false;
                 }
             }
