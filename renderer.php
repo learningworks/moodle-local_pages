@@ -240,34 +240,38 @@ class local_pages_renderer extends plugin_renderer_base {
             $record = $value->readsfrom;
             $tmpparam = str_replace(' ', '', $value->name);
             $tmpparam = optional_param($tmpparam, '', PARAM_RAW);
-            if ($value->type == "Text Area") {
+            if ($value->type == get_string('textarea', 'local_pages')) {
                 $str .= '<div class="form-group fitem ' . $errorclass . '">';
                 $str .= '<div class="fitemtitle"><label for="' .
                     str_replace(" ", "", $value->name) . '">' . $value->name . '</label></div>';
-                $str .= '<div class="felement"><textarea class="form-control" name="' .
+                $str .= '<div class="felement">' .
+                    ($value->required == "Yes" ? "<span class='required'>*</span>" : '') .
+                    '<textarea class="form-control" name="' .
                     str_replace(" ", "_", $value->name) . '" id="' .
                     str_replace(" ", "", $value->name) . '" ' . ($value->required == "Yes" ? "Required" : '') .
                     ' placeholder="' . $value->defaultvalue . '">' .
                     ($tmpparam != '' ? $tmpparam : (isset($USER->$record) ? $USER->$record : ''))
                     . '</textarea></div></div>';
-            } else if (strtolower($value->type) == "checkbox") {
-                $str .= '<div class="checkbox ' . $errorclass . '">';
-                $str .= '<label for="' . str_replace(" ", "", $value->name) . '">';
-                $str .= '<input name="' . str_replace(" ", "_", $value->name) . '" type="hidden" value="0"  id="' .
-                    str_replace(" ", "", $value->name) . '" />';
+            } else if ($value->type == get_string('checkbox', 'local_pages')) {
+                $str .= '<div class="form-group fitem ' . $errorclass . '">';
+                $str .= '<div class="fitemtitle"><label for="' . str_replace(" ", "", $value->name) .
+                    '">' . $value->name . '</label></div>';
+                $str .= '<div class="felement">';
+                $str .= ($value->required == "Yes" ? "<span class='required'>*</span>" : '');
                 $str .= '<input name="' . str_replace(" ", "_", $value->name) . '" type="' .
                     strtolower($value->type) . '" value="' . $tmpparam . '" id="' .
                     str_replace(" ", "", $value->name) . '" ' . ($value->required == "Yes" ? "Required" : '') .
                     ' placeholder="' . $value->defaultvalue . '" />';
-                $str .= $value->name . '</label></div>';
+                $str .= '</div></div>';
             } else {
-                if ($value->type == "HTML") {
+                if ($value->type == get_string('html', 'local_pages')) {
                     $str .= '<div class="form-break">' . $value->name ."</div>";
                 } else if ($value->type == "Select") {
                     $str .= '<div class="form-group fitem fitem_fselect' . $errorclass . '">';
                     $str .= '<div class="fitemtitle"><label for="' . str_replace(" ", "", $value->name) . '">' .
                         $value->name . '</label></div>';
-                    $str .= '<div class="felement fselect">'.
+                    $str .= '<div class="felement fselect">' .
+                        ($value->required == "Yes" ? "<span class='required'>*</span>" : '') .
                         '<select class="form-control" ' . ($value->required == "Yes" ? "Required" : '') .
                         ' name="' . str_replace(" ", "_", $value->name) . '" id="' .
                         str_replace(" ", "", $value->name) . '">';
@@ -286,7 +290,9 @@ class local_pages_renderer extends plugin_renderer_base {
                     $str .= '<div class="form-group fitem fitem_ftext ' . $errorclass . '">';
                     $str .= '<div class="fitemtitle"><label for="' . str_replace(" ", "", $value->name) . '">' .
                         $value->name . '</label></div>';
-                    $str .= '<div class="felement ftext"><input name="' . str_replace(" ", "_", $value->name) . '" type="' .
+                    $str .= '<div class="felement ftext">' .
+                        ($value->required == "Yes" ? "<span class='required'>*</span>" : '') .
+                        '<input name="' . str_replace(" ", "_", $value->name) . '" type="' .
                         strtolower($value->type) . '" value="' .
                         ($tmpparam != '' ? $tmpparam : (isset($USER->$record) ? $USER->$record : ''))
                         . '" placeholder="' . $value->defaultvalue .
@@ -320,22 +326,21 @@ class local_pages_renderer extends plugin_renderer_base {
         foreach ((array)$records as $key => $value) {
             $tmpparam = str_replace(" ", "_", $value->name);
             $tmpparam = optional_param($tmpparam, '', PARAM_RAW);
-
-            if ($value->required == "Yes" && $value->type != "HTML") {
-                if ($value->type == "Email" && (stripos($tmpparam, "@") === false ||
+            if ($value->required == "Yes" && $value->type != get_string('html', 'local_pages')) {
+                if ($value->type == get_string('email', 'local_pages') && (stripos($tmpparam, "@") === false ||
                         stripos($tmpparam, ".") === false)
                 ) {
-                    $this->error_fields[$value->name] = "Please Supply a valid email address for " . $value->name;
+                    $this->error_fields[$value->name] = get_string('validemail', 'local_pages', $value->name);
                     $valid = false;
                 }
 
-                if ($value->type != 'Email' && $tmpparam == '') {
-                    $this->error_fields[$value->name] = "Please fill in " . $value->name;
+                if ($value->type != get_string('email', 'local_pages') && $tmpparam == '') {
+                    $this->error_fields[$value->name] = get_string('pleasefillin', 'local_pages', $value->name);
                     $valid = false;
                 }
 
-                if ($value->type == 'Numeric' && !is_numeric($tmpparam)) {
-                    $this->error_fields[$value->name] = "Please provide a number for " . $value->name;
+                if ($value->type == get_string('numeric', 'local_pages') && !is_numeric($tmpparam)) {
+                    $this->error_fields[$value->name] = get_string('pleasefillinnumber', 'local_pages', $value->name);
                     $valid = false;
                 }
             }
@@ -362,7 +367,7 @@ class local_pages_renderer extends plugin_renderer_base {
         $records = json_decode($page->pagedata);
         $outarray = array();
         foreach ((array)$records as $key => $value) {
-            if ($value->type != "HTML") {
+            if ($value->type != get_string('html', 'local_pages')) {
                 $outarray[] = "{" . $value->name . "}";
 
                 $tmpparam = str_replace(" ", "_", $value->name);

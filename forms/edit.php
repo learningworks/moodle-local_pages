@@ -243,29 +243,28 @@ class pages_edit_product_form extends moodleform {
                 get_string('select_no', 'local_pages').'</option>' .
                 '</select></div>';
 
-            $html .= '<div class="col-sm-12 col-md-2 span2"><label>' .
-                get_string('type', 'local_pages') . '</label>' .
+            $html .= '<div class="col-sm-12 col-md-2 span2"><label>' . get_string('type', 'local_pages') . '</label>' .
                 '<select class="form-control field-type" name="fieldtype[]">' .
                 '<option value="Text" ' . (isset($records[$i]) &&
-                $records[$i]->type == 'Text' ? 'selected="selected"' : '') . ' >' .
+                $records[$i]->type == get_string('text', 'local_pages') ? 'selected="selected"' : '') . ' >' .
                 get_string('select_text', 'local_pages') . '</option>' .
                 '<option value="Email" ' . (isset($records[$i]) &&
-                $records[$i]->type == 'Email' ? 'selected="selected"' : '') . ' >' .
+                $records[$i]->type == get_string('email', 'local_pages') ? 'selected="selected"' : '') . ' >' .
                 get_string('select_email', 'local_pages') . '</option>' .
                 '<option value="Number" ' . (isset($records[$i]) &&
-                $records[$i]->type == 'Number' ? 'selected="selected"' : '') . '  >' .
+                $records[$i]->type == get_string('number', 'local_pages') ? 'selected="selected"' : '') . '  >' .
                 get_string('select_number', 'local_pages')  . '</option>' .
                 '<option value="Checkbox" ' . (isset($records[$i]) &&
-                $records[$i]->type == 'Checkbox' ? 'selected="selected"' : '') . ' >' .
+                $records[$i]->type == get_string('checkbox', 'local_pages') ? 'selected="selected"' : '') . ' >' .
                 get_string('select_checkbox', 'local_pages') . '</option>' .
                 '<option value="Text Area"' . (isset($records[$i]) &&
-                $records[$i]->type == 'Text Area' ? 'selected="selected"' : '') . ' >' .
+                $records[$i]->type == get_string('textarea', 'local_pages') ? 'selected="selected"' : '') . ' >' .
                 get_string('select_text_area', 'local_pages') . '</option>' .
                 '<option value="Select" ' . (isset($records[$i]) &&
-                $records[$i]->type == 'Select' ? 'selected="selected"' : '') . ' >' .
+                $records[$i]->type == get_string('select', 'local_pages') ? 'selected="selected"' : '') . ' >' .
                 get_string('select_select', 'local_pages') . '</option>' .
                 '<option value="HTML" ' . (isset($records[$i]) &&
-                $records[$i]->type == 'HTML' ? 'selected="selected"' : '') . ' >' .
+                $records[$i]->type == get_string('html', 'local_pages') ? 'selected="selected"' : '') . ' >' .
                 get_string('select_html', 'local_pages') . '</option>' .
                 '</select></div>';
 
