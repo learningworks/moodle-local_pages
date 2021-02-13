@@ -71,6 +71,10 @@ class pages_edit_product_form extends moodleform {
             'local_pages', 'pagecontent', 0, array('subdirs' => true), $defaults->pagecontent['text']);
         $defaults->pagecontent['itemid'] = $draftideditor;
         $defaults->pagecontent['format'] = FORMAT_HTML;
+
+        $options = array('maxbytes' => 204800, 'maxfiles' => 1, 'accepted_types' => ['jpg, png']);
+        $defaults->ogimage = file_prepare_standard_filemanager($defaults, 'ogimage', $options, $context, 'local_pages', 'ogimage', $defaults->id);
+
         return parent::set_data($defaults);
     }
 
@@ -105,6 +109,9 @@ class pages_edit_product_form extends moodleform {
 
         $mform = $this->_form;
 
+        // PAGE DETAILS
+        $mform->addElement('header', 'details', get_string('edit_details', 'local_pages'));
+
         $mform->addElement(
             'date_selector', 'pagedate',
             get_string(
@@ -117,6 +124,15 @@ class pages_edit_product_form extends moodleform {
 
         $mform->addElement('text', 'pagename', get_string('page_name', 'local_pages'));
         $mform->setType('pagename', PARAM_TEXT);
+
+        $mform->addElement('text', 'accesslevel', get_string('page_accesslevel', 'local_pages'));
+        $mform->addHelpButton('accesslevel', 'accesslevel_description', 'local_pages');
+        $mform->setType('accesslevel', PARAM_TEXT);
+
+        // NAVIGATION CONTROLS
+        $mform->addElement('header', 'menuitems', "Navigation");
+        $mform->addElement('select', 'onmenu', get_string('page_onmenu', 'local_pages'),
+            array("1" => get_string("yes", "local_pages"), "0" => get_string("no", "local_pages")), 0);
 
         $icons = [ "" => "" ];
         foreach (local_pages_get_fontawesome_icon_map() as $pix => $fa) {
@@ -134,28 +150,33 @@ class pages_edit_product_form extends moodleform {
         $mform->addElement('text', 'menuname', get_string('menu_name', 'local_pages'));
         $mform->setType('menuname', PARAM_TEXT);
 
-        $mform->addElement('text', 'emailto', get_string('emailto_name', 'local_pages'));
-        $mform->setType('emailto', PARAM_TEXT);
+        // HEAD CONTENT
+        $mform->addElement('header', 'htmlhead', "HTML head");
+        if(get_config('local_pages', 'additionalhead')) {
+            $mform->addElement('textarea', 'meta', get_string('edit_head', 'local_pages'));
+            $mform->setType('meta', PARAM_RAW);
+        }
+
+        $options = array('subdirs' => 0, 'maxbytes' => 204800, 'maxfiles' => 1, 'accepted_types' => ['jpg', 'jpeg', 'png', 'svg', 'webp']);
+        $mform->addElement('filemanager', 'ogimage_filemanager', get_string('edit_ogimage', 'local_pages'), null, $options);
+
+        // PAGE DISPLAY
+        $mform->addElement('header', 'htmlbody', "Page Display");
 
         $mform->addElement('select', 'pagelayout', get_string('pagelayout_name', 'local_pages'), $layouts);
-
         $mform->getElement('pagelayout')->setSelected('standard');
+
+        $mform->addElement('select', 'pageparent', get_string('page_parent', 'local_pages'), $pages);
 
         $mform->addElement('text', 'pageorder', get_string('page_order', 'local_pages'));
         $mform->setType('pageorder', PARAM_INT);
 
-        $mform->addElement('select', 'pageparent', get_string('page_parent', 'local_pages'), $pages);
-
-        $mform->addElement('select', 'onmenu', get_string('page_onmenu', 'local_pages'),
-            array("1" => get_string("yes", "local_pages"), "0" => get_string("no", "local_pages")), 0);
-
-        $mform->addElement('text', 'accesslevel', get_string('page_accesslevel', 'local_pages'));
-        $mform->addHelpButton('accesslevel', 'accesslevel_description', 'local_pages');
-        $mform->setType('accesslevel', PARAM_TEXT);
-
         $mform->addElement('select', 'pagetype', get_string('page_pagetype', 'local_pages'),
             array("page" => get_string("page", "local_pages"),
                 "form" => get_string("form", "local_pages")), 'page');
+
+        $mform->addElement('text', 'emailto', get_string('emailto_name', 'local_pages'));
+        $mform->setType('emailto', PARAM_TEXT);
 
         $context = context_system::instance();
         $editoroptions = array('maxfiles' => EDITOR_UNLIMITED_FILES, 'noclean' => true, 'context' => $context);

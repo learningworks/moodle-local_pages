@@ -461,6 +461,7 @@ class local_pages_renderer extends plugin_renderer_base
             $recordpage->id = $data->id;
             $recordpage->pagedate = $data->pagedate;
             $recordpage->pagename = $data->pagename;
+            $recordpage->meta = $data->meta;
             $recordpage->menuicon = $data->menuicon;
             $recordpage->pageorder = intval($data->pageorder);
             $recordpage->menuname = strtolower(str_replace(array(" ", "/", "\\", "'", '"', ";", "~",
@@ -475,6 +476,10 @@ class local_pages_renderer extends plugin_renderer_base
             $recordpage->pagecontent = $data->pagecontent['text'];
             $result = $page->update($recordpage);
             if ($result && $result > 0) {
+                $options = array('subdirs' => 0, 'maxbytes' => 204800, 'maxfiles' => 1, 'accepted_types' => '*');
+                if(isset($data->ogimage_filemanager)) {
+                    file_postupdate_standard_filemanager($data, 'ogimage', $options, $context, 'local_pages', 'ogimage', $result);
+                }
                 redirect(new moodle_url($CFG->wwwroot . '/local/pages/edit.php', array('id' => $result)));
             }
         }
@@ -492,6 +497,7 @@ class local_pages_renderer extends plugin_renderer_base
         $forform = new stdClass();
         $forform->pagecontent['text'] = $page->pagecontent;
         $forform->pagename = $page->pagename;
+        $forform->meta = $page->meta;
         $forform->onmenu = $page->onmenu;
         $forform->accesslevel = $page->accesslevel;
         $forform->pageparent = $page->pageparent;

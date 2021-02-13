@@ -134,5 +134,18 @@ function xmldb_local_pages_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2019102402, 'local', 'pages');
     }
 
+    if ($oldversion < 2021021200) {
+        // Define field meta to be added to local_pages.
+
+        $table = new xmldb_table('local_pages');
+        $field = new xmldb_field('meta', XMLDB_TYPE_TEXT, null, null, null, null, null, 'pagename');
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        upgrade_plugin_savepoint(true, 2021021200, 'local', 'pages');
+    }
+
+
     return true;
 }
