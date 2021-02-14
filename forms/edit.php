@@ -152,7 +152,7 @@ class pages_edit_product_form extends moodleform {
 
         // HEAD CONTENT
         $mform->addElement('header', 'htmlhead', "HTML head");
-        if(get_config('local_pages', 'additionalhead')) {
+        if (get_config('local_pages', 'additionalhead')) {
             $mform->addElement('textarea', 'meta', get_string('edit_head', 'local_pages'));
             $mform->setType('meta', PARAM_RAW);
         }

@@ -60,7 +60,7 @@ function local_pages_pluginfile($course, $birecordorcm, $context, $filearea, $ar
     } else if ($filearea === 'ogimage') {
         $itemid = array_pop($args);
         $file = $fs->get_file($context->id, 'local_pages', $filearea, $itemid, '/', $filename);
-        // todo: maybe put in fall back image
+        // Todo: Maybe put in fall back image.
     }
 
     \core\session\manager::write_close();
@@ -537,7 +537,7 @@ function local_pages_get_fontawesome_icon_map() {
 function local_pages_before_standard_html_head() {
     global $CFG, $DB, $PAGE, $SITE;
 
-    if($PAGE->pagetype !== 'local-pages-index') {
+    if ($PAGE->pagetype !== 'local-pages-index') {
         return;
     }
 
@@ -545,12 +545,12 @@ function local_pages_before_standard_html_head() {
     $custompage     = \local_pages\custompage::load($pageid);
     $output = get_config('local_pages', 'additionalhead') ? $custompage->meta : '';
 
-    $query = "SELECT * FROM {files} 
+    $query = "SELECT * FROM {files}
               WHERE component = 'local_pages'
               AND filearea = 'ogimage'
               AND itemid = ?
               AND filesize > 0";
-    if($filerecord = $DB->get_record_sql($query, [$pageid])){
+    if ($filerecord = $DB->get_record_sql($query, [$pageid])){
         $src = $CFG->wwwroot . '/pluginfile.php/1/local_pages/ogimage/' . $custompage->id . '/' . $filerecord->filename;
         $output .= "\n" . '    <meta property="og:image" content="' . $src . '" />';
     }

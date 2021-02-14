@@ -146,6 +146,5 @@ function xmldb_local_pages_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2021021200, 'local', 'pages');
     }
 
-
     return true;
 }
