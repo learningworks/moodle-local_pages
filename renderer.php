@@ -325,8 +325,7 @@ class local_pages_renderer extends plugin_renderer_base
      * @param mixed $records
      * @return bool
      */
-    public function valid($records)
-    {
+    public function valid($records) {
         $valid = true;
         foreach ((array)$records as $key => $value) {
             $tmpparam = trim(str_replace(" ", "_", $value->name));
@@ -360,8 +359,7 @@ class local_pages_renderer extends plugin_renderer_base
      *
      * @param mixed $page
      */
-    public function processform($page)
-    {
+    public function processform($page) {
         global $DB;
         $touser = get_admin();
         $fromuser = clone $touser;
@@ -471,7 +469,7 @@ class local_pages_renderer extends plugin_renderer_base
             $result = $page->update($recordpage);
             if ($result && $result > 0) {
                 $options = array('subdirs' => 0, 'maxbytes' => 204800, 'maxfiles' => 1, 'accepted_types' => '*');
-                if(isset($data->ogimage_filemanager)) {
+                if (isset($data->ogimage_filemanager)) {
                     file_postupdate_standard_filemanager($data, 'ogimage', $options, $context, 'local_pages', 'ogimage', $result);
                 }
                 redirect(new moodle_url($CFG->wwwroot . '/local/pages/edit.php', array('id' => $result)));
