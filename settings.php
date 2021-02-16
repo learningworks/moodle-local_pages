@@ -47,6 +47,14 @@ if ($hassiteconfig) {
         0
     );
 
+    // Setting to show text box for HTML head on edit page and contents on view page.
+    $settings[] = new \admin_setting_configcheckbox(
+        'local_pages/additionalhead',
+        get_string('setting_additionalhead', 'local_pages'),
+        get_string('setting_additionalhead_description', 'local_pages'),
+        0
+    );
+
     // Setting to copy a message to the user that fills out a form.
     $settings[] = new \admin_setting_configcheckbox(
         'local_pages/user_copy',

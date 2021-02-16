@@ -4,6 +4,7 @@
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" />
                 <FIELD NAME="pagename" TYPE="text" NOTNULL="true" SEQUENCE="false" />
+                <FIELD NAME="meta" TYPE="text" NOTNULL="false" SEQUENCE="false" />
                 <FIELD NAME="pagecontent" TYPE="text" LENGTH="1" NOTNULL="false" SEQUENCE="false" />
                 <FIELD NAME="pageparent" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false" />
 				<FIELD NAME="deleted" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="0" SEQUENCE="false" />

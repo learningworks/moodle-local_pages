@@ -50,8 +50,7 @@ class local_pages_renderer extends plugin_renderer_base
      * @param string $name
      * @return string
      */
-    public function get_submenuitem($parent, $name)
-    {
+    public function get_submenuitem($parent, $name) {
         global $DB, $CFG, $USER;
         $html = '';
         $records = $DB->get_records_sql("SELECT * FROM {local_pages} WHERE deleted=0 AND " .
@@ -99,8 +98,7 @@ class local_pages_renderer extends plugin_renderer_base
      *
      * @return string
      */
-    public function list_pages()
-    {
+    public function list_pages() {
         global $DB, $CFG;
         $html = '<ul class="custompages-list">';
         $records = $DB->get_records_sql("SELECT * FROM {local_pages} WHERE deleted=0 AND pageparent=0 ORDER BY pageorder");
@@ -128,8 +126,7 @@ class local_pages_renderer extends plugin_renderer_base
      * @param mixed $page
      * @return mixed
      */
-    public function showpage($page)
-    {
+    public function showpage($page) {
         global $DB;
         $context = context_system::instance();
         $canaccess = true;
@@ -178,8 +175,7 @@ class local_pages_renderer extends plugin_renderer_base
      * @param mixed $data
      * @return mixed
      */
-    public function adduserdata($data)
-    {
+    public function adduserdata($data) {
         global $USER, $DB;
         if (isloggedin()) {
             $usr = $USER;
@@ -201,8 +197,7 @@ class local_pages_renderer extends plugin_renderer_base
      * @param mixed $data
      * @return string
      */
-    public function createform($data)
-    {
+    public function createform($data) {
         global $USER;
 
         // Setup required parameters.
@@ -330,8 +325,7 @@ class local_pages_renderer extends plugin_renderer_base
      * @param mixed $records
      * @return bool
      */
-    public function valid($records)
-    {
+    public function valid($records) {
         $valid = true;
         foreach ((array)$records as $key => $value) {
             $tmpparam = trim(str_replace(" ", "_", $value->name));
@@ -365,8 +359,7 @@ class local_pages_renderer extends plugin_renderer_base
      *
      * @param mixed $page
      */
-    public function processform($page)
-    {
+    public function processform($page) {
         global $DB;
         $touser = get_admin();
         $fromuser = clone $touser;
@@ -422,8 +415,7 @@ class local_pages_renderer extends plugin_renderer_base
      *
      * @param bool $page
      */
-    public function save_page($page = false)
-    {
+    public function save_page($page = false) {
         global $CFG;
         $mform = new pages_edit_product_form($page);
         if ($mform->is_cancelled()) {
@@ -461,6 +453,9 @@ class local_pages_renderer extends plugin_renderer_base
             $recordpage->id = $data->id;
             $recordpage->pagedate = $data->pagedate;
             $recordpage->pagename = $data->pagename;
+            if (get_config('local_pages', 'additionalhead')) {
+                $recordpage->meta = $data->meta;
+            }
             $recordpage->menuicon = $data->menuicon;
             $recordpage->pageorder = intval($data->pageorder);
             $recordpage->menuname = strtolower(str_replace(array(" ", "/", "\\", "'", '"', ";", "~",
@@ -475,6 +470,10 @@ class local_pages_renderer extends plugin_renderer_base
             $recordpage->pagecontent = $data->pagecontent['text'];
             $result = $page->update($recordpage);
             if ($result && $result > 0) {
+                $options = array('subdirs' => 0, 'maxbytes' => 204800, 'maxfiles' => 1, 'accepted_types' => '*');
+                if (isset($data->ogimage_filemanager)) {
+                    file_postupdate_standard_filemanager($data, 'ogimage', $options, $context, 'local_pages', 'ogimage', $result);
+                }
                 redirect(new moodle_url($CFG->wwwroot . '/local/pages/edit.php', array('id' => $result)));
             }
         }
@@ -486,12 +485,12 @@ class local_pages_renderer extends plugin_renderer_base
      *
      * @param bool $page
      */
-    public function edit_page($page = false)
-    {
+    public function edit_page($page = false) {
         $mform = new pages_edit_product_form($page);
         $forform = new stdClass();
         $forform->pagecontent['text'] = $page->pagecontent;
         $forform->pagename = $page->pagename;
+        $forform->meta = $page->meta;
         $forform->onmenu = $page->onmenu;
         $forform->accesslevel = $page->accesslevel;
         $forform->pageparent = $page->pageparent;
@@ -516,8 +515,7 @@ class local_pages_renderer extends plugin_renderer_base
      * @param string $url
      * @return string
      */
-    public function get_menuitem($parent, $name, $url)
-    {
+    public function get_menuitem($parent, $name, $url) {
         global $DB, $CFG;
         $context = context_system::instance();
         $html = '';
@@ -566,8 +564,7 @@ class local_pages_renderer extends plugin_renderer_base
      *
      * @return string
      */
-    public function build_menu()
-    {
+    public function build_menu() {
         global $DB;
         $context = context_system::instance();
         $dbman = $DB->get_manager();

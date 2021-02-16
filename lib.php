@@ -53,8 +53,14 @@ function local_pages_pluginfile($course, $birecordorcm, $context, $filearea, $ar
     $filename = array_pop($args);
     $filepath = $args ? '/' . implode('/', $args) . '/' : '/';
 
-    if (!$file = $fs->get_file($context->id, 'local_pages', 'pagecontent', 0, $filepath, $filename) or $file->is_directory()) {
-        send_file_not_found();
+    if ($filearea === 'pagecontent') {
+        if (!$file = $fs->get_file($context->id, 'local_pages', 'pagecontent', 0, $filepath, $filename) or $file->is_directory()) {
+            send_file_not_found();
+        }
+    } else if ($filearea === 'ogimage') {
+        $itemid = array_pop($args);
+        $file = $fs->get_file($context->id, 'local_pages', $filearea, $itemid, '/', $filename);
+        // Todo: Maybe put in fall back image.
     }
 
     \core\session\manager::write_close();
@@ -526,4 +532,34 @@ function local_pages_get_fontawesome_icon_map() {
         'local_pages:t/user' => 'fa-user',
         'local_pages:t/viewdetails' => 'fa-list',
     ];
+}
+
+function local_pages_before_standard_html_head() {
+    global $CFG, $DB, $PAGE, $SITE;
+
+    if ($PAGE->pagetype !== 'local-pages-index') {
+        return;
+    }
+
+    $pageid = optional_param('id', 0, PARAM_INT);
+    $custompage     = \local_pages\custompage::load($pageid);
+    $output = get_config('local_pages', 'additionalhead') ? $custompage->meta : '';
+
+    $query = "SELECT * FROM {files}
+              WHERE component = 'local_pages'
+              AND filearea = 'ogimage'
+              AND itemid = ?
+              AND filesize > 0";
+    if ($filerecord = $DB->get_record_sql($query, [$custompage->id])) {
+        $src = $CFG->wwwroot . '/pluginfile.php/1/local_pages/ogimage/' . $custompage->id . '/' . $filerecord->filename;
+        $output .= "\n" . '    <meta property="og:image" content="' . $src . '" />';
+    }
+
+    $output .= "\n" . '    <meta property="og:site_name" content="' . $SITE->fullname . '" />';
+    $output .= "\n" . '    <meta property="og:type" content="website" />';
+    $output .= "\n" . '    <meta property="og:title" content="' . $PAGE->title . '" />';
+    $output .= "\n" . '    <meta property="og:url" content="' . $PAGE->url . '" />';
+
+    return $output;
+
 }
