@@ -453,7 +453,9 @@ class local_pages_renderer extends plugin_renderer_base
             $recordpage->id = $data->id;
             $recordpage->pagedate = $data->pagedate;
             $recordpage->pagename = $data->pagename;
-            $recordpage->meta = $data->meta;
+            if (get_config('local_pages', 'additionalhead')) {
+                $recordpage->meta = $data->meta;
+            }
             $recordpage->menuicon = $data->menuicon;
             $recordpage->pageorder = intval($data->pageorder);
             $recordpage->menuname = strtolower(str_replace(array(" ", "/", "\\", "'", '"', ";", "~",

@@ -550,7 +550,7 @@ function local_pages_before_standard_html_head() {
               AND filearea = 'ogimage'
               AND itemid = ?
               AND filesize > 0";
-    if ($filerecord = $DB->get_record_sql($query, [$pageid])) {
+    if ($filerecord = $DB->get_record_sql($query, [$custompage->id])) {
         $src = $CFG->wwwroot . '/pluginfile.php/1/local_pages/ogimage/' . $custompage->id . '/' . $filerecord->filename;
         $output .= "\n" . '    <meta property="og:image" content="' . $src . '" />';
     }
