@@ -555,10 +555,20 @@ function local_pages_before_standard_html_head() {
         $output .= "\n" . '    <meta property="og:image" content="' . $src . '" />';
     }
 
+    $url = new moodle_url($PAGE->url);
+    $url->remove_all_params();
+
+    if(get_config('local_pages', 'cleanurl_enabled') && $pageid === 0){
+        $url =  str_replace('index.php','', $url->out());
+        $url .= $custompage->menuname;
+    } else {
+        $url = $url->out() . '?id='. $custompage->id;
+    }
+
     $output .= "\n" . '    <meta property="og:site_name" content="' . $SITE->fullname . '" />';
     $output .= "\n" . '    <meta property="og:type" content="website" />';
     $output .= "\n" . '    <meta property="og:title" content="' . $PAGE->title . '" />';
-    $output .= "\n" . '    <meta property="og:url" content="' . $PAGE->url . '" />';
+    $output .= "\n" . '    <meta property="og:url" content="' . $url . '" />';
 
     return $output;
 
