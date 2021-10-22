@@ -37,9 +37,8 @@ require_once("{$CFG->dirroot}/local/pages/lib.php");
 // Set the page layout.
 $custompage     = \local_pages\custompage::load($pageid);
 
-// Check if the page has an access level requirement.
-$accesslevel    = $custompage->accesslevel;
-if ($accesslevel != '') {
+// Check if the page has a login or access level requirement.
+if ($custompage->loginrequired || $custompage->accesslevel != '') {
     require_login();
 }
 
@@ -47,6 +46,7 @@ $templatename   = trim($custompage->pagelayout) != '' ? $custompage->pagelayout 
 $PAGE->set_pagelayout($templatename);
 
 // Now, get the page renderer.
+/* @var $renderer local_pages_renderer */
 $renderer = $PAGE->get_renderer('local_pages');
 
 // More page setup.
