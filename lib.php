@@ -120,9 +120,9 @@ function local_pages_process_records($records, $nav, $parent = false, global_nav
                 }
             }
             if ($canaccess) {
-                $urllocation = new moodle_url($CFG->wwwroot . '/local/pages/', array('id' => $page->id));
+                $urllocation = new moodle_url('/local/pages/', array('id' => $page->id));
                 if (get_config('local_pages', 'cleanurl_enabled') && trim($page->menuname) != '') {
-                    $urllocation = new moodle_url($CFG->wwwroot . '/local/pages/' . $page->menuname);
+                    $urllocation = new moodle_url('/local/pages/' . $page->menuname);
                 }
                 if (!$gnav->get('lpi' . $page->id)) {
                     $child = $nav->add(
@@ -162,7 +162,7 @@ function local_pages_extend_navigation(global_navigation $nav) {
     if (has_capability('local/pages:addpages', $context)) {
         $mainnode = $nav->add(
             get_string('pagesplugin', 'local_pages'),
-            new moodle_url($CFG->wwwroot . "/local/pages/pages.php"),
+            new moodle_url("/local/pages/pages.php"),
             navigation_node::TYPE_CONTAINER,
             'local_pages',
             'local_pages',
