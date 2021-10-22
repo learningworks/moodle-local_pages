@@ -118,6 +118,19 @@ class pages_edit_product_form extends moodleform {
         $mform->addElement('text', 'pagename', get_string('page_name', 'local_pages'));
         $mform->setType('pagename', PARAM_TEXT);
 
+        $icons = [ "" => "" ];
+        foreach (local_pages_get_fontawesome_icon_map() as $pix => $fa) {
+            $text = preg_replace('/' . preg_quote('fa-', '/') . '/', '', $fa);
+            if (!in_array($text, $icons)) {
+                $items = explode(":", $pix);
+                $icons[$items[1]] = $text;
+            }
+        }
+        asort($icons);
+        $mform->addElement('select', 'menuicon', get_string('menu_icon', 'local_pages'), $icons);
+        $mform->setType('menuicon', PARAM_TEXT);
+        $mform->addHelpButton('menuicon', 'menu_icon_description', 'local_pages');
+
         $mform->addElement('text', 'menuname', get_string('menu_name', 'local_pages'));
         $mform->setType('menuname', PARAM_TEXT);
 

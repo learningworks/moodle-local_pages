@@ -412,7 +412,6 @@ class local_pages_renderer extends plugin_renderer_base {
             redirect(new moodle_url($CFG->wwwroot . '/local/pages/pages.php'));
         } else if ($data = $mform->get_data()) {
             require_once($CFG->libdir . '/formslib.php');
-
             $context = context_system::instance();
             $data->pagecontent['text'] = file_save_draft_area_files($data->pagecontent['itemid'], $context->id,
                 'local_pages', 'pagecontent',
@@ -444,6 +443,7 @@ class local_pages_renderer extends plugin_renderer_base {
             $recordpage->id = $data->id;
             $recordpage->pagedate = $data->pagedate;
             $recordpage->pagename = $data->pagename;
+            $recordpage->menuicon = $data->menuicon;
             $recordpage->pageorder = intval($data->pageorder);
             $recordpage->menuname = strtolower(str_replace(array(" ", "/", "\\", "'", '"', ";", "~",
                 "?", "&", "@", "#", "$", "%", "^", "*", "(", ")", "+", "="), "", trim($data->menuname)));
@@ -477,6 +477,7 @@ class local_pages_renderer extends plugin_renderer_base {
         $forform->accesslevel = $page->accesslevel;
         $forform->pageparent = $page->pageparent;
         $forform->menuname = $page->menuname;
+        $forform->menuicon = $page->menuicon;
         $forform->id = $page->id;
         $forform->emailto = $page->emailto;
         $forform->pagedate = $page->pagedate;

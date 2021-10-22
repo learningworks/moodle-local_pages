@@ -119,5 +119,20 @@ function xmldb_local_pages_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2019011100, 'local', 'pages');
     }
 
+    if ($oldversion < 2019102401) {
+
+        // Define field menuicon to be added to local_pages.
+        $table = new xmldb_table('local_pages');
+        $field = new xmldb_field('menuicon', XMLDB_TYPE_CHAR, '64', null, null, null, null, 'menuname');
+
+        // Conditionally launch add field menuicon.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Pages savepoint reached.
+        upgrade_plugin_savepoint(true, 2019102401, 'local', 'pages');
+    }
+
     return true;
 }
