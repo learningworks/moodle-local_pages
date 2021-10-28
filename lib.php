@@ -563,8 +563,8 @@ function local_pages_before_standard_html_head() {
     $url = new moodle_url($PAGE->url);
     $url->remove_all_params();
 
-    if(get_config('local_pages', 'cleanurl_enabled') && $pageid === 0){
-        $url =  str_replace('index.php','', $url->out());
+    if (get_config('local_pages', 'cleanurl_enabled') && $pageid === 0) {
+        $url = str_replace('index.php', '', $url->out());
         $url .= $custompage->menuname;
     } else {
         $url = $url->out() . '?id='. $custompage->id;
