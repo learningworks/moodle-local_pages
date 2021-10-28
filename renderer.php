@@ -353,7 +353,7 @@ class local_pages_renderer extends plugin_renderer_base
         }
         return $valid;
     }
-   /**
+    /**
      * clean the incoming data according to field type
      * @param mixed $data
      * @param string $type
@@ -410,7 +410,7 @@ class local_pages_renderer extends plugin_renderer_base
 
                 $tmpparam = str_replace(" ", "_", $value->name);
                 $tmpparam = optional_param($tmpparam, '', PARAM_RAW);
-		$tmpparam = $this->cleanme($tmpparam, $value->type);
+                $tmpparam = $this->cleanme($tmpparam, $value->type);
                 $fields[$value->name] = $tmpparam;
                 $messagetext .= ucfirst($value->name) . ": " . $tmpparam . "\r\n";
                 $field = strtolower(str_replace(" ", "", $value->name));
