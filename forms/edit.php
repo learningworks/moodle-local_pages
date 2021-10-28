@@ -168,7 +168,6 @@ class pages_edit_product_form extends moodleform {
         $options['maxbytes'] = 204800;
         $options['maxfiles'] = 1;
         $options['accepted_types'] = ['jpg', 'jpeg', 'png', 'svg', 'webp'];
-        
         $mform->addElement('filemanager', 'ogimage_filemanager', get_string('edit_ogimage', 'local_pages'), null, $options);
 
         // PAGE DISPLAY.
