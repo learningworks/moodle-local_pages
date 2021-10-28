@@ -225,6 +225,7 @@ class local_pages_renderer extends plugin_renderer_base
                         // Get all data sent from the form.
                         $tmpparam = str_replace(" ", "_", $value->name);
                         $tmpparam = optional_param($tmpparam, '', PARAM_RAW);
+			$tmpparam = $this->cleanme($tmpparam, $value->type);
                         $valuesin[] = $tmpparam;
                     }
                     return str_replace($valuesout, $valuesin, $data->pagecontent);
@@ -352,6 +353,39 @@ class local_pages_renderer extends plugin_renderer_base
         }
         return $valid;
     }
+	
+   /**
+     * clean the incoming data according to field type
+     * @param mixed $data
+     * @param string $type
+     * @return array|float|int|mixed|string|null
+     * @throws coding_exception
+     */
+    public function cleanme($data, $type) {
+        $safedata = '';
+        switch($type) {
+            case 'Text':
+                $safedata = clean_param($data, PARAM_ALPHANUMEXT);
+                break;
+            case 'Email':
+                $safedata = clean_param($data, PARAM_EMAIL);
+                break;
+            case 'Number':
+                $safedata = clean_param($data, PARAM_FLOAT);
+                break;
+            case 'Text Area':
+                $safedata = clean_param($data, PARAM_ALPHANUMEXT);
+                break;
+            case 'Select':
+                $safedata = clean_param($data, PARAM_ALPHANUMEXT);
+                break;
+            case 'Checkbox' :
+                $safedata = clean_param($data, PARAM_ALPHANUMEXT);
+                break;
+        }
+
+        return $safedata;
+    }
 
     /**
      *
@@ -377,7 +411,7 @@ class local_pages_renderer extends plugin_renderer_base
 
                 $tmpparam = str_replace(" ", "_", $value->name);
                 $tmpparam = optional_param($tmpparam, '', PARAM_RAW);
-
+		$tmpparam = $this->cleanme($tmpparam, $value->type);
                 $fields[$value->name] = $tmpparam;
                 $messagetext .= ucfirst($value->name) . ": " . $tmpparam . "\r\n";
                 $field = strtolower(str_replace(" ", "", $value->name));
