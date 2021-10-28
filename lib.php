@@ -559,7 +559,7 @@ function local_pages_before_standard_html_head() {
     $url->remove_all_params();
 
     if(get_config('local_pages', 'cleanurl_enabled') && $pageid === 0){
-        $url =  str_replace('index.php','', $url->out());
+        $url = str_replace('index.php', '', $url->out());
         $url .= $custompage->menuname;
     } else {
         $url = $url->out() . '?id='. $custompage->id;
