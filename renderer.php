@@ -353,14 +353,13 @@ class local_pages_renderer extends plugin_renderer_base
         }
         return $valid;
     }
-	
-  /**
-    * clean the incoming data according to field type
-    * @param mixed $data
-    * @param string $type
-    * @return array|float|int|mixed|string|null
-    * @throws coding_exception
-    */
+   /**
+     * clean the incoming data according to field type
+     * @param mixed $data
+     * @param string $type
+     * @return array|float|int|mixed|string|null
+     * @throws coding_exception
+     */
     public function cleanme($data, $type) {
         $safedata = '';
         switch($type) {
