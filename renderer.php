@@ -225,7 +225,7 @@ class local_pages_renderer extends plugin_renderer_base
                         // Get all data sent from the form.
                         $tmpparam = str_replace(" ", "_", $value->name);
                         $tmpparam = optional_param($tmpparam, '', PARAM_RAW);
-			$tmpparam = $this->cleanme($tmpparam, $value->type);
+                        $tmpparam = $this->cleanme($tmpparam, $value->type);
                         $valuesin[] = $tmpparam;
                     }
                     return str_replace($valuesout, $valuesin, $data->pagecontent);
