@@ -534,6 +534,11 @@ function local_pages_get_fontawesome_icon_map() {
     ];
 }
 
+/**
+ * Callback to add head elements.
+ *
+ * @return str valid html head content
+ */
 function local_pages_before_standard_html_head() {
     global $CFG, $DB, $PAGE, $SITE;
 
