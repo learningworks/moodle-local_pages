@@ -362,7 +362,7 @@ class local_pages_renderer extends plugin_renderer_base
      */
     public function cleanme($data, $type) {
         $safedata = '';
-        switch($type) {
+        switch(strtolower($type)) {
             case 'Text':
                 $safedata = clean_param($data, PARAM_ALPHANUMEXT);
                 break;
@@ -381,6 +381,8 @@ class local_pages_renderer extends plugin_renderer_base
             case 'Checkbox' :
                 $safedata = clean_param($data, PARAM_ALPHANUMEXT);
                 break;
+            default:
+                $safedata = clean_param($data, PARAM_ALPHANUMEXT);
         }
 
         return $safedata;
