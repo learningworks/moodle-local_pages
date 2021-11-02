@@ -362,23 +362,17 @@ class local_pages_renderer extends plugin_renderer_base
      */
     public function cleanme($data, $type) {
         $safedata = '';
-        switch(strtolower($type)) {
-            case 'Text':
-                $safedata = clean_param($data, PARAM_ALPHANUMEXT);
-                break;
-            case 'Email':
+        switch(mb_strtolower($type)) {
+            case 'email':
                 $safedata = clean_param($data, PARAM_EMAIL);
                 break;
-            case 'Number':
+            case 'number':
                 $safedata = clean_param($data, PARAM_FLOAT);
                 break;
-            case 'Text Area':
-                $safedata = clean_param($data, PARAM_ALPHANUMEXT);
-                break;
-            case 'Select':
-                $safedata = clean_param($data, PARAM_ALPHANUMEXT);
-                break;
-            case 'Checkbox' :
+            case 'text':
+            case 'text area':
+            case 'select':
+            case 'checkbox' :
                 $safedata = clean_param($data, PARAM_ALPHANUMEXT);
                 break;
             default:
