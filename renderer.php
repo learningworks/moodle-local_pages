@@ -373,10 +373,10 @@ class local_pages_renderer extends plugin_renderer_base
             case 'text area':
             case 'select':
             case 'checkbox' :
-                $safedata = clean_param($data, PARAM_ALPHANUMEXT);
+                $safedata = preg_replace('/[^A-Za-z0-9 _-]/i', '', $data);
                 break;
             default:
-                $safedata = clean_param($data, PARAM_ALPHANUMEXT);
+                $safedata = preg_replace('/[^A-Za-z0-9 _-]/i', '', $data);
         }
 
         return $safedata;
