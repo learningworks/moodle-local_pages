@@ -1,6 +1,6 @@
 # Changelog
 
-## V1.9 – 22/10/2021
+## V1.9 – 04/11/2021
 ### Added
 •	Ability to add ogimage and HEAD content
 
