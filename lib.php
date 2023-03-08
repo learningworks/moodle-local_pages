@@ -84,7 +84,7 @@ function local_pages_build_menu(navigation_node $nav, $parent, global_navigation
     $records = $DB->get_records_sql("SELECT * FROM {local_pages} WHERE deleted=0 AND onmenu=1 " .
         "AND pagetype='page' AND pageparent=? AND pagedate <=? " .
         "ORDER BY pageorder", array($parent, $today));
-    local_pages_process_records($records, $nav, false, $gnav);
+    local_pages_process_records($records, $nav, $gnav);
 }
 
 /**
@@ -99,7 +99,7 @@ function local_pages_build_menu(navigation_node $nav, $parent, global_navigation
  * @throws dml_exception
  * @throws moodle_exception
  */
-function local_pages_process_records($records, $nav, $parent = false, global_navigation $gnav) {
+function local_pages_process_records($records, $nav, global_navigation $gnav, $parent = false) {
     global $CFG;
     if ($records) {
         foreach ($records as $page) {
@@ -175,7 +175,7 @@ function local_pages_extend_navigation(global_navigation $nav) {
     $records = $DB->get_records_sql("SELECT * FROM {local_pages} WHERE deleted=0 AND onmenu=1 " .
         "AND pagetype='page' AND pageparent=0 AND pagedate <= ? ORDER BY pageorder", array($today));
 
-    local_pages_process_records($records, $nav, false, $nav);
+    local_pages_process_records($records, $nav, $nav);
 }
 
 /**
