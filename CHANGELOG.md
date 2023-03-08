@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.9.1 (2023030800)
+ - Improe PHP 8.x compatability
+ 
 ## V1.9 – 04/11/2021
 ### Added
 •	Ability to add ogimage and HEAD content
