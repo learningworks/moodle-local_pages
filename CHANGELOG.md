@@ -1,5 +1,9 @@
 # Changelog
 
+## V1.9.1 08/03/2023
+### Fixed
+* Improve PHP 8.x compatability
+ 
 ## V1.9 – 04/11/2021
 ### Added
 •	Ability to add ogimage and HEAD content
