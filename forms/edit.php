@@ -189,8 +189,9 @@ class pages_edit_product_form extends moodleform {
         global $DB;
         $usertable = $DB->get_record_sql("select * FROM {user} LIMIT 1");
         $records = json_decode($this->_pagedata);
-        // PHP 7.2 count now throws error if items is not countable instead of returning 0.
-        $limit = intval(@count($records));
+
+        // PHP 7.2 now gives an error if the item cannot be counted - pre 7.2 it returned 0.
+        $limit = is_countable($records) ? intval(@count($records)) : 0;
 
         $i = 0;
         $html = '<div class="form-builder row" id="form-builder">' .
