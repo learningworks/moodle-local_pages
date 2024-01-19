@@ -119,14 +119,14 @@ class custompage {
 
         $data = new \stdClass();
         if (intval($id) > 0) {
-            $data = $DB->get_record_sql("SELECT * FROM {local_pages} WHERE id=? LIMIT 1", array(intval($id)));
+            $data = $DB->get_record_sql("SELECT * FROM {local_pages} WHERE id=?", array(intval($id), IGNORE_MULTIPLE));
         } else {
 
             // Check url for page name.
             $main = explode('?', trim($_SERVER['REQUEST_URI']));
             $parts = explode("/", trim($main[0]));
             $url = '%' . end($parts) . '%';
-            $page = $DB->get_record_sql("SELECT * FROM {local_pages} WHERE menuname LIKE ? limit 1", array(trim($url)));
+            $page = $DB->get_record_sql("SELECT * FROM {local_pages} WHERE menuname LIKE ?", array(trim($url)), IGNORE_MULTIPLE);
 
             if ($page) {
                 $data = $page;
