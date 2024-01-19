@@ -63,6 +63,23 @@ if ($hassiteconfig) {
         0
     );
 
+    $settings[] = new \admin_setting_configtext(
+        'local_pages/recaptcha_site_key',
+        get_string('recaptcha_site_key', 'local_pages'),
+        get_string('recaptcha_site_key_description', 'local_pages'),
+        '',
+        PARAM_TEXT,
+        80
+    );
+    $settings[] = new \admin_setting_configtext(
+        'local_pages/recaptcha_secret_key',
+        get_string('recaptcha_secret_key', 'local_pages'),
+        get_string('recaptcha_secret_key_description', 'local_pages'),
+        '',
+        PARAM_TEXT,
+        80
+    );
+
     // Setting to define a message to be sent to a user from a form.
     $settings[] = new \admin_setting_confightmleditor(
         'local_pages/message_copy',
