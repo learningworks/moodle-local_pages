@@ -39,7 +39,7 @@ class local_pages_renderer extends plugin_renderer_base {
     /**
      * @var array
      */
-    public $errorfields = array();
+    public $error_fields = array();
 
     /**
      *
