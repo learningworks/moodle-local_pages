@@ -283,6 +283,25 @@ class local_pages_renderer extends plugin_renderer_base {
             $str .= '<span class="help-block">' . $this->error_fields[$value->name] . '</span>';
         }
 
+        $recaptcha_site_key = get_config('local_pages', 'recaptcha_site_key');
+        if ($recaptcha_site_key)
+        {
+            $recaptcha_error = "";
+            if (isset($this->error_fields['recaptcha'])) {
+                $recaptcha_error = '<span class="help-block error-item">' . $this->error_fields['recaptcha'] . '</span>';
+            }
+            $str .= <<<HTML
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<div class="fitem fitem_actionbuttons fitem_fgroup">
+    <div class="felement fgroup">
+        $recaptcha_error
+        <div class="g-recaptcha" data-sitekey="$recaptcha_site_key"></div>
+    </div>
+</div>
+HTML;
+
+        }
+
         $str .= '<div class="fitem fitem_actionbuttons fitem_fgroup"><div class="felement fgroup">' .
             '<input type="text" name="hp" value="" style="position:absolute;left:-99999px" /> ' .
             '<button type="submit" name="formsubmit" value="1" class="btn btn-primary">Submit</button>' .
@@ -320,6 +339,26 @@ class local_pages_renderer extends plugin_renderer_base {
                     $this->error_fields[$value->name] = "Please provide a number for " . $value->name;
                     $valid = false;
                 }
+            }
+        }
+        $recaptcha_site_key = get_config('local_pages', 'recaptcha_site_key');
+        if ($recaptcha_site_key)
+        {
+            $recaptcha_secret_key = get_config('local_pages', 'recaptcha_secret_key');
+            $captcha = isset($_POST['g-recaptcha-response']) ? $_POST['g-recaptcha-response'] : "";
+            if (!$captcha)
+            {
+                $this->error_fields['recaptcha'] = get_string('pleasefillin', 'local_pages', 'reCaptcha');
+                return false;
+            }
+
+            // Verify the reCaptcha response
+            $url = "https://www.google.com/recaptcha/api/siteverify?secret=$recaptcha_secret_key&response={$captcha}&remoteip={$_SERVER['REMOTE_ADDR']}";
+            $response = json_decode(file_get_contents($url), true);
+            if (!$response['success'])
+            {
+                $this->error_fields['recaptcha'] = get_string('invalid_recaptcha', 'local_pages');
+                return false;
             }
         }
         return $valid;
